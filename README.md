@@ -1,4 +1,2 @@
 # dk-wish
 hihi
-
-commit
