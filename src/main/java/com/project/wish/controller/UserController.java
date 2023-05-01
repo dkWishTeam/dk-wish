@@ -107,7 +107,7 @@ public class UserController {
      * @param session session 에 있는 회원의 고유번호를 얻기 위한 객체
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/block")
     public String updateUserBlockByAdmin(@PathVariable("id") Integer id, HttpSession session)
         throws UnAuthorizedAccessException {
         isRoleEqualsAdmin(session);
@@ -122,7 +122,7 @@ public class UserController {
      * @param session session 에 있는 회원의 고유번호를 얻기 위한 객체
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/unblock")
     public String updateUserUnBlockByAdmin(@PathVariable("id") Integer id, HttpSession session)
         throws UnAuthorizedAccessException {
         isRoleEqualsAdmin(session);
@@ -152,7 +152,7 @@ public class UserController {
      *
      * @return 회원가입 form 을 반환합니다.
      */
-    @GetMapping
+    @GetMapping("sign-up")
     public String getSignUpForm() {
         return "sign-up";
         //todo 해당 경로의 Path hierarchy 구조 변경
