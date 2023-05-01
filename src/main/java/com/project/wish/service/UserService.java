@@ -21,7 +21,9 @@ public interface UserService {
 
     void updateUser(Integer userId, UserUpdateRequestDto dto);
 
-    void updateUserByAdmin(Integer id);
+    void updateUserBlockByAdmin(Integer id);
+
+    void updateUserUnBlockByAdmin(Integer id);
 
     void deleteUserById(Integer id);
 
@@ -58,6 +60,7 @@ public interface UserService {
         user.setBirth(dto.getBirth());
         user.setPhone(dto.getPhone());
         user.setNickname(dto.getNickname());
+        user.setModifyDatetime(LocalDateTime.now());
         return user;
     }
 
