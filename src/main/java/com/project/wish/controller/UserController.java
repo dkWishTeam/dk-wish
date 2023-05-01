@@ -108,10 +108,25 @@ public class UserController {
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      */
     @PutMapping("/{id}")
-    public String updateUserByAdmin(@PathVariable("id") Integer id, HttpSession session)
+    public String updateUserBlockByAdmin(@PathVariable("id") Integer id, HttpSession session)
         throws UnAuthorizedAccessException {
         isRoleEqualsAdmin(session);
-        userService.updateUserByAdmin(id);
+        userService.updateUserBlockByAdmin(id);
+        return "redirect:/users/" + id + "/admin";
+    }
+
+    /**
+     * 관리자가 회원을 unBlock 할 때 쓰이는 메서드입니다.
+     *
+     * @param id 회원의 고유번호
+     * @param session session 에 있는 회원의 고유번호를 얻기 위한 객체
+     * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
+     */
+    @PutMapping("/{id}")
+    public String updateUserUnBlockByAdmin(@PathVariable("id") Integer id, HttpSession session)
+        throws UnAuthorizedAccessException {
+        isRoleEqualsAdmin(session);
+        userService.updateUserUnBlockByAdmin(id);
         return "redirect:/users/" + id + "/admin";
     }
 
