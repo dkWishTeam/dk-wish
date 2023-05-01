@@ -18,7 +18,9 @@ public interface UserRepository {
 
     void updateUser(User user);
 
-    void updateUserByAdmin(Integer id);
+    void updateUserBlockByAdmin(Integer id);
+
+    void updateUserUnBlockByAdmin(Integer id);
 
     void deleteUser(int userId);
 
