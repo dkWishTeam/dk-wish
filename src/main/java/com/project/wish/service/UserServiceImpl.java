@@ -7,9 +7,9 @@ import com.project.wish.dto.UserResponseDtoByAdmin;
 import com.project.wish.dto.UserUpdateRequestDto;
 import com.project.wish.repository.UserRepository;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,26 +27,32 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto findUserById(Integer id) {
-        return userRepository.findUserById(id);
+        User user = userRepository.findUserById(id);
+        return userToUserResponseDto(user);
         //todo 찾았는데 없을 경우
     }
 
     @Override
     public UserResponseDtoByAdmin findUserByIdByAdmin(Integer id) {
-        return userRepository.findUserByIdByAdmin(id);
+        User user = userRepository.findUserByIdByAdmin(id);
+        return userToUserResponseDtoByAdmin(user);
         //todo 찾았는데 없을 경우
     }
 
     @Override
     public List<UserResponseDtoByAdmin> findUsers() {
-        return userRepository.findUsers();
+        List<User> users = userRepository.findUsers();
+        return users.stream().map(this::userToUserResponseDtoByAdmin).collect(Collectors.toList());
         //todo paging
     }
 
     @Override
-    public void updateUser(Integer userId, UserUpdateRequestDto dto) {
-        userRepository.updateUser(userId,dto);
+    public void updateUser(Integer id, UserUpdateRequestDto dto) {
+        User user = userRepository.findUserById(id);
+        User updatedUser = userUpdateRequestDtoToUser(user, dto);
+        userRepository.updateUser(updatedUser);
     }
+
 
     @Override
     public void updateUserByAdmin(Integer id) {
@@ -60,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isUserIdUnique(String userId) {
-        User user = userRepository.findUserByUserId();
+        User user = userRepository.findUserByUserId(userId);
         return user == null;
     }
 
