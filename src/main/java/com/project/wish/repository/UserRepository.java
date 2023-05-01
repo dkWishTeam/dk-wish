@@ -1,22 +1,32 @@
 package com.project.wish.repository;
 
 import com.project.wish.domain.User;
+import com.project.wish.dto.UserResponseDto;
+import com.project.wish.dto.UserResponseDtoByAdmin;
+import com.project.wish.dto.UserUpdateRequestDto;
+import java.util.List;
 
 public interface UserRepository {
 
-    boolean insertUser(User user);
+    void insertUser(User user);
 
-    boolean deleteUser(int userId);
+    User findUserById(Integer id);
 
-    boolean updateUser(User user);
+    User findUserByIdByAdmin(Integer id);
 
-    boolean findUser(int userId);
+    List<User> findUsers();
 
-    boolean findUsers();
+    void updateUser(User user);
 
-    User findByEmail(String email);
+    void updateUserByAdmin(Integer id);
 
-    User findByNickname(String nickname);
+    void deleteUser(int userId);
 
-    User findByPhone(String phone);
+    User findUserByPhone(String phone);
+
+    User findUserByUserId(String userId);
+
+    User findUserByEmail(String email);
+
+    User findUserByNickname(String nickname);
 }
