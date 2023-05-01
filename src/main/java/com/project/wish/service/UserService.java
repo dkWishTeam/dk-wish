@@ -8,7 +8,6 @@ import com.project.wish.dto.UserResponseDtoByAdmin;
 import com.project.wish.dto.UserUpdateRequestDto;
 import java.time.LocalDateTime;
 import java.util.List;
-import lombok.Builder;
 
 public interface UserService {
 
@@ -48,6 +47,37 @@ public interface UserService {
             .registerDatetime(LocalDateTime.now())
             .modifyDatetime(null)
             .isQuit(false)
+            .build();
+    }
+
+    default User userUpdateRequestDtoToUser(User user, UserUpdateRequestDto dto) {
+        user.setUserId(dto.getUserId());
+        user.setPassword(dto.getPassword());
+        user.setEmail(dto.getEmail());
+        user.setName(dto.getName());
+        user.setBirth(dto.getBirth());
+        user.setPhone(dto.getPhone());
+        user.setNickname(dto.getNickname());
+        return user;
+    }
+
+    default UserResponseDto userToUserResponseDto(User user) {
+        return UserResponseDto.builder()
+            .id(user.getId())
+            .userId(user.getUserId())
+            .email(user.getEmail())
+            .name(user.getName())
+            .birth(user.getBirth())
+            .phone(user.getPhone())
+            .nickname(user.getNickname())
+            .build();
+    }
+
+    default UserResponseDtoByAdmin userToUserResponseDtoByAdmin(User user) {
+        return UserResponseDtoByAdmin.builder()
+            .id(user.getId())
+            .nickname(user.getNickname())
+            .isBlock(user.isBlock())
             .build();
     }
 
