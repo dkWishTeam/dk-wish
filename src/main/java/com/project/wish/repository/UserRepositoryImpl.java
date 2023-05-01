@@ -34,6 +34,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> findUsers() {
         String statement = "wishdb.findUsers";
         return session.selectOne(statement);
+        // todo xml 파일에서 페이징
     }
 
     @Override
@@ -43,8 +44,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void updateUserByAdmin(Integer id) {
-        String statement = "wishdb.updateUserByAdmin";
+    public void updateUserBlockByAdmin(Integer id) {
+        String statement = "wishdb.updateUserBlockByAdmin";
+        session.update(statement, id);
+    }
+
+    @Override
+    public void updateUserUnBlockByAdmin(Integer id) {
+        String statement = "wishdb.updateUserUnBlockByAdmin";
         session.update(statement, id);
     }
 
