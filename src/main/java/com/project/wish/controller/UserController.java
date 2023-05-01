@@ -152,7 +152,7 @@ public class UserController {
      *
      * @return 회원가입 form 을 반환합니다.
      */
-    @GetMapping
+    @GetMapping("sign-up")
     public String getSignUpForm() {
         return "sign-up";
         //todo 해당 경로의 Path hierarchy 구조 변경
