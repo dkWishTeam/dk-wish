@@ -26,6 +26,14 @@ public interface UserService {
 
     void deleteUserById(Integer id);
 
+    boolean isUserIdUnique(String userId);
+
+    boolean isEmailUnique(String email);
+
+    boolean isNicknameUnique(String nickname);
+
+    boolean isPhoneUnique(String phone);
+
     default User userCreateRequestDtoToUser(UserCreateRequestDto dto) {
         return User.builder()
             .roleId(Role.USER.getRoleId())
@@ -42,4 +50,5 @@ public interface UserService {
             .isQuit(false)
             .build();
     }
+
 }

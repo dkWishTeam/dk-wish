@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    // think 중복체크 시 user 반환과 boolean 반환중 뭘 쓸까
 
     //todo 트랜잭션
     private final UserRepository userRepository;
@@ -55,5 +56,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserById(Integer id) {
         userRepository.deleteUser(id);
+    }
+
+    @Override
+    public boolean isUserIdUnique(String userId) {
+        User user = userRepository.findUserByUserId();
+        return user == null;
+    }
+
+    @Override
+    public boolean isEmailUnique(String email) {
+        User user = userRepository.findUserByEmail(email);
+        return user == null;
+    }
+
+    @Override
+    public boolean isNicknameUnique(String nickname) {
+        User user = userRepository.findUserByNickname(nickname);
+        return user == null;
+    }
+
+    @Override
+    public boolean isPhoneUnique(String phone) {
+        User user = userRepository.findUserByPhone(phone);
+        return user == null;
     }
 }
