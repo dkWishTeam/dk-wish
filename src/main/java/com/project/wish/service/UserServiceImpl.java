@@ -55,8 +55,13 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void updateUserByAdmin(Integer id) {
-        userRepository.updateUserByAdmin(id);
+    public void updateUserBlockByAdmin(Integer id) {
+        userRepository.updateUserBlockByAdmin(id);
+    }
+
+    @Override
+    public void updateUserUnBlockByAdmin(Integer id) {
+        userRepository.updateUserUnBlockByAdmin(id);
     }
 
     @Override
