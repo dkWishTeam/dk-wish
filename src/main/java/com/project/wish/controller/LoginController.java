@@ -1,20 +1,20 @@
 package com.project.wish.controller;
 
-import com.project.wish.dto.UserDto;
+import com.project.wish.dto.LoginDto;
 import com.project.wish.service.UserService;
 import com.project.wish.service.WishListService;
 import javax.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class LoginController {
-    @Autowired
-    UserService userService;
-    @Autowired
-    WishListService wishListService;
+
+    private final UserService userService;
+    private final WishListService wishListService;
 
     @RequestMapping("/")
     public String main(Model model) {
@@ -28,7 +28,7 @@ public class LoginController {
     }
 
     @RequestMapping("/loginCheck")
-    public String loginCheck(Model model, UserDto user, HttpSession session) {
+    public String loginCheck(Model model, LoginDto user, HttpSession session) {
         boolean result = userService.loginCheck(user, session);
         if(result == true) {
             //model.addAttribute("user", userService.getUserInfo(user));

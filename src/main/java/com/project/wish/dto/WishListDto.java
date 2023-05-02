@@ -9,15 +9,15 @@ import lombok.ToString;
 @ToString
 public class WishListDto {
     Long id;
-    Long user_id;
+    Long userId;
 
     // 이미지
     byte[] image;
     // product name
-    String product_name;
+    String productName;
     // goal amount
-    Long goal_amount;
+    Long goalAmount;
 
     String nickname;
-    int percentage_completed;
+    int percentageCompleted;
 }

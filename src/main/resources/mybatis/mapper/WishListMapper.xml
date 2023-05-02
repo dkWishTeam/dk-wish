@@ -22,7 +22,7 @@
     select id, user_id, image, title, product_name, goal_amount
     from wish
     where is_public = true
-    order by register_datetime
+    order by register_datetime desc
   </select>
 
   <select id="getNickName" resultType="string" parameterType="WishListDto">

@@ -1,17 +1,14 @@
 package com.project.wish.repository;
 
 import com.project.wish.domain.User;
-import com.project.wish.dto.UserDto;
-import com.project.wish.dto.UserResponseDto;
-import com.project.wish.dto.UserResponseDtoByAdmin;
-import com.project.wish.dto.UserUpdateRequestDto;
+import com.project.wish.dto.LoginDto;
 import java.util.List;
 
 public interface UserRepository {
 
-    public UserDto loginUser(UserDto user);
+    public LoginDto findLoginUser(LoginDto user);
     
-    public UserDto getUserInfo(UserDto user);
+    public LoginDto findLoginUserInfo(LoginDto user);
     
     void insertUser(User user);
 
