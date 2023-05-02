@@ -6,4 +6,6 @@ import java.util.List;
 public interface WishListService {
     public List<WishListDto> getAllWishList();
     public List<WishListDto> getWishList(String path);
+
+    public void setNickNamePercent(List<WishListDto> list);
 }

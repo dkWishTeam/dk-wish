@@ -31,9 +31,8 @@ public class LoginController {
     public String loginCheck(Model model, UserDto user, HttpSession session) {
         boolean result = userService.loginCheck(user, session);
         if(result == true) {
-            model.addAttribute("user", userService.getUserInfo(user));
-            System.out.println(session.getAttribute("id"));
-            return "index";
+            //model.addAttribute("user", userService.getUserInfo(user));
+            return "redirect:/";
         } else {
             model.addAttribute("msg", "아이디 혹은 비밀번호가 다릅니다.");
             return "login";
@@ -43,6 +42,6 @@ public class LoginController {
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
         userService.logout(session);
-        return "index";
+        return "redirect:/";
     }
 }

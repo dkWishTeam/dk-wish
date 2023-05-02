@@ -8,12 +8,16 @@ import lombok.ToString;
 @Setter
 @ToString
 public class WishListDto {
+    Long id;
+    Long user_id;
+
     // 이미지
     byte[] image;
     // product name
     String product_name;
     // goal amount
     Long goal_amount;
-    // userid
-    Long user_id;
+
+    String nickname;
+    int percentage_completed;
 }
