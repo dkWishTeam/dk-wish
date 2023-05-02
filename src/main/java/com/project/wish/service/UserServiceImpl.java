@@ -2,8 +2,6 @@ package com.project.wish.service;
 
 import com.project.wish.dto.UserDto;
 import com.project.wish.repository.UserRepository;
-import com.project.wish.repository.UserRepositoryImpl;
-import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
