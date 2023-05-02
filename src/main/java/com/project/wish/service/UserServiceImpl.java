@@ -1,6 +1,6 @@
 package com.project.wish.service;
 
-import com.project.wish.dto.UserDto;
+import com.project.wish.dto.LoginDto;
 import javax.servlet.http.HttpSession;
 import com.project.wish.domain.User;
 import com.project.wish.dto.UserCreateRequestDto;
@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public boolean loginCheck (UserDto user, HttpSession session) {
-        UserDto loginUser = userRepository.loginUser(user);
+    public boolean loginCheck (LoginDto user, HttpSession session) {
+        LoginDto loginUser = userRepository.findLoginUser(user);
         if(loginUser == null) {
             return false;
         }
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        UserDto loginUserInfo = getUserInfo(user);
+        LoginDto loginUserInfo = getLoginUserInfo(user);
         session.setAttribute("id", loginUserInfo.getId());
         session.setAttribute("nickname", loginUserInfo.getNickname());
 
@@ -45,8 +45,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserInfo (UserDto user) {
-        UserDto userInfo = userRepository.getUserInfo(user);
+    public LoginDto getLoginUserInfo(LoginDto user) {
+        LoginDto userInfo = userRepository.findLoginUserInfo(user);
         return userInfo;
     }
     

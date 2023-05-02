@@ -82,14 +82,15 @@
     FROM user
     WHERE nickname = #{nickname}
   </select>
-  <select id="login" resultType="UserDto" parameterType="UserDto">
+
+  <select id="login" resultType="LoginDto" parameterType="LoginDto">
     select password
     from user
-    where user_id = #{user_id}
+    where user_id = #{userId}
   </select>
-  <select id="getUserInfo" resultType="UserDto" parameterType="UserDto">
-    select id, role_id, user_id, password, email, name, birth, phone, nickname, is_block, register_datetime, modify_datetime, is_quit
+  <select id="getLoginUserInfo" resultType="LoginDto" parameterType="LoginDto">
+    select id, user_id, password, nickname, is_block, is_quit
     from user
-    where user_id = #{user_id}
+    where user_id = #{userId}
   </select>
 </mapper>
