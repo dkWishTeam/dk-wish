@@ -22,12 +22,12 @@ public class LoginController {
         return "index";
     }
 
-    @RequestMapping("login")
+    @RequestMapping("/login")
     public String login() {
         return "login";
     }
 
-    @RequestMapping("loginCheck")
+    @RequestMapping("/loginCheck")
     public String loginCheck(Model model, UserDto user, HttpSession session) {
         boolean result = userService.loginCheck(user, session);
         if(result == true) {
@@ -40,7 +40,7 @@ public class LoginController {
         }
     }
 
-    @RequestMapping("logout")
+    @RequestMapping("/logout")
     public String logout(HttpSession session) {
         userService.logout(session);
         return "index";

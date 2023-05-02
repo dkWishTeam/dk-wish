@@ -20,7 +20,9 @@ public class UserServiceImpl implements UserService {
         if(!loginUser.getPassword().equals(user.getPassword())) {
             return false;
         }
-        session.setAttribute("id", user.getId());
+        if(session.getAttribute("id") == null)
+            session.setAttribute("id", user.getId());
+
         return true;
     }
 
