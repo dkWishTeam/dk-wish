@@ -1,5 +1,7 @@
 package com.project.wish.service;
 
+import com.project.wish.dto.UserDto;
+import javax.servlet.http.HttpSession;
 import com.project.wish.domain.User;
 import com.project.wish.dto.UserCreateRequestDto;
 import com.project.wish.dto.UserResponseDto;
@@ -19,6 +21,35 @@ public class UserServiceImpl implements UserService {
     //todo 트랜잭션
     private final UserRepository userRepository;
 
+
+    @Override
+    public boolean loginCheck (UserDto user, HttpSession session) {
+        UserDto loginUser = userRepository.loginUser(user);
+        if(loginUser == null) {
+            return false;
+        }
+        if(!loginUser.getPassword().equals(user.getPassword())) {
+            return false;
+        }
+
+        UserDto loginUserInfo = getUserInfo(user);
+        session.setAttribute("id", loginUserInfo.getId());
+        session.setAttribute("nickname", loginUserInfo.getNickname());
+
+        return true;
+    }
+
+    @Override
+    public void logout(HttpSession session) {
+        session.removeAttribute("id");
+    }
+
+    @Override
+    public UserDto getUserInfo (UserDto user) {
+        UserDto userInfo = userRepository.getUserInfo(user);
+        return userInfo;
+    }
+    
     @Override
     public void insertUser(UserCreateRequestDto dto) {
         User user = userCreateRequestDtoToUser(dto);

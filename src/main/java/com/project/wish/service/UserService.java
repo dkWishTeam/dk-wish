@@ -6,11 +6,18 @@ import com.project.wish.dto.UserCreateRequestDto;
 import com.project.wish.dto.UserResponseDto;
 import com.project.wish.dto.UserResponseDtoByAdmin;
 import com.project.wish.dto.UserUpdateRequestDto;
+import com.project.wish.dto.UserDto;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface UserService {
 
+    public boolean loginCheck(UserDto user, HttpSession session);
+    
+    public void logout(HttpSession session);
+
+    public UserDto getUserInfo(UserDto user);
     void insertUser(UserCreateRequestDto dto);
 
     UserResponseDto findUserById(Integer id);
@@ -83,5 +90,4 @@ public interface UserService {
             .isBlock(user.isBlock())
             .build();
     }
-
 }

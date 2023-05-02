@@ -2,6 +2,7 @@ package com.project.wish.repository;
 
 import com.project.wish.domain.User;
 import java.util.List;
+import com.project.wish.dto.UserDto;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,32 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Autowired
     SqlSession session;
+  
+    @Override
+    public UserDto loginUser(UserDto user) {
+        UserDto result = null;
+        try {
+            String statement = "user.login";
+            result = session.selectOne(statement, user);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
+        return result;
+    }
+    @Override
+    public UserDto getUserInfo(UserDto user) {
+        UserDto result = null;
+
+        try {
+            String statement = "user.getUserInfo";
+            result = session.selectOne(statement, user);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return result;
+        }
     @Override
     public void insertUser(User user) {
         String statement = "wishdb.insertUser";

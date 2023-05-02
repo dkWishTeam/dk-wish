@@ -82,3 +82,15 @@
     WHERE nickname = #{nickname}
   </select>
 </mapper>
+<mapper namespace="user">
+  <select id="login" resultType="UserDto" parameterType="UserDto">
+    select password
+    from user
+    where user_id = #{user_id}
+  </select>
+  <select id="getUserInfo" resultType="UserDto" parameterType="UserDto">
+    select id, role_id, user_id, password, email, name, birth, phone, nickname, is_block, register_datetime, modify_datetime, is_quit
+    from user
+    where user_id = #{user_id}
+  </select>
+</mapper>

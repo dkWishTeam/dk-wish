@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wishList">
+  <select id="all" resultType="WishListDto">
+    select id, user_id, image, title, product_name, goal_amount
+    from wish
+    where is_public = true
+  </select>
+  <select id="completion" resultType="WishListDto">
+    select id, user_id, image, title, product_name, goal_amount
+    from wish
+    where is_public = true and completion_status = true
+  </select>
+  <select id="ongoing" resultType="WishListDto">
+    select id, user_id, image, title, product_name, goal_amount
+    from wish
+    where is_public = true and completion_status = false
+  </select>
+  <select id="new" resultType="WishListDto">
+    select id, user_id, image, title, product_name, goal_amount
+    from wish
+    where is_public = true
+    order by register_datetime
+  </select>
+
+  <select id="getNickName" resultType="string" parameterType="WishListDto">
+    select u.nickname
+    from wish w
+    left join user u on w.#{user_id} = u.id
+  </select>
+
+  <select id="getPercent" resultType="WishListDto" parameterType="WishListDto">
+    select w.id, sum(wh.amount) / w.goal_amount * 100 as percentage_completed
+    from wish w
+    left join wish_history wh on w.id = wh.wish_id
+    where w.id = #{wish_id}
+    group by w.id;
+  </select>
+</mapper>
+
+
+
+
+
+
+
+
