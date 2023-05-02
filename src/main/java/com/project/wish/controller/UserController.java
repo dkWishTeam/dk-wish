@@ -47,8 +47,9 @@ public class UserController {
      * @return 회원의 myPage 를 반환합니다.
      */
     @GetMapping("/{id}")
-    public String findUserById(HttpSession session, Model model, @PathVariable("id") Integer id)
+    public String findUserById(HttpSession session, Model model, @PathVariable("id") Long id)
         throws UnAuthorizedAccessException {
+        System.out.println("들어오나?" + id);
         isUserAuthorized(id, session);
         model.addAttribute("user", userService.findUserById(id));
         return "user/userInfo";
@@ -64,7 +65,7 @@ public class UserController {
      * @return 회원의 myPage 를 반환합니다.
      */
     @GetMapping("/{id}/admin")
-    public String findUserByIdByAdmin(HttpSession session, Model model, @PathVariable("id") Integer id)
+    public String findUserByIdByAdmin(HttpSession session, Model model, @PathVariable("id") Long id)
         throws UnAuthorizedAccessException {
         isRoleEqualsAdmin(session);
         model.addAttribute("user", userService.findUserByIdByAdmin(id));
@@ -96,7 +97,7 @@ public class UserController {
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      */
     @PutMapping("/{id}")
-    public String updateUser(@PathVariable("id") Integer id, @RequestBody UserUpdateRequestDto dto, HttpSession session)
+    public String updateUser(@PathVariable("id") Long id, @RequestBody UserUpdateRequestDto dto, HttpSession session)
         throws UnAuthorizedAccessException {
         isUserAuthorized(id, session);
         userService.updateUser(id, dto);
@@ -111,7 +112,7 @@ public class UserController {
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      */
     @PutMapping("/{id}/block")
-    public String updateUserBlockByAdmin(@PathVariable("id") Integer id, HttpSession session)
+    public String updateUserBlockByAdmin(@PathVariable("id") Long id, HttpSession session)
         throws UnAuthorizedAccessException {
         isRoleEqualsAdmin(session);
         userService.updateUserBlockByAdmin(id);
@@ -126,7 +127,7 @@ public class UserController {
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      */
     @PutMapping("/{id}/unblock")
-    public String updateUserUnBlockByAdmin(@PathVariable("id") Integer id, HttpSession session)
+    public String updateUserUnBlockByAdmin(@PathVariable("id") Long id, HttpSession session)
         throws UnAuthorizedAccessException {
         isRoleEqualsAdmin(session);
         userService.updateUserUnBlockByAdmin(id);
@@ -142,7 +143,7 @@ public class UserController {
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      */
     @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable("id") Integer id, HttpSession session)
+    public String deleteUser(@PathVariable("id") Long id, HttpSession session)
         throws UnAuthorizedAccessException {
         isUserAuthorized(id, session);
         userService.deleteUserById(id);
@@ -218,14 +219,15 @@ public class UserController {
     /**
      * uri Path 와 session 의 id 값의 동일여부를(권한이 있는지) 체크하는 메서드입니다.
      *
-     * @param userId  회원의 고유번호
+     * @param id  회원의 고유번호
      * @param session 로그인 시 session 에 저장되는 id 값을 얻기 위해 사용되는 session 객체
      * @throws UnAuthorizedAccessException
      */
-    private void isUserAuthorized(Integer userId, HttpSession session) throws UnAuthorizedAccessException {
-        Integer loggedUserId = (Integer) session.getAttribute("userId");
-        if (loggedUserId == null || !Objects.equals(loggedUserId, userId)) {
+    private void isUserAuthorized(Long id, HttpSession session) throws UnAuthorizedAccessException {
+        Long loggedUserId = (Long)session.getAttribute("id");
+        if (loggedUserId == null || !Objects.equals(loggedUserId, id)) {
             throw new UnAuthorizedAccessException();
+            //todo 권한이 없는 페이지 오류 처리
         }
     }
 
@@ -237,7 +239,8 @@ public class UserController {
      */
     private void isRoleEqualsAdmin(HttpSession session) throws UnAuthorizedAccessException {
         String role = (String) session.getAttribute("role");
-        if (role == null || !Objects.equals(role, Role.ADMIN)) {
+        //todo 로그인 시 session.add(role,"ADMIN") 추가
+        if (role == null || !Objects.equals(role, Role.ADMIN.toString())) {
             throw new UnAuthorizedAccessException();
         }
     }

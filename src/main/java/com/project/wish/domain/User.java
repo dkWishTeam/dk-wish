@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Builder
 public class User {
-    private Integer id;
+    private Long id;
     private int roleId;
     private String userId;
     private String password;
