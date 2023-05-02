@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wishdb">
+  <insert id="insertUser" parameterType="User">
+    INSERT INTO user (role_id, user_id, password, email, name, birth, phone, nickname, is_block, register_datetime,
+                       modify_datetime, is_quit)
+    VALUES (#{roleId}, #{userId}, #{password}, #{email}, #{name}, #{birth}, #{phone}, #{nickname}, #{isBlock},
+            #{registerDatetime}, #{modifyDatetime}, #{isQuit})
+  </insert>
+
+  <select id="findUserById" parameterType="java.lang.Integer" resultType="User">
+    SELECT *
+    FROM user
+    WHERE id = #{id}
+  </select>
+
+  <select id="findUserByIdByAdmin" parameterType="java.lang.Integer" resultType="User">
+    SELECT *
+    FROM user
+    WHERE id = #{id}
+  </select>
+
+  <select id="findUsers" resultType="User">
+    SELECT *
+    FROM user
+  </select>
+
+  <update id="updateUser" parameterType="User">
+    UPDATE user
+    SET user_id         = #{userId},
+        password        = #{password},
+        email           = #{email},
+        name            = #{name},
+        birth           = #{birth},
+        phone           = #{phone},
+        nickname        = #{nickname},
+        modify_datetime = #{modifyDatetime}
+    WHERE id = #{id}
+  </update>
+
+  <update id="updateUserBlockByAdmin" parameterType="java.lang.Integer">
+    UPDATE user
+    SET is_block = true;
+    WHERE id = #{id}
+  </update>
+
+  <update id="updateUserUnBlockByAdmin" parameterType="java.lang.Integer">
+    UPDATE user
+    SET is_block = false;
+    WHERE id = #{id}
+  </update>
+
+  <update id="deleteUser" parameterType="java.lang.Integer">
+    UPDATE user
+    SET is_quit = true;
+    WHERE id = #{id}
+  </update>
+
+  <select id="findUserByPhone" parameterType="java.lang.String" resultType="User">
+    SELECT *
+    FROM user
+    WHERE phone = #{phone}
+  </select>
+
+  <select id="findUserByUserId" parameterType="java.lang.String" resultType="User">
+    SELECT *
+    FROM user
+    WHERE user_id = #{userId}
+  </select>
+
+  <select id="findUserByEmail" parameterType="java.lang.String" resultType="User">
+    SELECT *
+    FROM user
+    WHERE email = #{email}
+  </select>
+
+  <select id="findUserByNickname" parameterType="java.lang.String" resultType="User">
+    SELECT *
+    FROM user
+    WHERE nickname = #{nickname}
+  </select>
+  <select id="login" resultType="UserDto" parameterType="UserDto">
+    select password
+    from user
+    where user_id = #{user_id}
+  </select>
+  <select id="getUserInfo" resultType="UserDto" parameterType="UserDto">
+    select id, role_id, user_id, password, email, name, birth, phone, nickname, is_block, register_datetime, modify_datetime, is_quit
+    from user
+    where user_id = #{user_id}
+  </select>
+</mapper>
