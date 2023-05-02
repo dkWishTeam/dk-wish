@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller("/users")
+@Controller
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -30,17 +33,17 @@ public class UserController {
      * @param dto user 등록 시 쓰이는 dto 입니다.
      */
     @PostMapping
-    public String createUser(@RequestBody UserCreateRequestDto dto) {
-        userService.insertUser(dto);
-        return "redirect:/main";
+    public String createUser(UserCreateRequestDto dto) {
+        userService.insertUser(dto);//think 입력 시점에 중복체크 싹다 한 번 다시? 아니면 unique 제약 조건을 걸어주나?
+        return "redirect:/";
     }
 
     /**
      * 회원정보 조회시에 사용되는 메서드입니다.
      *
      * @param session myPage 에 대한 권한이 있는지 얻기 위한 session 객체입니다.
-     * @param model 데이터를 담는 model 객체입니다.
-     * @param id 회원의 고유번호
+     * @param model   데이터를 담는 model 객체입니다.
+     * @param id      회원의 고유번호
      * @return 회원의 myPage 를 반환합니다.
      */
     @GetMapping("/{id}")
@@ -48,7 +51,7 @@ public class UserController {
         throws UnAuthorizedAccessException {
         isUserAuthorized(id, session);
         model.addAttribute("user", userService.findUserById(id));
-        return "";
+        return "user/userInfo";
         //todo Hierarchy check
     }
 
@@ -56,8 +59,8 @@ public class UserController {
      * 관리자의 회원정보 조회시에 사용되는 메서드입니다.
      *
      * @param session myPage 에 대한 권한이 있는지 얻기 위한 session 객체입니다.
-     * @param model 데이터를 담는 model 객체입니다.
-     * @param id 회원의 고유번호
+     * @param model   데이터를 담는 model 객체입니다.
+     * @param id      회원의 고유번호
      * @return 회원의 myPage 를 반환합니다.
      */
     @GetMapping("/{id}/admin")
@@ -87,8 +90,8 @@ public class UserController {
     /**
      * 회원이 자신의 정보를 수정할 때 쓰는 메서드입니다.
      *
-     * @param id 회원의 고유번호
-     * @param dto UserUpdateRequestDto(회원 정보수정사항을 담는 객체) 객체입니다.
+     * @param id      회원의 고유번호
+     * @param dto     UserUpdateRequestDto(회원 정보수정사항을 담는 객체) 객체입니다.
      * @param session session 에 있는 회원의 고유번호를 얻기 위한 객체
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      */
@@ -103,7 +106,7 @@ public class UserController {
     /**
      * 관리자가 회원을 block 할 때 쓰이는 메서드입니다.
      *
-     * @param id 회원의 고유번호
+     * @param id      회원의 고유번호
      * @param session session 에 있는 회원의 고유번호를 얻기 위한 객체
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      */
@@ -118,7 +121,7 @@ public class UserController {
     /**
      * 관리자가 회원을 unBlock 할 때 쓰이는 메서드입니다.
      *
-     * @param id 회원의 고유번호
+     * @param id      회원의 고유번호
      * @param session session 에 있는 회원의 고유번호를 얻기 위한 객체
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      */
@@ -152,9 +155,9 @@ public class UserController {
      *
      * @return 회원가입 form 을 반환합니다.
      */
-    @GetMapping("sign-up")
+    @GetMapping("/sign-up")
     public String getSignUpForm() {
-        return "sign-up";
+        return "user/signUpForm";
         //todo 해당 경로의 Path hierarchy 구조 변경
     }
 
@@ -165,7 +168,9 @@ public class UserController {
      * @return 사용가능하면(중복이 아니면) true 를 반환합니다.
      */
     @PostMapping("/userid-duplicate-check")
+    @ResponseBody
     public boolean isUserIdUnique(@RequestParam("userId") String userId) {
+        System.out.println("wd");
         boolean isEmailDuplicate = userService.isUserIdUnique(userId);
         return !isEmailDuplicate;
     }
@@ -178,6 +183,7 @@ public class UserController {
      * @return 사용가능하면(중복이 아니면) true 를 반환합니다.
      */
     @PostMapping("/email-duplicate-check")
+    @ResponseBody
     public boolean isEmailUnique(@RequestParam("email") String email) {
         boolean isEmailDuplicate = userService.isEmailUnique(email);
         return !isEmailDuplicate;
@@ -190,6 +196,7 @@ public class UserController {
      * @return 사용가능하면(중복이 아니면) true 를 반환합니다.
      */
     @PostMapping("/nickname-duplicate-check")
+    @ResponseBody
     public boolean isNicknameUnique(@RequestParam("nickname") String nickname) {
         boolean isNicknameDuplicate = userService.isNicknameUnique(nickname);
         return !isNicknameDuplicate;
@@ -202,6 +209,7 @@ public class UserController {
      * @return 사용가능하면(중복이 아니면) true 를 반환합니다.
      */
     @PostMapping("/phone-duplicate-check")
+    @ResponseBody
     public boolean isPhoneUnique(@RequestParam("phone") String phone) {
         boolean isPhoneDuplicate = userService.isPhoneUnique(phone);
         return !isPhoneDuplicate;
@@ -209,7 +217,8 @@ public class UserController {
 
     /**
      * uri Path 와 session 의 id 값의 동일여부를(권한이 있는지) 체크하는 메서드입니다.
-     * @param userId 회원의 고유번호
+     *
+     * @param userId  회원의 고유번호
      * @param session 로그인 시 session 에 저장되는 id 값을 얻기 위해 사용되는 session 객체
      * @throws UnAuthorizedAccessException
      */
@@ -222,6 +231,7 @@ public class UserController {
 
     /**
      * session 의 role 값을 확인하여 관리자인지 확인할 때 쓰이는 메서드입니다.
+     *
      * @param session role value 를 얻기 위한 session 객체
      * @throws UnAuthorizedAccessException
      */
@@ -231,5 +241,4 @@ public class UserController {
             throw new UnAuthorizedAccessException();
         }
     }
-
 }

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+        integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+          integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    form {
+      max-width: 350px;
+      margin: 0 auto;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .success-message-userId,
+    .success-message-password,
+    .success-message-email,
+    .success-message-name,
+    .success-message-birth,
+    .success-message-phone,
+    .success-message-nickname{
+      color: #008000;
+      font-size: 12px;
+      margin-top: -10px;
+    }
+
+    .error-message-userId,
+    .error-message-password,
+    .error-message-email,
+    .error-message-name,
+    .error-message-birth,
+    .error-message-phone,
+    .error-message-nickname{
+      color: #ff0000;
+      font-size: 12px;
+      margin-top: -10px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="datetime-local"],
+    input[type="checkbox"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 3px;
+    }
+
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    label {
+      padding-top: 20px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+      width: 100%;
+    }
+
+  </style>
+</head>
+<body>
+<h1>회원가입 폼</h1>
+<form action="/users" method="POST">
+  <label for="userId">사용자 아이디</label>
+  <input type="text" id="userId" name="userId" placeholder="아이디를 입력해주세요" required>
+  <!-- id ajax 중복체크 -->
+  <span class="error-message-userId" id="userIdErrorMessage"></span>
+  <span class="success-message-userId" id="userIdSuccessMessage"></span>
+
+
+  <label for="password">비밀번호</label>
+  <input type="password" id="password" name="password" placeholder="비밀번호를 입력해주세요" required><br>
+  <span class="error-message-password" id="passwordErrorMessage"></span>
+  <span class="success-message-password" id="passwordSuccessMessage"></span>
+
+  <label for="email">이메일</label>
+  <input type="email" id="email" name="email" placeholder="email@wish.co.kr" required><br>
+  <!-- email ajax 중복체크 -->
+  <span class="error-message-email" id="emailErrorMessage"></span>
+  <span class="success-message-email" id="emailSuccessMessage"></span>
+
+  <label for="name">이름</label>
+  <input type="text" id="name" name="name" placeholder="이름 입력" required><br>
+  <span class="error-message-name" id="nameErrorMessage"></span>
+  <span class="success-message-name" id="nameSuccessMessage"></span>
+
+  <label for="birth">생년월일</label>
+  <input type="date" id="birth" name="birth" required><br>
+  <span class="error-message-birth" id="birthErrorMessage"></span>
+  <span class="success-message-birth" id="birthSuccessMessage"></span>
+
+  <label for="phone">전화번호</label>
+  <input type="text" id="phone" name="phone" placeholder="'-'빼고 숫자만입력" required><br>
+  <!-- phone ajax 중복체크 -->
+  <span class="error-message-phone" id="phoneErrorMessage"></span>
+  <span class="success-message-phone" id="phoneSuccessMessage"></span>
+
+  <label for="nickname">닉네임</label>
+  <input type="text" id="nickname" name="nickname" placeholder="닉네임 입력" required><br>
+  <!-- nickname ajax 중복체크 -->
+  <span class="error-message-nickname" id="nicknameErrorMessage"></span>
+  <span class="success-message-nickname" id="nicknameSuccessMessage"></span>
+
+  <input id="submitButton" type="submit" value="가입하기">
+</form>
+<script>
+  function checkUserId() {
+    var userId = $('#userId').val();
+    let errorMessage = $('#userIdErrorMessage');
+    let successMessage = $('#userIdSuccessMessage');
+    if (userId.trim() === '') {
+      errorMessage.text("아이디를 입력해주세요");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#userId')[0].style.borderColor = 'red';
+      return false;
+    } else if (userId.length < 4 || userId.length > 20) {
+      errorMessage.text("아이디는 4자 이상 20자 이하여야 합니다.");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#userId')[0].style.borderColor = 'red';
+      return false;
+    } else if (!/^[a-zA-Z0-9]+$/.test(userId)) {
+      errorMessage.text("아이디는 영문자와 숫자만 사용할 수 있습니다.");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#userId')[0].style.borderColor = 'red';
+      return false;
+    }
+
+    $.ajax({
+      url: '/users/userid-duplicate-check',
+      type: 'post', //POST 방식으로 전달
+      data: {userId: userId},
+      success: function (isDuplicate) {
+        if (!isDuplicate) {
+          successMessage.text("사용 가능한 ID 입니다.");
+          successMessage.css("display", "inline");
+          errorMessage.css("display", "none");
+          $('#userId')[0].style.borderColor = 'green';
+        } else {
+          errorMessage.text("이미 사용중인 ID 입니다.");
+          errorMessage.css("display", "inline");
+          successMessage.css("display", "none");
+          $('#userId')[0].style.borderColor = 'red';
+        }
+      },
+      error: function () {
+        alert("에러입니다");
+      }
+    })
+  }
+  function checkPassword() {
+    var password = $('#password').val();
+    let errorMessage = $('#passwordErrorMessage');
+    let successMessage = $('#passwordSuccessMessage');
+    if (password.trim() === '') {
+      errorMessage.text("비밀번호를 입력해주세요");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#password')[0].style.borderColor = 'red';
+      return false;
+    } else if (password.length < 4 || password.length > 20) {
+      errorMessage.text("비밀번호는 4자 이상 20자 이하여야 합니다.");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#password')[0].style.borderColor = 'red';
+      return false;
+    }
+    successMessage.text("사용가능한 비밀번호에요.");
+    successMessage.css("display", "inline");
+    errorMessage.css("display", "none");
+    $('#password')[0].style.borderColor = 'green';
+    return true;
+  }
+  function checkEmail() {
+    var email = $('#email').val();
+    let errorMessage = $('#emailErrorMessage');
+    let successMessage = $('#emailSuccessMessage');
+
+    if (email.trim() === '') {
+      errorMessage.text("이메일을 입력해주세요");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#email')[0].style.borderColor = 'red';
+      return false;
+    } else if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
+      errorMessage.text("잘못된 이메일 주소입니다. 이메일 주소를 정확하게 입력해주세요.");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#email')[0].style.borderColor = 'red';
+      return false;
+    }
+
+    $.ajax({
+      url: '/users/email-duplicate-check',
+      type: 'post',
+      data: {email: email},
+      success: function (isDuplicate) {
+        if (!isDuplicate) {
+          successMessage.text("사용 가능한 email 입니다.");
+          successMessage.css("display", "inline");
+          errorMessage.css("display", "none");
+          $('#email')[0].style.borderColor = 'green';
+        } else {
+          errorMessage.text("이미 등록된 email 입니다.");
+          errorMessage.css("display", "inline");
+          successMessage.css("display", "none");
+          $('#email')[0].style.borderColor = 'red';
+        }
+      },
+      error: function () {
+        alert("에러입니다");
+      }
+    })
+  }
+  function checkName() {
+    var name = $('#name').val();
+    let errorMessage = $('#nameErrorMessage');
+    let successMessage = $('#nameSuccessMessage');
+    if (name.trim() === '') {
+      errorMessage.text("이름을 입력해주세요");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#name')[0].style.borderColor = 'red';
+      return false;
+    } else if (name.length < 2 || name.length > 20) {
+      errorMessage.text("이름은 2~20글자여야 합니다.");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#name')[0].style.borderColor = 'red';
+      return false;
+    }
+    errorMessage.css("display", "none");
+    $('#name')[0].style.borderColor = 'green';
+  }
+  function checkBirth() {
+    var dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    var birth = $('#birth').val();
+    var inputDate = new Date(birth);
+    var currentDate = new Date();
+    let errorMessage = $('#birthErrorMessage');
+    let successMessage = $('#birthSuccessMessage');
+    if (birth.trim() === '') {
+      errorMessage.text("생년월일을 입력해주세요");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#birth')[0].style.borderColor = 'red';
+      return false;
+    } else if (!dateRegex.test(birth)) {
+      errorMessage.text("올바른 생년월일 형식을 입력해주세요.");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#birth')[0].style.borderColor = 'red';
+      return false;
+    } else if (inputDate > currentDate) {
+      errorMessage.text("태어나지 않은 회원은 가입할 수 없습니다.");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#birth')[0].style.borderColor = 'red';
+      return false;
+    }
+    errorMessage.css("display", "none");
+    $('#birth')[0].style.borderColor = 'green';
+  }
+  function checkPhone() {
+    var phone = $('#phone').val();
+    let errorMessage = $('#phoneErrorMessage');
+    let successMessage = $('#phoneSuccessMessage');
+
+    if (phone.trim() === '') {
+      errorMessage.text("휴대폰 번호를 입력해주세요");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#phone')[0].style.borderColor = 'red';
+      return false;
+    } else if (!/^\d{11}$/.test(phone)) {
+      errorMessage.text("잘못된 휴대폰 번호입니다. 휴대폰 번호를 정확하게 입력해주세요.");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#phone')[0].style.borderColor = 'red';
+      return false;
+    }
+
+    $.ajax({
+      url: '/users/phone-duplicate-check',
+      type: 'post',
+      data: {phone: phone},
+      success: function (isDuplicate) {
+        if (!isDuplicate) {
+          successMessage.text("사용 가능한 휴대폰 번호 입니다.");
+          successMessage.css("display", "inline");
+          errorMessage.css("display", "none");
+          $('#phone')[0].style.borderColor = 'green';
+          return true;
+        } else {
+          errorMessage.text("이미 등록된 휴대폰 번호 입니다.");
+          errorMessage.css("display", "inline");
+          successMessage.css("display", "none");
+          $('#phone')[0].style.borderColor = 'red';
+        }
+      },
+      error: function () {
+        alert("에러입니다");
+      }
+    })
+  }
+
+  function checkNickname() {
+    var nickname = $('#nickname').val();
+    let errorMessage = $('#nicknameErrorMessage');
+    let successMessage = $('#nicknameSuccessMessage');
+
+    if (nickname.trim() === '') {
+      errorMessage.text("닉네임을 입력해주세요");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#nickname')[0].style.borderColor = 'red';
+      return false;
+    } else if (nickname.length < 2 || nickname.length > 10) {
+      errorMessage.text("닉네임은 2~10 글자 사이어야 합니다.");
+      errorMessage.css("display", "inline");
+      successMessage.css("display", "none");
+      $('#nickname')[0].style.borderColor = 'red';
+      return false;
+    }
+
+    $.ajax({
+      url: '/users/nickname-duplicate-check',
+      type: 'post',
+      data: {nickname: nickname},
+      success: function (isDuplicate) {
+        if (!isDuplicate) {
+          successMessage.text("사용 가능한 닉네임 입니다.");
+          successMessage.css("display", "inline");
+          errorMessage.css("display", "none");
+          $('#nickname')[0].style.borderColor = 'green';
+        } else {
+          errorMessage.text("이미 사용중인 닉네임 입니다.");
+          errorMessage.css("display", "inline");
+          successMessage.css("display", "none");
+          $('#nickname')[0].style.borderColor = 'red';
+        }
+      },
+      error: function () {
+        alert("에러입니다");
+      }
+    })
+  }
+
+  function checkFormValidity() {
+    console.log("시작");
+    var userIdValid = checkUserId();
+    var passwordValid = checkPassword();
+    var emailValid = checkEmail();
+    var nameValid = checkName();
+    var birthValid = checkBirth();
+    var phoneValid = checkPhone();
+    var nicknameValid = checkNickname();
+
+    var submitButton = document.getElementById('submitButton');
+
+    if (userIdValid && passwordValid && emailValid && nameValid && birthValid && phoneValid && nicknameValid) {
+      submitButton.disabled = false;
+      console.log("검증1");
+    } else {
+      submitButton.disabled = true;
+      console.log("검증1");
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const userIdInput = document.getElementById('userId');
+    const passwordInput = document.getElementById('password');
+    const emailInput = document.getElementById('email');
+    const nameInput = document.getElementById('name');
+    const birthInput = document.getElementById('birth');
+    const phoneInput = document.getElementById('phone');
+    const nicknameInput = document.getElementById('nickname');
+
+    userIdInput.addEventListener('blur', checkUserId);
+    passwordInput.addEventListener('blur', checkPassword);
+    emailInput.addEventListener('blur', checkEmail);
+    nameInput.addEventListener('blur', checkName);
+    birthInput.addEventListener('blur', checkBirth);
+    phoneInput.addEventListener('blur', checkPhone);
+    nicknameInput.addEventListener('blur', checkNickname);
+  });
+</script>
+</body>
+</html>
