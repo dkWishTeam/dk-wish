@@ -22,13 +22,13 @@ public class UserServiceImpl implements UserService {
         if(!loginUser.getPassword().equals(user.getPassword())) {
             return false;
         }
-        session.setAttribute("userId", user.getUser_id());
+        session.setAttribute("id", user.getId());
         return true;
     }
 
     @Override
     public void logout(HttpSession session) {
-        session.removeAttribute("userId");
+        session.removeAttribute("id");
     }
 
     @Override

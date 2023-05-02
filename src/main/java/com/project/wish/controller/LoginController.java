@@ -18,7 +18,7 @@ public class LoginController {
 
     @RequestMapping("/")
     public String main(Model model) {
-        model.addAttribute("list", wishListService.getWishList("all"));
+        model.addAttribute("wishList", wishListService.getWishList("all"));
         return "index";
     }
 

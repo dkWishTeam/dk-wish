@@ -15,15 +15,9 @@ public class WishListController {
     @Autowired
     WishListService wishListService;
 
-//    @RequestMapping(value = "/", produces = "application/json; charset=utf-8")
-//    @ResponseBody
-//    public List<WishListDto> getJsonAllWishList() {
-//        return wishListService.getAllWishList();
-//    }
-
-    @RequestMapping("/list/{path}")
+    @RequestMapping("/wishList/{path}")
     public String getWishList(@PathVariable("path") String path, Model model) {
-        model.addAttribute("list", wishListService.getWishList(path));
+        model.addAttribute("wishList", wishListService.getWishList(path));
         return "index";
     }
 }
