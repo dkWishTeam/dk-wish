@@ -23,12 +23,12 @@ public class UserRepositoryImpl implements UserRepository{
         return result;
     }
 
-    public List<UserDto> getUserInfo(UserDto user) {
-        List<UserDto>  result = null;
+    public UserDto getUserInfo(UserDto user) {
+        UserDto result = null;
 
         try {
             String statement = "user.getUserInfo";
-            result = session.selectList(statement, user);
+            result = session.selectOne(statement, user);
         } catch (Exception e){
             e.printStackTrace();
         }

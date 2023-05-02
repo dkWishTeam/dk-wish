@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface UserRepository {
     public UserDto loginUser(UserDto user);
-    public List<UserDto> getUserInfo(UserDto user);
+    public UserDto getUserInfo(UserDto user);
 }

@@ -1,6 +1,7 @@
 package com.project.wish.service;
 
 import com.project.wish.dto.UserDto;
+import com.project.wish.repository.UserRepository;
 import com.project.wish.repository.UserRepositoryImpl;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    UserRepositoryImpl repo;
+    UserRepository repo;
 
     @Override
     public boolean loginCheck (UserDto user, HttpSession session) {
@@ -32,8 +33,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserInfo (UserDto user) {
-        List<UserDto> list = repo.getUserInfo(user);
-        return list.get(0);
+        UserDto userInfo = repo.getUserInfo(user);
+        return userInfo;
     }
 
 }

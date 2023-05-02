@@ -2,19 +2,23 @@ package com.project.wish.controller;
 
 import com.project.wish.dto.UserDto;
 import com.project.wish.service.UserService;
+import com.project.wish.service.WishListService;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
     @Autowired
     UserService userService;
+    @Autowired
+    WishListService wishListService;
 
-    @RequestMapping("main")
-    public String main() {
+    @RequestMapping("/")
+    public String main(Model model) {
+        model.addAttribute("list", wishListService.getWishList("all"));
         return "index";
     }
 
@@ -24,25 +28,21 @@ public class LoginController {
     }
 
     @RequestMapping("loginCheck")
-    public ModelAndView loginCheck(UserDto user, HttpSession session) {
+    public String loginCheck(Model model, UserDto user, HttpSession session) {
         boolean result = userService.loginCheck(user, session);
-        ModelAndView mav = new ModelAndView();
 
         if(result == true) {
-            mav.addObject("user", userService.getUserInfo(user));
-            mav.setViewName("index");
+            model.addAttribute("user", userService.getUserInfo(user));
+            return "index";
         } else {
-            mav.addObject("msg", "아이디 혹은 비밀번호가 다릅니다.");
-            mav.setViewName("login");
+            model.addAttribute("msg", "아이디 혹은 비밀번호가 다릅니다.");
+            return "login";
         }
-        return mav;
     }
 
     @RequestMapping("logout")
-    public ModelAndView logout(HttpSession session) {
+    public String logout(Model model, HttpSession session) {
         userService.logout(session);
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("index");
-        return mav;
+        return "index";
     }
 }
