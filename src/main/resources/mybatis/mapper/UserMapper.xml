@@ -81,8 +81,6 @@
     FROM user
     WHERE nickname = #{nickname}
   </select>
-</mapper>
-<mapper namespace="user">
   <select id="login" resultType="UserDto" parameterType="UserDto">
     select password
     from user

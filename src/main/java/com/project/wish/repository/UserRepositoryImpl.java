@@ -17,7 +17,7 @@ public class UserRepositoryImpl implements UserRepository {
     public UserDto loginUser(UserDto user) {
         UserDto result = null;
         try {
-            String statement = "user.login";
+            String statement = "wishdb.login";
             result = session.selectOne(statement, user);
         } catch (Exception e){
             e.printStackTrace();
@@ -30,7 +30,7 @@ public class UserRepositoryImpl implements UserRepository {
         UserDto result = null;
 
         try {
-            String statement = "user.getUserInfo";
+            String statement = "wishdb.getUserInfo";
             result = session.selectOne(statement, user);
         } catch (Exception e){
             e.printStackTrace();
