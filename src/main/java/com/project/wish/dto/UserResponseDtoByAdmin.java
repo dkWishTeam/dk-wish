@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserResponseDtoByAdmin {
 
-    private Integer id;
+    private Long id;
     private String nickname;
     private boolean isBlock;
 }

@@ -45,13 +45,13 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findUserById(Integer id) {
+    public User findUserById(Long id) {
         String statement = "wishdb.findUserById";
         return session.selectOne(statement, id);
     }
 
     @Override
-    public User findUserByIdByAdmin(Integer id) {
+    public User findUserByIdByAdmin(Long id) {
         String statement = "wishdb.findUserByIdByAdmin";
         return session.selectOne(statement, id);
     }
@@ -70,19 +70,19 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void updateUserBlockByAdmin(Integer id) {
+    public void updateUserBlockByAdmin(Long id) {
         String statement = "wishdb.updateUserBlockByAdmin";
         session.update(statement, id);
     }
 
     @Override
-    public void updateUserUnBlockByAdmin(Integer id) {
+    public void updateUserUnBlockByAdmin(Long id) {
         String statement = "wishdb.updateUserUnBlockByAdmin";
         session.update(statement, id);
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(Long id) {
         String statement = "wishdb.deleteUser";
         session.delete(statement, id);
     }

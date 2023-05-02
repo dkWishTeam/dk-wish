@@ -57,14 +57,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto findUserById(Integer id) {
+    public UserResponseDto findUserById(Long id) {
         User user = userRepository.findUserById(id);
         return userToUserResponseDto(user);
         //todo 찾았는데 없을 경우
     }
 
     @Override
-    public UserResponseDtoByAdmin findUserByIdByAdmin(Integer id) {
+    public UserResponseDtoByAdmin findUserByIdByAdmin(Long id) {
         User user = userRepository.findUserByIdByAdmin(id);
         return userToUserResponseDtoByAdmin(user);
         //todo 찾았는데 없을 경우
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Integer id, UserUpdateRequestDto dto) {
+    public void updateUser(Long id, UserUpdateRequestDto dto) {
         User user = userRepository.findUserById(id);
         User updatedUser = userUpdateRequestDtoToUser(user, dto);
         userRepository.updateUser(updatedUser);
@@ -86,17 +86,17 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void updateUserBlockByAdmin(Integer id) {
+    public void updateUserBlockByAdmin(Long id) {
         userRepository.updateUserBlockByAdmin(id);
     }
 
     @Override
-    public void updateUserUnBlockByAdmin(Integer id) {
+    public void updateUserUnBlockByAdmin(Long id) {
         userRepository.updateUserUnBlockByAdmin(id);
     }
 
     @Override
-    public void deleteUserById(Integer id) {
+    public void deleteUserById(Long id) {
         userRepository.deleteUser(id);
     }
 
