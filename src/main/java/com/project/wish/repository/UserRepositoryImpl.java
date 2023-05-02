@@ -59,7 +59,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> findUsers() {
         String statement = "wishdb.findUsers";
-        return session.selectOne(statement);
+        return session.selectList(statement);
         // todo xml 파일에서 페이징
     }
 
