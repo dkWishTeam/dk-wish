@@ -36,8 +36,6 @@ public class WishListServiceImpl implements WishListService{
             default:
                 break;
         }
-
-        //setNickNamePercent(list);
         return list;
     }
 }
