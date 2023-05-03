@@ -35,6 +35,10 @@ public class UserServiceImpl implements UserService {
         LoginDto loginUserInfo = getLoginUserInfo(user);
         session.setAttribute("id", loginUserInfo.getId());
         session.setAttribute("nickname", loginUserInfo.getNickname());
+        if(loginUserInfo.getRoleId() == 1)
+            session.setAttribute("role", "ADMIN");
+        else
+            session.setAttribute("role", "USER");
 
         return true;
     }
@@ -42,6 +46,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void logout(HttpSession session) {
         session.removeAttribute("id");
+        session.removeAttribute("nickname");
+        session.removeAttribute("role");
     }
 
     @Override
