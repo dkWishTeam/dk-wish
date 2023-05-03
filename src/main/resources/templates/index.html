@@ -67,7 +67,7 @@
               <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">마이 위시</a>
             </li>
             <li>
-              <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">위시 플레이스</a>
+              <a href="/" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">위시 플레이스</a>
             </li>
           </ul>
         </div>
@@ -127,17 +127,25 @@
       </div>
 
       <div class="px-10 my-8 grid grid-cols-2 md:grid-cols-3 gap-4">
-        <!-- -->
         <th:block th:each="wish:${wishList}">
           <div class="max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <a href="#">
-              <img class="rounded-t-lg" src="/images/default.png" alt="default" />
+<!--              <th:block th:if="${wish.image}">-->
+<!--                <img class="rounded-t-lg" th:src="'data:image/png;base64,' + ${#strings.toHexString(wish.image)}" alt="" />-->
+<!--              </th:block>-->
+              <th:block th:unless="${wish.image}">
+                <img class="rounded-t-lg" src="/images/default.png" alt="default" />
+              </th:block>
             </a>
             <div class="p-5">
               <a href="#">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">[[${wish.productName}]]</h5>
               </a>
-              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">목표금액 : [[${wish.goalAmount}]] 원</p>
+
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">닉네임 : <span class="text-blue-700">[[${wish.nickname}]]</span></p>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">목표금액 : <span class="text-blue-700">[[${wish.goalAmountFormat}]] 원</span></p>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">달성률 : <span class="text-blue-700">[[${wish.percentage}]] %</span></p>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">모금액 : <span class="text-blue-700">[[${wish.ongoingAmountFormat}]] 원</span></p>
               <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 Read more
                 <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>

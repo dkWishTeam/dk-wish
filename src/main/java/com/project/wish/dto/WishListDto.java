@@ -18,6 +18,9 @@ public class WishListDto {
     // goal amount
     Long goalAmount;
 
+    String goalAmountFormat;
+    String ongoingAmountFormat;
+
     String nickname;
-    int percentageCompleted;
+    int percentage;
 }

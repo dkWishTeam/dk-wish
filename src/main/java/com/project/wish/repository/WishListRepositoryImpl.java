@@ -63,27 +63,4 @@ public class WishListRepositoryImpl implements WishListRepository{
         return list;
     }
 
-    @Override
-    public String getNickName(WishListDto dto) {
-        String result = null;
-        try {
-            String statement = "wishList.getNickName";
-            result = session.selectOne(statement, dto);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    @Override
-    public WishListDto getPercent(WishListDto dto) {
-        WishListDto result = null;
-        try {
-            String statement = "wishList.getPercent";
-            result = session.selectOne(statement, dto);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return result;
-    }
 }

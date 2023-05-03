@@ -14,7 +14,6 @@ public class WishListServiceImpl implements WishListService{
     @Override
     public List<WishListDto> getAllWishList() {
         List<WishListDto> list = repo.getAllWishList();
-        //setNickNamePercent(list);
         return list;
     }
 
@@ -41,14 +40,4 @@ public class WishListServiceImpl implements WishListService{
         //setNickNamePercent(list);
         return list;
     }
-
-    @Override
-    public void setNickNamePercent(List<WishListDto> list) {
-        for(WishListDto wish : list) {
-            wish.setNickname(repo.getNickName(wish));
-            //wish.setPercentage_completed(repo.getPercent(wish));
-        }
-    }
-
-
 }
