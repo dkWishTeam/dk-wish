@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" xmlns:tr="http://www.thymeleaf.org/">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wishHistory Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #sec1 {
+      max-width: 1024px;
+      margin: auto;
+    }
+
+    #progressBarBox {
+      width: 100%;
+    }
+
+    td {
+      padding-right: 150px;
+    }
+
+    .wishHistoryList {
+      cursor: pointer;
+    }
+
+    .wishHistoryList:hover {
+      background-color: #cccccc;
+    }
+
+
+  </style>
+
+</head>
+<body>
+
+<header>
+</header>
+<section id="sec1">
+  <div id="progressBarBox">
+
+  </div>
+  <div id="listBox">
+    <button></button>
+  </div>
+  <table th:if="${wishHistoryResponseDtoList}">
+    <tr class="wishHistoryList" th:each="wishHistoryResponseDto : ${wishHistoryResponseDtoList}">
+      <td th:text="|${wishHistoryResponseDto.id}회차-${wishHistoryResponseDto.historyDatetime}|"
+          th:onclick="|displayHistoryContents(${wishHistoryResponseDto.id})|"></td>
+      <td th:text="|${wishHistoryResponseDto.amount}원|"></td>
+      <td><a href="/">삭제하기</a></td>
+    </tr>
+<!--    <tr class="wishHistoryInfo">-->
+<!--      <td th:text="|${}회차|"></td>-->
+<!--    </tr>-->
+
+      <div id="wishHistoryContent" style="display: none">
+        <h2>n회차 - 날짜</h2>
+        <form method="post" action="post">
+          <!--      <input type="hidden" name="id"><br>-->
+          <div id="amountBox" style="display: block">
+            <label for="amount">넣은 금액: </label>
+            <input type="text" name="amount" id="amount" value="" readonly>
+          </div>
+          <div id="rateBox" style="display: block">
+            <label for>금액 넣은 후 달성률: </label>
+            <input type="text" name="achievementRate" value="" readonly>
+          </div>
+        </form>
+      </div>
+
+<!--      <div id="wishHistoryContent" style="display: none">-->
+<!--        <h2 id="title"></h2>-->
+<!--        -->
+<!--            <input type="text" name="amount" id="amount" value="" readonly>-->
+<!--            <label for>금액 넣은 후 달성률: </label>-->
+<!--            <input type="text" name="achievementRate" value="" readonly>-->
+<!--      </div>-->
+
+  </table>
+
+</section>
+<script>
+  let jsonObj = null;
+  let titleDom = null;
+  let amountDom = null;
+  let achievementRateDom = null;
+
+  function displayHistoryContents(id) {
+
+    let xhr = new XMLHttpRequest();
+    xhr.onload = () => {
+      if (xhr.status == 200) {
+        document.getElementById("wishHistoryContent").style.display = 'block';
+        // let idDom = document.querySelector("#wishHistoryContent input[name=id]");
+        titleDom = document.getElementById("titleDom");
+        amountDom = document.getElementById("#title");
+        achievementRateDom = document.querySelector("#wishHistoryContent input[name=achievementRate]")
+        jsonObj = JSON.parse(xhr.responseText);
+        console.log(jsonObj);
+        amountDom.value = jsonObj.amount;
+        achievementRateDom.value = "75%";
+      }
+    }
+    xhr.open("GET", "/wishHistory/one?id=" + id, true);
+    xhr.send();
+  }
+
+
+</script>
+
+</body>
+</html>
