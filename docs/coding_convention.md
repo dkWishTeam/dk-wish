@@ -38,27 +38,46 @@
 - 올바른 방법 🟢 : `com.example.userwish`
 - 잘못된 방법 ⛔️ : `com.example.userWish`, `com.example.UserWish`, `com.example.user_wish`
 
+<br>
 
 ### 클래스 네이밍
-- `CamelCase` 사용
+- `UpperCamelCase` 사용
 - 클래스의 기능을 유추할 수 있는 **명사**를 사용
 - 올바른 방법 🟢 : `UserController`,
 - 잘못된 방법 ⛔️ : `ControlUser`, `WriteWish`, `userTest`
 
+  #### Mybatis 매퍼 파일 네이밍  
+  - 클래스 네이밍과 동일한 규칙 사용
+  - 매퍼 파일의 성격을 유추할 수 있는 도메인 이름을 접두어로 붙여서 사용
+  - 올바른 방법 🟢 : `WishMapper.xml`, `MemberMapper.xml`
+  - 잘못된 방법 ⛔️ : `wish-mapper.xml`, `mapper1.xml`, `wishMapper.xml`
+
+  #### View 파일 네이밍
+  - `lowerCamelCase` 사용
+  - 명사형으로 작성
+  - view 페이지를 유추할수 있는 이름으로 작성
+  - SSR 페이지와 정적파일 둘다 동일하게 명명
+  - 올바른 방법 🟢 : `addWishForm.html`, `editWishForm.html` 
+  - 잘못된 방법 ⛔️ : `CreatingWish.html`, `Add_Wish.html`, `TestForm.html`
+
+  <br>
 
 ### 인터페이스 네이밍
-- `CamelCase` 사용
+- `UpperCamelCase` 사용
 - `Interface` 단어는 붙이지 않아도 됨
 - 인터페이스의 기능을 유추할 수 있는 **명사 또는 형용사**를 사용
 - 올바른 방법 🟢 : `Validation`, `Runnable`
 - 잘못된 방법 ⛔️ : `userController`, `usercontroller`, `ValidateInterface`
 
+<br>
 
 ### 메소드 네이밍
-- `camelCase` 사용
+- `lowerCamelCase` 사용
 - 동사 혹은 동사구를 사용
 - 올바른 방법 🟢 : `sendMessage`, `stop`
 - 잘못된 방법 ⛔️ : `message`, `userWish`
+
+<br>
 
 ### 기타 네이밍
 
