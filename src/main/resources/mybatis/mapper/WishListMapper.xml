@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
@@ -22,7 +23,7 @@
     select id, user_id, image, title, product_name, goal_amount
     from wish
     where is_public = true
-    order by register_datetime desc
+    order by register_datetime
   </select>
 
   <select id="getNickName" resultType="string" parameterType="WishListDto">
@@ -39,6 +40,7 @@
     group by w.id;
   </select>
 </mapper>
+
 
 
 
