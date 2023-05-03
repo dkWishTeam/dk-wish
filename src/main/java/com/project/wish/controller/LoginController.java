@@ -17,7 +17,7 @@ public class LoginController {
     private final WishListService wishListService;
 
     @RequestMapping("/")
-    public String main(Model model) {
+    public String mainPage(Model model) {
         model.addAttribute("wishList", wishListService.getWishList("all"));
         return "index";
     }
@@ -29,12 +29,12 @@ public class LoginController {
 
     @RequestMapping("/loginCheck")
     public String loginCheck(Model model, LoginDto user, HttpSession session) {
-        boolean result = userService.loginCheck(user, session);
+        boolean result = userService.loginCheck(user, session, model);
         if(result == true) {
             //model.addAttribute("user", userService.getUserInfo(user));
             return "redirect:/";
         } else {
-            model.addAttribute("msg", "아이디 혹은 비밀번호가 다릅니다.");
+            //model.addAttribute("msg", "아이디 혹은 비밀번호가 다릅니다.");
             return "login";
         }
     }

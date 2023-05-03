@@ -15,6 +15,8 @@ public class LoginDto {
     String password;
     String nickname;
 
+    String email;
+
     Integer isBlock;
     Integer isQuit;
 }

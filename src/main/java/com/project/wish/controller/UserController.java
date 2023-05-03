@@ -237,7 +237,7 @@ public class UserController {
      */
     private void isRoleEqualsAdmin(HttpSession session) throws UnAuthorizedAccessException {
         String role = (String) session.getAttribute("role");
-        if (role == null || !Objects.equals(role, Role.ADMIN)) {
+        if (role == null || !Objects.equals(role, Role.ADMIN.toString())) {
             throw new UnAuthorizedAccessException();
         }
     }
