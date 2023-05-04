@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class WishListDto {
+public class WishPlaceDto {
     Long id;
     Long userId;
 

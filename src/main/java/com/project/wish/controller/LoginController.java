@@ -2,11 +2,13 @@ package com.project.wish.controller;
 
 import com.project.wish.dto.LoginDto;
 import com.project.wish.service.UserService;
-import com.project.wish.service.WishListService;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -14,17 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LoginController {
 
     private final UserService userService;
-    private final WishListService wishListService;
 
     /**
      * 메인 페이지 요청 메서드
-     *
-     * @param model 메인페이지를 요청하면 위시리스트 전체를 모델 객체에 전달해줍니다.
      * @return 메인페이지로 리턴해줍니다.
      */
     @RequestMapping("/")
-    public String mainPage(Model model) {
-        model.addAttribute("wishList", wishListService.getWishList("all"));
+    public String mainPage() {
         return "index";
     }
 
@@ -33,11 +31,16 @@ public class LoginController {
      * @return 로그인페이지로 리턴
      */
     @RequestMapping("/login")
-    public String login(HttpSession session) {
+    public String login(HttpSession session, Model model,
+        @CookieValue(value = "rememberUserId", required = false) Cookie rememberCookie) {
         boolean result = userService.loginMaintain(session);
         if(result == true)
             return "redirect:/";
 
+        if(rememberCookie != null) {
+            model.addAttribute("rememberCookie", rememberCookie.getValue());
+            model.addAttribute("rememberCheckBox", true);
+        }
         return "login";
     }
 
@@ -50,14 +53,13 @@ public class LoginController {
      * @return 성공하면 메인페이지 실패하면 다시 로그인 페이지
      */
     @RequestMapping("/loginCheck")
-    public String loginCheck(Model model, LoginDto user, HttpSession session, boolean remember) {
-        System.out.println(remember);
-        boolean result = userService.loginCheck(user, session, model);
+    public String loginCheck(Model model, LoginDto user, HttpSession session, boolean remember, HttpServletResponse response) {
+        boolean result = userService.loginCheck(user, session, model, remember, response);
         if(result == true) {
             return "redirect:/";
-        } else {
-            return "login";
         }
+
+        return "login";
     }
 
     /**
@@ -80,7 +82,7 @@ public class LoginController {
     public String mainPageWishAdd(HttpSession session) {
         boolean result = userService.loginMaintain(session);
         if(result == true) {
-            return "index";
+            return "redirect:/"; // myWish merge하면 수정 예정
         }
 
         return "login";
