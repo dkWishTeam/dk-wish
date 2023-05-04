@@ -1,8 +1,9 @@
 package com.project.wish.repository;
 
 import com.project.wish.domain.User;
+import com.project.wish.exception.SignUpFailException;
 import java.util.List;
-import com.project.wish.dto.UserDto;
+import com.project.wish.dto.LoginDto;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -14,44 +15,49 @@ public class UserRepositoryImpl implements UserRepository {
     SqlSession session;
   
     @Override
-    public UserDto loginUser(UserDto user) {
-        UserDto result = null;
+    public LoginDto findLoginUser(LoginDto user) {
+        LoginDto result = null;
         try {
             String statement = "wishdb.login";
             result = session.selectOne(statement, user);
         } catch (Exception e){
             e.printStackTrace();
         }
-
         return result;
     }
     @Override
-    public UserDto getUserInfo(UserDto user) {
-        UserDto result = null;
+    public LoginDto findLoginUserInfo(LoginDto user) {
+        LoginDto result = null;
 
         try {
-            String statement = "wishdb.getUserInfo";
+            String statement = "wishdb.getLoginUserInfo";
             result = session.selectOne(statement, user);
         } catch (Exception e){
             e.printStackTrace();
         }
 
         return result;
-        }
+    }
+
     @Override
     public void insertUser(User user) {
-        String statement = "wishdb.insertUser";
+        String statement = null;
+        try {
+            statement = "wishdb.insertUser";
+        } catch (Exception e){
+            throw new SignUpFailException();
+        }
         session.insert(statement, user);
     }
 
     @Override
-    public User findUserById(Integer id) {
+    public User findUserById(Long id) {
         String statement = "wishdb.findUserById";
         return session.selectOne(statement, id);
     }
 
     @Override
-    public User findUserByIdByAdmin(Integer id) {
+    public User findUserByIdByAdmin(Long id) {
         String statement = "wishdb.findUserByIdByAdmin";
         return session.selectOne(statement, id);
     }
@@ -70,19 +76,19 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void updateUserBlockByAdmin(Integer id) {
+    public void updateUserBlockByAdmin(Long id) {
         String statement = "wishdb.updateUserBlockByAdmin";
         session.update(statement, id);
     }
 
     @Override
-    public void updateUserUnBlockByAdmin(Integer id) {
+    public void updateUserUnBlockByAdmin(Long id) {
         String statement = "wishdb.updateUserUnBlockByAdmin";
         session.update(statement, id);
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(Long id) {
         String statement = "wishdb.deleteUser";
         session.delete(statement, id);
     }

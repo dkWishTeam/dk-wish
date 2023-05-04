@@ -6,33 +6,34 @@ import com.project.wish.dto.UserCreateRequestDto;
 import com.project.wish.dto.UserResponseDto;
 import com.project.wish.dto.UserResponseDtoByAdmin;
 import com.project.wish.dto.UserUpdateRequestDto;
-import com.project.wish.dto.UserDto;
+import com.project.wish.dto.LoginDto;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface UserService {
 
-    public boolean loginCheck(UserDto user, HttpSession session);
+    public boolean loginCheck(LoginDto user, HttpSession session);
     
     public void logout(HttpSession session);
 
-    public UserDto getUserInfo(UserDto user);
+    public LoginDto getLoginUserInfo(LoginDto user);
+
     void insertUser(UserCreateRequestDto dto);
 
-    UserResponseDto findUserById(Integer id);
+    UserResponseDto findUserById(Long id);
 
-    UserResponseDtoByAdmin findUserByIdByAdmin(Integer id);
+    UserResponseDtoByAdmin findUserByIdByAdmin(Long id);
 
     List<UserResponseDtoByAdmin> findUsers();
 
-    void updateUser(Integer userId, UserUpdateRequestDto dto);
+    void updateUser(Long userId, UserUpdateRequestDto dto);
 
-    void updateUserBlockByAdmin(Integer id);
+    void updateUserBlockByAdmin(Long id);
 
-    void updateUserUnBlockByAdmin(Integer id);
+    void updateUserUnBlockByAdmin(Long id);
 
-    void deleteUserById(Integer id);
+    void deleteUserById(Long id);
 
     boolean isUserIdUnique(String userId);
 

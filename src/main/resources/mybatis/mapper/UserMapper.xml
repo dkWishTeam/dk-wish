@@ -10,13 +10,14 @@
             #{registerDatetime}, #{modifyDatetime}, #{isQuit})
   </insert>
 
-  <select id="findUserById" parameterType="java.lang.Integer" resultType="User">
+  <select id="findUserById" parameterType="java.lang.Long" resultType="User">
     SELECT *
     FROM user
     WHERE id = #{id}
+
   </select>
 
-  <select id="findUserByIdByAdmin" parameterType="java.lang.Integer" resultType="User">
+  <select id="findUserByIdByAdmin" parameterType="java.lang.Long" resultType="User">
     SELECT *
     FROM user
     WHERE id = #{id}
@@ -40,21 +41,21 @@
     WHERE id = #{id}
   </update>
 
-  <update id="updateUserBlockByAdmin" parameterType="java.lang.Integer">
+  <update id="updateUserBlockByAdmin" parameterType="java.lang.Long">
     UPDATE user
-    SET is_block = true;
+    SET is_block = true
     WHERE id = #{id}
   </update>
 
-  <update id="updateUserUnBlockByAdmin" parameterType="java.lang.Integer">
+  <update id="updateUserUnBlockByAdmin" parameterType="java.lang.Long">
     UPDATE user
-    SET is_block = false;
+    SET is_block = false
     WHERE id = #{id}
   </update>
 
-  <update id="deleteUser" parameterType="java.lang.Integer">
+  <update id="deleteUser" parameterType="java.lang.Long">
     UPDATE user
-    SET is_quit = true;
+    SET is_quit = true
     WHERE id = #{id}
   </update>
 
@@ -80,5 +81,17 @@
     SELECT *
     FROM user
     WHERE nickname = #{nickname}
+  </select>
+
+  <select id="login" resultType="LoginDto" parameterType="LoginDto">
+    select password
+    from user
+    where user_id = #{userId}
+  </select>
+
+  <select id="getLoginUserInfo" resultType="LoginDto" parameterType="LoginDto">
+    select id, user_id, password, nickname, is_block, is_quit
+    from user
+    where user_id = #{userId}
   </select>
 </mapper>
