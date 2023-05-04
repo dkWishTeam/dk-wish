@@ -75,13 +75,14 @@ public class UserController {
 
 
     /**
-     * 사이트 이용자(회원, 관리자)가 회원의 리스트를 보는 메서드입니다.
+     * 사이트 이용자(관리자)가 회원의 리스트를 보는 메서드입니다.
      *
      * @param model 데이터를 담는 model 객체입니다.
      * @return 회원 리스트 페이지를 반환합니다.
      */
     @GetMapping
-    public String findUsers(Model model) {
+    public String findUsersByAdmin(HttpSession session, Model model) {
+        isRoleEqualsAdmin(session);
         model.addAttribute("users", userService.findUsers());
         return "user/userList";
         //todo paging
@@ -217,6 +218,14 @@ public class UserController {
         return !isPhoneDuplicate;
     }
 
+    @PostMapping("/user-admin-check")
+    @ResponseBody
+    public boolean isUserAdmin(@RequestParam("id") Long id) {
+        return userService.isUserAdmin(id);
+    }
+
+
+
     /**
      * uri Path 와 session 의 id 값의 동일여부를(권한이 있는지) 체크하는 메서드입니다.
      *
@@ -240,7 +249,7 @@ public class UserController {
      */
     private void isRoleEqualsAdmin(HttpSession session) throws UnAuthorizedAccessException {
 
-        String role = session.getAttribute("role").toString();
+        String role = (String) session.getAttribute("role");
         //todo 로그인 시 session.add(role,"ADMIN") 추가
         if (role == null || !Objects.equals(role, Role.ADMIN.toString())) {
             throw new UnAuthorizedAccessException();

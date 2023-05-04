@@ -94,4 +94,6 @@ public interface UserService {
             .isBlock(user.isBlock())
             .build();
     }
+
+    boolean isUserAdmin(Long id);
 }

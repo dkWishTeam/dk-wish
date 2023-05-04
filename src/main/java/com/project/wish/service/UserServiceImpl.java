@@ -46,9 +46,9 @@ public class UserServiceImpl implements UserService {
         session.setAttribute("nickname", loginUserInfo.getNickname());
         session.setAttribute("email", loginUserInfo.getEmail());
         if (loginUserInfo.getRoleId() == 1) {
-            session.setAttribute("role", Role.ADMIN);
+            session.setAttribute("role", Role.ADMIN.toString());
         } else {
-            session.setAttribute("role", Role.USER);
+            session.setAttribute("role", Role.USER.toString());
         }
 
         return true;
@@ -148,5 +148,11 @@ public class UserServiceImpl implements UserService {
     public boolean isPhoneUnique(String phone) {
         User user = userRepository.findUserByPhone(phone);
         return user == null;
+    }
+
+    @Override
+    public boolean isUserAdmin(Long id) {
+        User user = userRepository.findUserById(id);
+        return user.getRoleId() == 1;
     }
 }

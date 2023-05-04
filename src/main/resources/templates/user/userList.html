@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>회원 정보</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script th:replace="fragments/tailwind-config-head :: script"></script>
   <style>
@@ -73,7 +76,7 @@
 <header th:replace="fragments/header :: header"></header>
 <hr>
 <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
-  <div th:if="${session.role.toString() == 'ADMIN'}">
+  <div th:if="${session.role == 'ADMIN'}">
     <ul>
       <li><a th:href="@{/users}">회원 리스트</a></li>
       <!--      <li><a th:href="@{/wish}">위시 리스트</a></li>-->
@@ -97,13 +100,13 @@
         <td style="padding: 10px; border: 1px solid #ddd;" th:text="위시보기" th:href="@{/users/}"></td>
         <td style="padding: 10px; border: 1px solid #ddd;">
           <form th:if="${user.isBlock}" th:method="post" th:action="@{/users/{id}/unblock(id=${user.id})}">
-            <button type="submit" style="background-color: #f44336; color: white; padding: 5px 10px; border: none; cursor: pointer;">
+            <button type="submit" style="background-color: #f44336; color: white; padding: 5px 10px; border: none; cursor: pointer;"  th:onclick="'submitForm(\'' + ${user.id} + '\')'">
               블락 됨
             </button>
           </form>
 
           <form th:unless="${user.isBlock}" th:method="post" th:action="@{/users/{id}/block(id=${user.id})}">
-            <button type="submit" style="background-color: #4CAF50; color: white; padding: 5px 10px; border: none; cursor: pointer;">
+            <button type="submit" style="background-color: #4CAF50; color: white; padding: 5px 10px; border: none; cursor: pointer;" th:onclick="'submitForm(\'' + ${user.id} + '\')'">
               블락 안 됨
             </button>
           </form>
@@ -115,25 +118,24 @@
 </article>
 
 <footer th:replace="fragments/footer :: footer"></footer>
-</body>
 <script>
-  $(document).ready(function() {
-    $('#putLink').click(function(event) {
-      event.preventDefault(); // 기본 동작(링크로의 이동)을 막습니다.
-      var url = $(this).attr('href');
-
-      $.ajax({
-        url: url,
-        type: 'PUT',
-        success: function(response) {
-          console.log('PUT request successfully sent');
-          // 처리 결과에 따라 UI를 업데이트합니다.
-        },
-        error: function(xhr, status, error) {
-          console.error('Error sending PUT request:', error);
+  function submitForm(id) {
+    $.ajax({
+      url: '/users/user-admin-check',
+      type: 'post', //POST 방식으로 전달
+      data: {id: id},
+      success: function (isAdminUser) {
+        if (isAdminUser) {
+          toastr.warning('관리자는 블락할 수 없습니둥');
+        } else {
+          toastr.success('성공적으로 블락되었습니둥');
         }
-      });
-    });
-  });
+      },
+      error: function () {
+        alert("에러입니다");
+      }
+    })
+  }
 </script>
+</body>
 </html>

@@ -44,13 +44,13 @@
   <update id="updateUserBlockByAdmin" parameterType="java.lang.Long">
     UPDATE user
     SET is_block = true
-    WHERE id = #{id}
+    WHERE id = #{id} AND role_id != 1
   </update>
 
   <update id="updateUserUnBlockByAdmin" parameterType="java.lang.Long">
     UPDATE user
     SET is_block = false
-    WHERE id = #{id}
+    WHERE id = #{id} AND role_id != 1
   </update>
 
   <update id="deleteUser" parameterType="java.lang.Long">
