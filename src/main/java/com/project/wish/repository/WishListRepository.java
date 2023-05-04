@@ -8,7 +8,4 @@ public interface WishListRepository {
     public List<WishListDto> getCompletionWishList();
     public List<WishListDto> getOngoingWishList();
     public List<WishListDto> getNewWishList();
-
-    public String getNickName(WishListDto dto);
-    public WishListDto getPercent(WishListDto dto);
 }

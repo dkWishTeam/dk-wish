@@ -239,6 +239,7 @@ public class UserController {
      * @throws UnAuthorizedAccessException
      */
     private void isRoleEqualsAdmin(HttpSession session) throws UnAuthorizedAccessException {
+
         String role = session.getAttribute("role").toString();
         //todo 로그인 시 session.add(role,"ADMIN") 추가
         if (role == null || !Objects.equals(role, Role.ADMIN.toString())) {

@@ -1,5 +1,6 @@
 package com.project.wish.service;
 
+import com.project.wish.domain.Role;
 import com.project.wish.dto.LoginDto;
 import javax.servlet.http.HttpSession;
 import com.project.wish.domain.User;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 @Service
 @RequiredArgsConstructor
@@ -23,25 +25,49 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public boolean loginCheck (LoginDto user, HttpSession session) {
+    public boolean loginCheck(LoginDto user, HttpSession session, Model model) {
         LoginDto loginUser = userRepository.findLoginUser(user);
-        if(loginUser == null) {
-            return false;
-        }
-        if(!loginUser.getPassword().equals(user.getPassword())) {
+        if (loginUser == null || !loginUser.getPassword().equals(user.getPassword())) {
+            model.addAttribute("msg", "아이디 혹은 비밀번호가 다릅니다.");
             return false;
         }
 
         LoginDto loginUserInfo = getLoginUserInfo(user);
+        if(loginUserInfo.getIsBlock() == 1) {
+            model.addAttribute("msg", "블락된 회원입니다. 관리자에게 문의하세요.");
+            return false;
+        }
+        if(loginUserInfo.getIsQuit() == 1) {
+            model.addAttribute("msg", "탈퇴하였습니다. 다시 회원가입하세요.");
+            return false;
+        }
+
         session.setAttribute("id", loginUserInfo.getId());
         session.setAttribute("nickname", loginUserInfo.getNickname());
+        session.setAttribute("email", loginUserInfo.getEmail());
+        if (loginUserInfo.getRoleId() == 1) {
+            session.setAttribute("role", Role.ADMIN);
+        } else {
+            session.setAttribute("role", Role.USER);
+        }
 
         return true;
     }
 
     @Override
+    public boolean loginMaintain(HttpSession session) {
+        if(session.getAttribute("id") != null)
+            return true;
+
+        return false;
+    }
+
+    @Override
     public void logout(HttpSession session) {
         session.removeAttribute("id");
+        session.removeAttribute("nickname");
+        session.removeAttribute("email");
+        session.removeAttribute("role");
     }
 
     @Override
@@ -49,7 +75,7 @@ public class UserServiceImpl implements UserService {
         LoginDto userInfo = userRepository.findLoginUserInfo(user);
         return userInfo;
     }
-    
+
     @Override
     public void insertUser(UserCreateRequestDto dto) {
         User user = userCreateRequestDtoToUser(dto);

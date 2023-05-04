@@ -4,47 +4,40 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wishList">
   <select id="all" resultType="WishListDto">
-    select id, user_id, image, title, product_name, goal_amount
-    from wish
+    SELECT w.id, w.user_id, u.nickname, w.title, w.image, w.product_name, format(w.goal_amount, '#,#') as goalAmountFormat, ifnull(format((SUM(wh.amount)), '#,#'), '0') as ongoingAmountFormat,((SUM(wh.amount)) / w.goal_amount) * 100 AS percentage
+    FROM user u
+    INNER JOIN wish w ON u.id = w.user_id
+    LEFT JOIN wish_history wh ON w.id = wh.wish_id
     where is_public = true
+    GROUP BY w.id
+    limit 9
   </select>
   <select id="completion" resultType="WishListDto">
-    select id, user_id, image, title, product_name, goal_amount
-    from wish
+    SELECT w.id, w.user_id, u.nickname, w.title, w.image, w.product_name, format(w.goal_amount, '#,#') as goalAmountFormat, ifnull(format((SUM(wh.amount)), '#,#'), '0') as ongoingAmountFormat, ((SUM(wh.amount)) / w.goal_amount) * 100 AS percentage
+    FROM user u
+           INNER JOIN wish w ON u.id = w.user_id
+           LEFT JOIN wish_history wh ON w.id = wh.wish_id
     where is_public = true and completion_status = true
+    GROUP BY w.id
+    limit 9
   </select>
   <select id="ongoing" resultType="WishListDto">
-    select id, user_id, image, title, product_name, goal_amount
-    from wish
+    SELECT w.id, w.user_id, u.nickname, w.title, w.image, w.product_name, format(w.goal_amount, '#,#') as goalAmountFormat, ifnull(format((SUM(wh.amount)), '#,#'), '0') as ongoingAmountFormat, ((SUM(wh.amount)) / w.goal_amount) * 100 AS percentage
+    FROM user u
+           INNER JOIN wish w ON u.id = w.user_id
+           LEFT JOIN wish_history wh ON w.id = wh.wish_id
     where is_public = true and completion_status = false
+    GROUP BY w.id
+    limit 9
   </select>
   <select id="new" resultType="WishListDto">
-    select id, user_id, image, title, product_name, goal_amount
-    from wish
+    SELECT w.id, w.user_id, u.nickname, w.title, w.image, w.product_name, format(w.goal_amount, '#,#') as goalAmountFormat, ifnull(format((SUM(wh.amount)), '#,#'), '0') as ongoingAmountFormat, ((SUM(wh.amount)) / w.goal_amount) * 100 AS percentage
+    FROM user u
+           INNER JOIN wish w ON u.id = w.user_id
+           LEFT JOIN wish_history wh ON w.id = wh.wish_id
     where is_public = true
-    order by register_datetime
-  </select>
-
-  <select id="getNickName" resultType="string" parameterType="WishListDto">
-    select u.nickname
-    from wish w
-    left join user u on w.#{user_id} = u.id
-  </select>
-
-  <select id="getPercent" resultType="WishListDto" parameterType="WishListDto">
-    select w.id, sum(wh.amount) / w.goal_amount * 100 as percentage_completed
-    from wish w
-    left join wish_history wh on w.id = wh.wish_id
-    where w.id = #{wish_id}
-    group by w.id;
+    GROUP BY w.id
+    order by w.register_datetime desc
+    limit 9
   </select>
 </mapper>
-
-
-
-
-
-
-
-
-

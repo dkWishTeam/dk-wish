@@ -4,42 +4,177 @@
   <meta charset="UTF-8">
   <title>Wish</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script th:replace="fragments/tailwind-config-head :: script"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {"50":"#eff6ff","100":"#dbeafe","200":"#bfdbfe","300":"#93c5fd","400":"#60a5fa","500":"#3b82f6","600":"#2563eb","700":"#1d4ed8","800":"#1e40af","900":"#1e3a8a"}
+          }
+        },
+        fontFamily: {
+          'body': [
+            'Inter',
+            'ui-sans-serif',
+            'system-ui',
+            '-apple-system',
+            'system-ui',
+            'Segoe UI',
+            'Roboto',
+            'Helvetica Neue',
+            'Arial',
+            'Noto Sans',
+            'sans-serif',
+            'Apple Color Emoji',
+            'Segoe UI Emoji',
+            'Segoe UI Symbol',
+            'Noto Color Emoji'
+          ],
+          'sans': [
+            'Inter',
+            'ui-sans-serif',
+            'system-ui',
+            '-apple-system',
+            'system-ui',
+            'Segoe UI',
+            'Roboto',
+            'Helvetica Neue',
+            'Arial',
+            'Noto Sans',
+            'sans-serif',
+            'Apple Color Emoji',
+            'Segoe UI Emoji',
+            'Segoe UI Symbol',
+            'Noto Color Emoji'
+          ]
+        }
+      }
+    }
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
 </head>
 <body>
-<header th:replace="fragments/header :: header"></header>
+  <header>
+    <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+      <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+        <a href="/" class="flex items-center">
+          <img src="/images/wishLogo-color.png" class="mr-3 h-6 sm:h-9" alt="wish Logo" />
+        </a>
 
-<section>
+        <!-- hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2" -->
+        <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
+          <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+            <li>
+              <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">마이 위시</a>
+            </li>
+            <li>
+              <a href="/" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">위시 플레이스</a>
+            </li>
+          </ul>
+        </div>
+
+        <th:block th:if="${session.id}">
+          <div class="flex items-end items-center lg:order-2">
+            <button type="button" class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+              <span class="sr-only">Open user menu</span>
+              <img class="w-8 h-8 rounded-full" src="/images/defaultUser.png" alt="user photo">
+            </button>
+            <!-- Dropdown menu -->
+            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
+              <div class="px-4 py-3">
+                <span class="block text-sm text-gray-900 dark:text-white">[[${session.nickname}]]</span>
+                <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">[[${session.email}]]</span>
+              </div>
+              <ul class="py-2" aria-labelledby="user-menu-button">
+                <li>
+                  <a th:href="@{/users/{id}(id=${session.id})}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">마이페이지</a>
+                  <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">로그아웃</a>
+                </li>
+              </ul>
+            </div>
+            <button data-collapse-toggle="mobile-menu-2" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
+              <span class="sr-only">Open main menu</span>
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+              <svg class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+          </div>
+        </th:block>
+
+        <th:block th:unless="${session.id}">
+          <div class="flex items-end items-center lg:order-2">
+            <a th:href="@{/users/sign-up}" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">회원가입</a>
+            <a href="/login" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">로그인</a>
+            <button data-collapse-toggle="mobile-menu-2" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
+              <span class="sr-only">Open main menu</span>
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+              <svg class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+          </div>
+        </th:block>
+
+      </div>
+    </nav>
+  </header>
+
+  <section>
     <!-- main text  -->
-    <article class="text-center">
+    <article class="text-center py-20">
       <h1 class="text-center my-9 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">We wish your wishes</h1>
-      <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">당신의 소망을 이루는 첫 걸음, Wish와 함께하세요! 당신이 원하는 물건을 구매할 수 있게 도와주며 다른 이들의 위시 내역을 보며 자극을 받을 수 있습니다. Wish는 함께하는 여정에서 당신의 꿈을 현실로 만들어드립니다. 지금 Wish와 함께 꿈을 이루어나가보세요!</p>
-      <a href="#" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
+      <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-24 xl:px-56 dark:text-gray-400">당신의 소망을 이루는 첫 걸음, Wish와 함께하세요! 당신이 원하는 물건을 구매할 수 있게 도와주며 다른 이들의 위시 내역을 보며 자극을 받을 수 있습니다. Wish는 함께하는 여정에서 당신의 꿈을 현실로 만들어드립니다. 지금 Wish와 함께 꿈을 이루어나가보세요!</p>
+
+      <a href="/main/add" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
         등록하기
       </a>
     </article>
     <!-- wish list  -->
     <article>
 
-      <div class="flex items-center justify-center py-4 md:py-8 flex-wrap">
-        <button type="button" onclick="location.href='/wishList/all'" class="text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800">전체</button>
-        <button type="button" onclick="location.href='/wishList/completion'" class="text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:text-white dark:focus:ring-gray-800">성공</button>
-        <button type="button" onclick="location.href='/wishList/ongoing'" class="text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:text-white dark:focus:ring-gray-800">진행중</button>
-        <button type="button" onclick="location.href='/wishList/new'" class="text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:text-white dark:focus:ring-gray-800">최신순</button>
+      <div class="flex items-center justify-center py-6 md:py-8 flex-wrap" role="group">
+        <button type="button" onclick="location.href='/wishList/all'"  class="px-4 py-2 text-lg font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+          전체
+        </button>
+        <button type="button" onclick="location.href='/wishList/completion'" class="px-4 py-2 text-lg font-medium text-gray-900 bg-white border-t border-b border-r border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+          성공
+        </button>
+        <button type="button" onclick="location.href='/wishList/ongoing'" class="px-4 py-2 text-lg font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+          진행중
+        </button>
+        <button type="button" onclick="location.href='/wishList/new'" class="px-4 py-2 text-lg font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+          최신순
+        </button>
       </div>
 
-      <div class="px-10 my-8 grid grid-cols-2 md:grid-cols-3 gap-4">
-        <!-- -->
+<!--      <div class="flex items-center justify-center py-6 md:py-8 flex-wrap">-->
+<!--        <button type="button" onclick="location.href='/wishList/all'" class="text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800">전체</button>-->
+<!--        <button type="button" onclick="location.href='/wishList/completion'" class="text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:text-white dark:focus:ring-gray-800">성공</button>-->
+<!--        <button type="button" onclick="location.href='/wishList/ongoing'" class="text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:text-white dark:focus:ring-gray-800">진행중</button>-->
+<!--        <button type="button" onclick="location.href='/wishList/new'" class="text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:text-white dark:focus:ring-gray-800">최신순</button>-->
+<!--      </div>-->
+
+      <!-- px-10 my-8 grid grid-cols-2 md:grid-cols-3 gap-4 -->
+      <div class="px-20 my-8 grid grid-cols-2 md:grid-cols-3 gap-6">
         <th:block th:each="wish:${wishList}">
+
           <div class="max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <a href="#">
               <img class="rounded-t-lg" src="/images/default.png" alt="default" />
+<!--              <th:block th:if="${wish.image}">-->
+<!--                <img class="rounded-t-lg" th:src="'data:image/png;base64,' + ${#strings.toHexString(wish.image)}" alt="" />-->
+<!--              </th:block>-->
+<!--              <th:block th:unless="${wish.image}">-->
+<!--                <img class="rounded-t-lg" src="/images/default.png" alt="default" />-->
+<!--              </th:block>-->
             </a>
             <div class="p-5">
               <a href="#">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">[[${wish.productName}]]</h5>
               </a>
-              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">목표금액 : [[${wish.goalAmount}]] 원</p>
+
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">닉네임 : <span class="text-blue-700">[[${wish.nickname}]]</span></p>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">목표금액 : <span class="text-blue-700">[[${wish.goalAmountFormat}]] 원</span></p>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">달성률 : <span class="text-blue-700">[[${wish.percentage}]] %</span></p>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">모금액 : <span class="text-blue-700">[[${wish.ongoingAmountFormat}]] 원</span></p>
               <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 Read more
                 <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -52,8 +187,36 @@
     </article>
   </section>
 
-<footer th:replace="fragments/footer :: footer"></footer>
+  <footer class="bg-gray-800 rounded-lg shadow dark:bg-gray-900">
+  <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+    <div class="sm:flex sm:items-center sm:justify-between">
+      <div class="flex items-center mb-4 sm:mb-0">
+        <img src="/images/wishLogo-white.png" class="h-8 mr-3" alt="wish-Logo" />
+        <div class="text-white mx-2">|</div>
+        <div class="text-white mx-2">개인정보처리방침</div>
+        <div class="text-white mx-2">|</div>
+        <div class="text-white mx-2">이용약관</div>
+      </div>
+    </div>
+    <div class="my-4 sm:flex sm:items-center sm:justify-between text-gray-400">
+      (주)wish | 대표자: 지니 | 사업자번호: 02-1234-1234 사업자 정보 확인
+    </div>
+    <div class="my-4 sm:flex sm:items-center sm:justify-between text-gray-400">
+      통신판매업: 2023-서울송파-0000 | 개인정보보호책임자: 지니 | 이메일: genie@wish.com
+    </div>
+    <div class="my-4 sm:flex sm:items-center sm:justify-between text-gray-400">
+      주소: 서울특별시 송파구 중대로 135
+    </div>
+    <div class="my-6 sm:flex sm:items-center sm:justify-between text-gray-400">
+      @wish. ALL RIGHTS RESERVED
+    </div>
+  </div>
+</footer>
 
+<script>
 
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 </body>
 </html>

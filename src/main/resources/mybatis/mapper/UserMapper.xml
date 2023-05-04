@@ -90,7 +90,7 @@
   </select>
 
   <select id="getLoginUserInfo" resultType="LoginDto" parameterType="LoginDto">
-    select id, user_id, password, nickname, is_block, is_quit
+    select id, role_id, user_id, password, nickname, is_block, is_quit, email
     from user
     where user_id = #{userId}
   </select>
