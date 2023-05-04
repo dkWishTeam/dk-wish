@@ -13,8 +13,16 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class WishHistoryResponseDto {
-    private int id;
-    private int wishId;
+
+    private Long wishId;
+    private Long id;
     private LocalDateTime historyDatetime;
-    private int amount;
+    private LocalDateTime registerDatetime;
+    private Long amount;
+
+    @Override
+    public String toString() {
+        return this.getId() + " " + this.getWishId() + " " +  this.getAmount() +  " " + this.getHistoryDatetime();
+    }
 }
+

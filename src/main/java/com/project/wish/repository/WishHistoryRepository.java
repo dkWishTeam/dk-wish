@@ -4,13 +4,13 @@ import com.project.wish.domain.WishHistory;
 import java.util.List;
 
 public interface WishHistoryRepository {
-    List<WishHistory> findWishHistoryListByWishId(Integer wishId);
+    List<WishHistory> findWishHistoryListByWishId(Long wishId);
 
-    WishHistory findWishHistoryOneById(Integer id);
+    WishHistory findWishHistoryInfoById(Long id);
 
-    void insertWishHistory(WishHistory wishHistory);
+    void createWishHistory(WishHistory wishHistory);
 
     void updateWishHistory(WishHistory wishHistory);
 
-    void deleteWishHistory(Integer id);
+    void deleteWishHistory(Long id);
 }

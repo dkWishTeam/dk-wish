@@ -13,19 +13,19 @@ public class WishHistoryRepositoryImpl implements WishHistoryRepository {
     SqlSession session;
 
     @Override
-    public List<WishHistory> findWishHistoryListByWishId(Integer wishId) {
+    public List<WishHistory> findWishHistoryListByWishId(Long wishId) {
         String statement = "WishHistoryMapper.findWishHistoryListByWishId";
         return session.selectList(statement, wishId);
     }
 
     @Override
-    public WishHistory findWishHistoryOneById(Integer id) {
-        String statement = "WishHistoryMapper.findWishHistoryOneById";
+    public WishHistory findWishHistoryInfoById(Long id) {
+        String statement = "WishHistoryMapper.findHistoryInfoById";
         return session.selectOne(statement, id);
     }
 
     @Override
-    public void insertWishHistory(WishHistory wishHistory) {
+    public void createWishHistory(WishHistory wishHistory) {
         String statement = "WishHistoryMapper.insertWishHistory";
         session.insert(statement, wishHistory);
     }
@@ -37,9 +37,9 @@ public class WishHistoryRepositoryImpl implements WishHistoryRepository {
     }
 
     @Override
-    public void deleteWishHistory(Integer id) {
+    public void deleteWishHistory(Long id) {
         String statement = "WishHistoryMapper.deleteWishHistory";
-        session.update(statement, id);
+        session.delete(statement, id);
     }
 
 }

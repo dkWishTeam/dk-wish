@@ -10,7 +10,8 @@ import lombok.Setter;
 @Builder
 public class WishHistoryUpdateRequestDto {
 
-    private Integer id;
-    private LocalDateTime historyDatetime;
-    private Integer amount;
+    private Long wishId;
+    private Long id;
+    private java.sql.Date historyDatetime;
+    private Long amount;
 }

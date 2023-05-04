@@ -4,53 +4,60 @@ import com.project.wish.domain.WishHistory;
 import com.project.wish.dto.WishHistoryCreateDto;
 import com.project.wish.dto.WishHistoryResponseDto;
 import com.project.wish.dto.WishHistoryUpdateRequestDto;
+import java.sql.Date;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 public interface WishHistoryService {
 
-    List<WishHistoryResponseDto> findWishHistoryListByWishId(Integer wishId);
+    List<WishHistoryResponseDto> findWishHistoryListByWishId(Long wishId);
 
-    WishHistoryResponseDto findWishHistoryOneById(Integer id);
+    WishHistoryResponseDto findWishHistoryInfoById(Long id);
 
-    void insertWishHistory(WishHistory wishHistory);
+    void createWishHistory(WishHistoryCreateDto wishHistoryCreateDto);
 
-    void updateWishHistory(WishHistory wishHistory);
+    void updateWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto);
+
+    void deleteWishHistory(Long id);
 
     default WishHistoryResponseDto wishHistoryToWishHistoryResponseDto(WishHistory wishHistory) {
         return WishHistoryResponseDto.builder()
+            .wishId(wishHistory.getWishId())
             .id(wishHistory.getId())
             .historyDatetime(wishHistory.getHistoryDatetime())
+            .registerDatetime(wishHistory.getRegisterDatetime())
             .amount(wishHistory.getAmount())
             .build();
     }
 
-    default WishHistory wishHistoryCreateDtoToWishHistory(WishHistoryCreateDto wishHistoryCreateDto, LocalDateTime localDateTime) {
-        WishHistory wishHistory = WishHistory.builder()
-            .id(wishHistoryCreateDto.getId())
+    default WishHistory wishHistoryCreateDtoToWishHistory(WishHistoryCreateDto wishHistoryCreateDto) {
+        return WishHistory.builder()
             .wishId(wishHistoryCreateDto.getWishId())
-            .historyDatetime(wishHistoryCreateDto.getHistoryDatetime())
+            .historyDatetime(convertSqlDateToLocalDateTime(wishHistoryCreateDto.getHistoryDatetime()))
             .amount(wishHistoryCreateDto.getAmount())
-            .registerDatetime(wishHistoryCreateDto.getHistoryDatetime())
+            .registerDatetime(LocalDateTime.now())
             .build();
-        wishHistory.setModifyDatetime(localDateTime);
-        return wishHistory;
     }
 
-    default WishHistory wishUpdateRequestDtoToWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto, Integer wishId, LocalDateTime localDateTime1, LocalDateTime localDateTime2){
-        WishHistory wishHistory = WishHistory.builder()
+    default WishHistory wishHistoryUpdateRequestDtoToWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto, LocalDateTime registerDatetime){
+        return WishHistory.builder()
+            .wishId(wishHistoryUpdateRequestDto.getWishId())
             .id(wishHistoryUpdateRequestDto.getId())
-            .historyDatetime(wishHistoryUpdateRequestDto.getHistoryDatetime())
+            .historyDatetime(convertSqlDateToLocalDateTime(wishHistoryUpdateRequestDto.getHistoryDatetime()))
             .amount(wishHistoryUpdateRequestDto.getAmount())
+            .registerDatetime(registerDatetime)
+            .modifyDatetime(LocalDateTime.now())
             .build();
-
-        wishHistory.setRegisterDatetime(localDateTime1);
-        wishHistory.setModifyDatetime(localDateTime2);;
-        return wishHistory;
     }
 
+    default LocalDateTime convertSqlDateToLocalDateTime(Date sqlDate){
+        java.util.Date utilDate = new java.util.Date(sqlDate.getTime());
+        LocalDateTime localDateTime = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return localDateTime;
+    }
 //    default WishHistory wishHistoryCreateDtoToWishHistory(WishHistoryCreateDto dto) {
-//
+//v
 //    }
 
 
