@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WishHistoryMapper">
+  <select id="findWishHistoryListByWishId" parameterType="java.lang.Long" resultType="WishHistory">
+    SELECT wish_history.*
+    FROM wish
+    JOIN wish_history ON wish.id = wish_history.wish_id
+    WHERE wish_history.wish_id = #{wishId}
+  </select>
+
+  <select id="findWishHistoryInfoById" parameterType="java.lang.Integer" resultType="WishHistory">
+    SELECT wish_history.*
+    FROM wish_history
+    WHERE id = #{id}
+
+  </select>
+
+  <insert id="insertWishHistory" parameterType="WishHistory">
+    INSERT INTO wish_history (wish_id, history_datetime, amount, register_datetime, modify_datetime)
+    VALUES (#{wishId}, #{historyDatetime}, #{amount}, #{registerDatetime}, #{modifyDatetime})
+  </insert>
+
+  <update id="updateWishHistory" parameterType="WishHistory">
+    UPDATE wishHistory
+    SET history_datetime = #{historyDatetime},
+        amount           = #{amount},
+        modify_datetime = #{modifyDatetime}
+    WHERE id = #{id}
+  </update>
+
+  <delete id="deleteWishHistory" parameterType="java.lang.Long">
+    DELETE
+    FROM wish_history
+    WHERE id = #{id}
+  </delete>
+</mapper>
+
+
+
+
+
+
+
+

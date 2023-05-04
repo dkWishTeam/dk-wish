@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" xmlns:tr="http://www.thymeleaf.org/">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wishHistory Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #sec1 {
+      max-width: 1024px;
+      margin: auto;
+    }
+
+    #progressBarBox {
+      width: 100%;
+    }
+
+    td {
+      padding-right: 150px;
+    }
+
+    /* 모달창 스타일링 */
+    .wishHistoryContent {
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    /* 모달창 내용 스타일링 */
+    .content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    /* 닫기 버튼 스타일링 */
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    /* 닫기 버튼 호버 스타일링 */
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+</header>
+<section id="sec1">
+  <div id="progressBarBox">
+
+  </div>
+  <div id="listBox">
+    <button></button>
+  </div>
+  <button id="createButton" th:onclick="showCreateModal()">생성하기</button>
+  <table th:if="${wishHistoryResponseDtoList}">
+    <tr class="wishHistoryList" th:each="wishHistoryResponseDto,index : ${wishHistoryResponseDtoList}">
+      <td th:text="|${index.count}회차-${wishHistoryResponseDto.historyDatetime}|"
+          th:onclick="|displayHistoryContents(${wishHistoryResponseDto.id})|"></td>
+      <td th:text="|${wishHistoryResponseDto.amount}원|"></td>
+      <td>
+<!--        <button id="modifyButton" th:onclick="|showModifyModal(${wishHistoryResponseDto.amount},${wishHistoryResponseDto.historyDatetime})|">수정하기</button>-->
+        <button id="modifyButton" th:data-dto="${wishHistoryResponseDto}" th:onclick="|showModifyModal(this)|">수정하기</button>
+        <!--        <button id="deleteButton" th:onclick="|deleteWishHistory(1)">삭제하기</button>-->
+      </td>
+    </tr>
+  </table>
+
+  <div style="display:none" id="wishHistoryCreateContent">
+    <span class="close">&times;</span>
+    <div class="content">
+      <form action="/wishHistory/create" method="POST">
+        <input type="hidden" name="wishId" th:value="${wishId}">
+        <label for="cteDatetime">기록 날: </label>
+        <input type="date" name="historyDatetime" id="cteDatetime">
+        <label for="createAmount">넣을 금액: </label>
+        <input type="text" name="amount" id="createAmount">
+        <input type="submit">
+      </form>
+    </div>
+  </div>
+
+  <div style="display: none" id="wishHistoryUpdateContent">
+    <span id="updateModalCloseBtn">&times;</span>
+    <div class="content">
+      <form th:action="@{/wishHistory/update}" method="POST">
+        <input type="hidden" name="id" value="" id="id"/>
+        <input type="hidden" name="wishId" value="" id="wishId"/>
+        <label for="updateDatetime">기록 날:</label>
+        <input type="date" name="historyDatetime" id="updateDatetime" value="">
+        <label for="updateAmount">금액:</label>
+        <input type="text" name="amount" id="updateAmount" value="">
+        <input type="submit" value="수정하기">
+      </form>
+    </div>
+  </div>
+</section>
+
+<script th:inline="javascript">
+  function showModifyModal(target) {
+    console.log(target.getAttribute("data-dto"));
+    let updateDto = target.getAttribute("data-dto").split(" ");
+    const updateId = document.getElementById("id");
+    const updateWishId = document.getElementById("wishId");
+    const updateAmount = document.getElementById("updateAmount");
+    const updateDatetime = document.getElementById("updateDatetime");
+
+    updateId.value = updateDto[0];
+    updateWishId.value = updateDto[1];
+    updateAmount.value = updateDto[2];
+    updateDatetime.value = updateDto[3].split("T")[0];
+
+    console.log(updateDto[2]);
+    console.log(updateDto[3]);
+
+    let modal = document.getElementById("wishHistoryUpdateContent");
+    let closeButton = document.getElementById("updateModalCloseBtn");
+
+
+
+
+
+    modal.style.display = "block";
+    closeButton.onclick = () => {
+      modal.style.display = "none";
+    }
+
+    window.onclick = (event) => {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  }
+
+  function deleteWishHistory(id) {
+    if (confirm("정말로 삭제하시겠습니까?")) {
+      fetch(`/wishHistory/delete/${id}`, {
+        method: 'GET'
+      }).then(response => {
+        if (response.redirected) {
+          window.location.href = response.url;
+        }
+      });
+    }
+  }
+
+
+</script>
+
+</body>
+</html>
