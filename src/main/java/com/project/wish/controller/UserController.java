@@ -34,7 +34,9 @@ public class UserController {
      */
     @PostMapping
     public String createUser(UserCreateRequestDto dto) {
-        userService.insertUser(dto);//think 입력 시점에 중복체크 싹다 한 번 다시? 아니면 unique 제약 조건을 걸어주나?
+        userService.insertUser(dto);
+        // think 입력 시점에 중복체크 싹다 한 번 다시? 아니면 unique 제약 조건을 걸어주나?
+        // todo 회원 가입 시 회원가입이 안되면 띄워주는 에러페이지
         return "redirect:/";
     }
 
@@ -49,11 +51,9 @@ public class UserController {
     @GetMapping("/{id}")
     public String findUserById(HttpSession session, Model model, @PathVariable("id") Long id)
         throws UnAuthorizedAccessException {
-        System.out.println("들어오나?" + id);
         isUserAuthorized(id, session);
         model.addAttribute("user", userService.findUserById(id));
         return "user/userInfo";
-        //todo Hierarchy check
     }
 
     /**
@@ -83,8 +83,7 @@ public class UserController {
     @GetMapping
     public String findUsers(Model model) {
         model.addAttribute("users", userService.findUsers());
-        return "";
-        //todo Hierarchy check
+        return "user/userList";
         //todo paging
     }
 
@@ -95,6 +94,7 @@ public class UserController {
      * @param dto     UserUpdateRequestDto(회원 정보수정사항을 담는 객체) 객체입니다.
      * @param session session 에 있는 회원의 고유번호를 얻기 위한 객체
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
+     * @return 마이페이지로 이동합니다.
      */
     @PutMapping("/{id}")
     public String updateUser(@PathVariable("id") Long id, @RequestBody UserUpdateRequestDto dto, HttpSession session)
@@ -110,13 +110,14 @@ public class UserController {
      * @param id      회원의 고유번호
      * @param session session 에 있는 회원의 고유번호를 얻기 위한 객체
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
+     * @return 마이페이지로 이동합니다.
      */
-    @PutMapping("/{id}/block")
+    @PostMapping("/{id}/block")
     public String updateUserBlockByAdmin(@PathVariable("id") Long id, HttpSession session)
         throws UnAuthorizedAccessException {
         isRoleEqualsAdmin(session);
         userService.updateUserBlockByAdmin(id);
-        return "redirect:/users/" + id + "/admin";
+        return "redirect:/users";
     }
 
     /**
@@ -126,12 +127,12 @@ public class UserController {
      * @param session session 에 있는 회원의 고유번호를 얻기 위한 객체
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      */
-    @PutMapping("/{id}/unblock")
+    @PostMapping("/{id}/unblock")
     public String updateUserUnBlockByAdmin(@PathVariable("id") Long id, HttpSession session)
         throws UnAuthorizedAccessException {
         isRoleEqualsAdmin(session);
         userService.updateUserUnBlockByAdmin(id);
-        return "redirect:/users/" + id + "/admin";
+        return "redirect:/users";
     }
 
     /**
@@ -238,7 +239,7 @@ public class UserController {
      * @throws UnAuthorizedAccessException
      */
     private void isRoleEqualsAdmin(HttpSession session) throws UnAuthorizedAccessException {
-        String role = (String) session.getAttribute("role");
+        String role = session.getAttribute("role").toString();
         //todo 로그인 시 session.add(role,"ADMIN") 추가
         if (role == null || !Objects.equals(role, Role.ADMIN.toString())) {
             throw new UnAuthorizedAccessException();

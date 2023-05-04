@@ -1,6 +1,7 @@
 package com.project.wish.repository;
 
 import com.project.wish.domain.User;
+import com.project.wish.exception.SignUpFailException;
 import java.util.List;
 import com.project.wish.dto.LoginDto;
 import org.apache.ibatis.session.SqlSession;
@@ -40,7 +41,12 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void insertUser(User user) {
-        String statement = "wishdb.insertUser";
+        String statement = null;
+        try {
+            statement = "wishdb.insertUser";
+        } catch (Exception e){
+            throw new SignUpFailException();
+        }
         session.insert(statement, user);
     }
 
