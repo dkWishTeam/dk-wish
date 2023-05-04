@@ -7,6 +7,7 @@ import com.project.wish.dto.UserResponseDto;
 import com.project.wish.dto.UserResponseDtoByAdmin;
 import com.project.wish.dto.UserUpdateRequestDto;
 import com.project.wish.dto.LoginDto;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,7 +15,7 @@ import org.springframework.ui.Model;
 
 public interface UserService {
 
-    public boolean loginCheck(LoginDto user, HttpSession session, Model model);
+    public boolean loginCheck(LoginDto user, HttpSession session, Model model, boolean remember, HttpServletResponse response);
 
     public boolean loginMaintain(HttpSession session);
 

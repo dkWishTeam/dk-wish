@@ -2,6 +2,9 @@ package com.project.wish.service;
 
 import com.project.wish.domain.Role;
 import com.project.wish.dto.LoginDto;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.project.wish.domain.User;
 import com.project.wish.dto.UserCreateRequestDto;
@@ -25,7 +28,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public boolean loginCheck(LoginDto user, HttpSession session, Model model) {
+    public boolean loginCheck(LoginDto user, HttpSession session, Model model,
+        boolean remember, HttpServletResponse response) {
         LoginDto loginUser = userRepository.findLoginUser(user);
         if (loginUser == null || !loginUser.getPassword().equals(user.getPassword())) {
             model.addAttribute("msg", "아이디 혹은 비밀번호가 다릅니다.");
@@ -42,6 +46,17 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
+        // 아이디 기억 : 쿠키에 아이디를 저장
+        Cookie rememberCookie = new Cookie("rememberUserId", loginUserInfo.getUserId());
+        rememberCookie.setPath("/");
+        if(remember == true) {
+            rememberCookie.setMaxAge(60*60*24*3); // 3일 동안 쿠키에 저장
+        } else {
+            rememberCookie.setMaxAge(0);
+        }
+        response.addCookie(rememberCookie);
+
+        // 세션에 유저 정보를 필요한 만큼 넣음
         session.setAttribute("id", loginUserInfo.getId());
         session.setAttribute("nickname", loginUserInfo.getNickname());
         session.setAttribute("email", loginUserInfo.getEmail());

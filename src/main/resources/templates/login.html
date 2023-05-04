@@ -117,16 +117,6 @@
   </nav>
 </header>
 
-<!--<header>-->
-<!--  <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">-->
-<!--    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">-->
-<!--      <a href="/" class="flex items-center">-->
-<!--        <img src="/images/wishLogo-color.png" class="mr-3 h-6 sm:h-9" alt="wish Logo" />-->
-<!--      </a>-->
-<!--    </div>-->
-<!--  </nav>-->
-<!--</header>-->
-
 <section class="bg-gray-50 dark:bg-gray-900">
   <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
     <h1 class="flex items-center mb-6 text-5xl font-semibold text-gray-900 dark:text-white">
@@ -143,7 +133,7 @@
         <form class="space-y-4 md:space-y-6" action="/loginCheck" method="post">
           <div>
             <label for="userId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">아이디</label>
-            <input type="text" name="userId" id="userId" class="bg-gray-50 border border-gray-300 text-gray-900
+            <input type="text" name="userId" id="userId" th:value="${rememberCookie}" class="bg-gray-50 border border-gray-300 text-gray-900
             sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
             w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
             dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="id" required="">
@@ -155,7 +145,7 @@
           <div class="flex items-center justify-between">
             <div class="flex items-start">
               <div class="flex items-center h-5">
-                <input id="remember" aria-describedby="remember" type="checkbox" name="remember" value="true"
+                <input id="remember" aria-describedby="remember" type="checkbox" name="remember" value="true" th:checked="${rememberCheckBox}"
                        class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3
                        focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800">
               </div>

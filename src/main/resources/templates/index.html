@@ -57,7 +57,7 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 
-  <section>
+<section>
     <!-- main text  -->
     <article class="text-center py-20">
       <h1 class="text-center my-9 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">We wish your wishes</h1>
@@ -70,63 +70,84 @@
     <!-- wish list  -->
     <article>
 
-      <div class="flex items-center justify-center py-6 md:py-8 flex-wrap" role="group">
-        <button type="button" onclick="location.href='/wishList/all'"  class="px-4 py-2 text-lg font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
-          전체
-        </button>
-        <button type="button" onclick="location.href='/wishList/completion'" class="px-4 py-2 text-lg font-medium text-gray-900 bg-white border-t border-b border-r border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
-          성공
-        </button>
-        <button type="button" onclick="location.href='/wishList/ongoing'" class="px-4 py-2 text-lg font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
-          진행중
-        </button>
-        <button type="button" onclick="location.href='/wishList/new'" class="px-4 py-2 text-lg font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
-          최신순
-        </button>
+      <div class="flex items-center justify-center py-6 md:py-8 flex-wrap">
+        <button id="all" type="button" class="select-btn text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800">전체</button>
+        <button id="completion" type="button" class="select-btn text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:text-white dark:focus:ring-gray-800">성공</button>
+        <button id="ongoing" type="button" class="select-btn text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:text-white dark:focus:ring-gray-800">진행중</button>
+        <button id="new" type="button" class="select-btn text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:text-white dark:focus:ring-gray-800">최신순</button>
       </div>
 
-<!--      <div class="flex items-center justify-center py-6 md:py-8 flex-wrap">-->
-<!--        <button type="button" onclick="location.href='/wishList/all'" class="text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800">전체</button>-->
-<!--        <button type="button" onclick="location.href='/wishList/completion'" class="text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:text-white dark:focus:ring-gray-800">성공</button>-->
-<!--        <button type="button" onclick="location.href='/wishList/ongoing'" class="text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:text-white dark:focus:ring-gray-800">진행중</button>-->
-<!--        <button type="button" onclick="location.href='/wishList/new'" class="text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:text-white dark:focus:ring-gray-800">최신순</button>-->
-<!--      </div>-->
-
-      <!-- px-10 my-8 grid grid-cols-2 md:grid-cols-3 gap-4 -->
-      <div class="px-20 my-8 grid grid-cols-2 md:grid-cols-3 gap-6">
-        <th:block th:each="wish:${wishList}">
-
-          <div class="max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <a href="#">
-              <img class="rounded-t-lg" src="/images/default.png" alt="default" />
-<!--              <th:block th:if="${wish.image}">-->
-<!--                <img class="rounded-t-lg" th:src="'data:image/png;base64,' + ${#strings.toHexString(wish.image)}" alt="" />-->
-<!--              </th:block>-->
-<!--              <th:block th:unless="${wish.image}">-->
-<!--                <img class="rounded-t-lg" src="/images/default.png" alt="default" />-->
-<!--              </th:block>-->
-            </a>
-            <div class="p-5">
-              <a href="#">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">[[${wish.productName}]]</h5>
-              </a>
-
-              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">닉네임 : <span class="text-blue-700">[[${wish.nickname}]]</span></p>
-              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">목표금액 : <span class="text-blue-700">[[${wish.goalAmountFormat}]] 원</span></p>
-              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">달성률 : <span class="text-blue-700">[[${wish.percentage}]] %</span></p>
-              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">모금액 : <span class="text-blue-700">[[${wish.ongoingAmountFormat}]] 원</span></p>
-              <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Read more
-                <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-              </a>
-            </div>
-          </div>
-        </th:block>
+      <div id="list-output-box" class="px-60 my-8 grid grid-cols-2 md:grid-cols-3 gap-6">
       </div>
 
     </article>
   </section>
 
 <footer th:replace="fragments/footer :: footer"></footer>
+
+<script>
+  const outputBox = document.querySelector("#list-output-box");
+
+  const selectClass = document.querySelector("#all").className;
+  const noneSelectClass = document.querySelector("#new").className;
+  const btnArr = document.querySelectorAll(".select-btn");
+
+  const xhr = new XMLHttpRequest();
+
+  window.onload = function () {
+    getWishList("all");
+  }
+
+  function noneSelectInit() {
+      for(let i = 0; i < btnArr.length; i++) {
+        btnArr[i].className = noneSelectClass;
+      }
+  }
+
+  function getWishList(str) {
+    xhr.onload = function () {
+      if(xhr.status == 200) {
+        let data = JSON.parse(this.responseText);
+
+        outputBox.innerHTML = "";
+        for(let i = 0; i < data.length; i++) {
+          outputBox.innerHTML += `<div class="max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <a href="#">
+              <img class="rounded-t-lg" src="/images/default.png" alt="default" />
+            </a>
+            <div class="p-5">
+              <a href="#">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${data[i].productName}</h5>
+              </a>
+
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">닉네임 : <span class="text-blue-700">${data[i].nickname}</span></p>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">목표금액 : <span class="text-blue-700">${data[i].goalAmountFormat} 원</span></p>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">달성률 : <span class="text-blue-700">${data[i].percentage} %</span></p>
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">모금액 : <span class="text-blue-700">${data[i].ongoingAmountFormat} 원</span></p>
+              <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Read more
+                <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+              </a>
+            </div>
+          </div>`;
+        }
+      }
+    };
+    xhr.open("GET", `/test/${str}`, true);
+    xhr.send();
+  }
+  function addButtonEvent() {
+    for(let i = 0; i < btnArr.length; i++) {
+      btnArr[i].addEventListener('click', function () {
+        noneSelectInit();
+        btnArr[i].className = selectClass;
+
+        getWishList(btnArr[i].id);
+      });
+    }
+  }
+
+  addButtonEvent();
+</script>
 </body>
 </html>
