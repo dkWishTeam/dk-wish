@@ -72,6 +72,15 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <hr>
+<aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
+  <div th:if="${session.role.toString() == 'ADMIN'}">
+    <ul>
+      <li><a th:href="@{/users}">회원 리스트</a></li>
+<!--      <li><a th:href="@{/wish}">위시 리스트</a></li>-->
+    </ul>
+  </div>
+</aside>
+<main>
 <article>
   <div style=" text-align: center;">
     <span style="color: rgb(33, 80, 187);" th:text="${user.name}"></span>
@@ -79,7 +88,7 @@
   </div>
   <div>
     <form th:action="@{/users/{id}(id=${user.id})}" method="POST">
-      <input type="hidden" name="_method" value="PUT" />
+      <input type="hidden" name="_method" value="PUT"/>
       <div>
         <label for="userId">아이디</label>
         <input type="text" id="userId" name="userId" th:value="${user.userId}" required>
@@ -107,7 +116,8 @@
       <div style="margin-top: 20px">
         <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4
           focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center
-          dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">회원 정보 수정</button>
+          dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">회원 정보 수정
+        </button>
       </div>
     </form>
   </div>
