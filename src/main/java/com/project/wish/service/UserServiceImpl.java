@@ -55,6 +55,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean loginMaintain(HttpSession session) {
+        if(session.getAttribute("id") != null)
+            return true;
+
+        return false;
+    }
+
+    @Override
     public void logout(HttpSession session) {
         session.removeAttribute("id");
         session.removeAttribute("nickname");

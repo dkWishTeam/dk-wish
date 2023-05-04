@@ -15,7 +15,9 @@ import org.springframework.ui.Model;
 public interface UserService {
 
     public boolean loginCheck(LoginDto user, HttpSession session, Model model);
-    
+
+    public boolean loginMaintain(HttpSession session);
+
     public void logout(HttpSession session);
 
     public LoginDto getLoginUserInfo(LoginDto user);
