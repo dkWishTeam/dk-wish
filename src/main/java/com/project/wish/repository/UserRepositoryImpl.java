@@ -1,6 +1,7 @@
 package com.project.wish.repository;
 
 import com.project.wish.domain.User;
+import com.project.wish.exception.SignUpFailException;
 import java.util.List;
 import com.project.wish.dto.LoginDto;
 import org.apache.ibatis.session.SqlSession;
@@ -40,18 +41,23 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void insertUser(User user) {
-        String statement = "wishdb.insertUser";
+        String statement = null;
+        try {
+            statement = "wishdb.insertUser";
+        } catch (Exception e){
+            throw new SignUpFailException();
+        }
         session.insert(statement, user);
     }
 
     @Override
-    public User findUserById(Integer id) {
+    public User findUserById(Long id) {
         String statement = "wishdb.findUserById";
         return session.selectOne(statement, id);
     }
 
     @Override
-    public User findUserByIdByAdmin(Integer id) {
+    public User findUserByIdByAdmin(Long id) {
         String statement = "wishdb.findUserByIdByAdmin";
         return session.selectOne(statement, id);
     }
@@ -70,19 +76,19 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void updateUserBlockByAdmin(Integer id) {
+    public void updateUserBlockByAdmin(Long id) {
         String statement = "wishdb.updateUserBlockByAdmin";
         session.update(statement, id);
     }
 
     @Override
-    public void updateUserUnBlockByAdmin(Integer id) {
+    public void updateUserUnBlockByAdmin(Long id) {
         String statement = "wishdb.updateUserUnBlockByAdmin";
         session.update(statement, id);
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(Long id) {
         String statement = "wishdb.deleteUser";
         session.delete(statement, id);
     }

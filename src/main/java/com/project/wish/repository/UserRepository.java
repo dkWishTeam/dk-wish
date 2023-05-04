@@ -12,19 +12,19 @@ public interface UserRepository {
     
     void insertUser(User user);
 
-    User findUserById(Integer id);
+    User findUserById(Long id);
 
-    User findUserByIdByAdmin(Integer id);
+    User findUserByIdByAdmin(Long id);
 
     List<User> findUsers();
 
     void updateUser(User user);
 
-    void updateUserBlockByAdmin(Integer id);
+    void updateUserBlockByAdmin(Long id);
 
-    void updateUserUnBlockByAdmin(Integer id);
+    void updateUserUnBlockByAdmin(Long id);
 
-    void deleteUser(int userId);
+    void deleteUser(Long userId);
 
     User findUserByPhone(String phone);
 

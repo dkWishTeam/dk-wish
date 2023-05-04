@@ -24,19 +24,19 @@ public interface UserService {
 
     void insertUser(UserCreateRequestDto dto);
 
-    UserResponseDto findUserById(Integer id);
+    UserResponseDto findUserById(Long id);
 
-    UserResponseDtoByAdmin findUserByIdByAdmin(Integer id);
+    UserResponseDtoByAdmin findUserByIdByAdmin(Long id);
 
     List<UserResponseDtoByAdmin> findUsers();
 
-    void updateUser(Integer userId, UserUpdateRequestDto dto);
+    void updateUser(Long userId, UserUpdateRequestDto dto);
 
-    void updateUserBlockByAdmin(Integer id);
+    void updateUserBlockByAdmin(Long id);
 
-    void updateUserUnBlockByAdmin(Integer id);
+    void updateUserUnBlockByAdmin(Long id);
 
-    void deleteUserById(Integer id);
+    void deleteUserById(Long id);
 
     boolean isUserIdUnique(String userId);
 
