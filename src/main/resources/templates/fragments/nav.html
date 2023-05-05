@@ -1,0 +1,13 @@
+<div th:fragment="nav">
+  <aside class="bg-blue-800 text-gray-400 h-screen w-60 flex-shrink-0">
+    <nav>
+      <a th:href="@{/users}" th:if="${session.role.toString() == 'ADMIN'}" class="items-center px-6 py-2 mt-4 bg-opacity-25 text-gray-100">
+        <span class="nav-span mx-3">회원정보보기</span>
+      </a>
+      <hr>
+      <a class="items-center px-6 py-2 mt-4 bg-opacity-25 text-gray-100">
+        <span class="nav-span mx-3">위시리스트</span>
+      </a>
+    </nav>
+  </aside>
+</div>

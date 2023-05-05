@@ -1,0 +1,13 @@
+.nav-span {
+  width: 30%;
+  height: 10%;
+  font-size: 30px;
+  margin-right: 0;
+}
+article {
+  font-family: Arial, sans-serif;
+  margin-top: 5%;
+  margin-bottom: 10%;
+  justify-content: center;
+  width: 100%;
+}

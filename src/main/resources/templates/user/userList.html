@@ -3,26 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <title>회원 정보</title>
+  <link rel="stylesheet" href="style/nav-article.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
         integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script th:replace="fragments/tailwind-config-head :: script"></script>
   <style>
 
-    article {
-      font-family: Arial, sans-serif;
-      margin-top: 5%;
-      margin-bottom: 10%;
-    }
-
     #title {
-      width: 30%;
-      height: 10%;
       font-size: 30px;
-      margin-right: 0;
     }
 
     form {
@@ -76,18 +69,11 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <hr>
-<aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
-  <div th:if="${session.role == 'ADMIN'}">
-    <ul>
-      <li><a th:href="@{/users}">회원 리스트</a></li>
-      <!--      <li><a th:href="@{/wish}">위시 리스트</a></li>-->
-    </ul>
-  </div>
-</aside>
-<article>
-  <div style="text-align: center; width: 50%">
+<div class="flex">
+  <div th:replace="fragments/nav :: nav"></div>
+  <article style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
     <span id="title">회원 리스트</span>
-    <table style="width: 100%; border-collapse: collapse;">
+    <table style="width: 50%; text-align: center; border-collapse: collapse;">
       <thead>
       <tr style="background-color: #f2f2f2;">
         <th style="padding: 10px; border: 1px solid #ddd;">닉네임</th>
@@ -104,18 +90,18 @@
                   th:style="${'background-color: ' + (user.isBlock ? '#f44336' : '#4CAF50')}"
                   th:onclick="'blockUser(' + ${user.id} +',' + ${userStat.index}  + ')'"
                   th:id="'blockButton-' + ${userStat.index}">
-            <span th:id="'blockSpan-' + ${userStat.index}" th:text="${user.isBlock ? '블락 됨' : '블락 안 됨'}" style="color: white;"></span>
+              <span th:id="'blockSpan-' + ${userStat.index}" th:text="${user.isBlock ? '블락 됨' : '블락 안 됨'}"
+                    style="color: white;"></span>
           </button>
         </td>
       </tr>
       </tbody>
     </table>
-  </div>
-</article>
-
+  </article>
+</div>
 <footer th:replace="fragments/footer :: footer"></footer>
 <script>
-  function blockUser(id,index) {
+  function blockUser(id, index) {
     $.ajax({
       url: '/users/' + id + '/block',
       type: 'get', //POST 방식으로 전달
