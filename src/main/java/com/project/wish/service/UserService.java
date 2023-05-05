@@ -32,9 +32,7 @@ public interface UserService {
 
     void updateUser(Long userId, UserUpdateRequestDto dto);
 
-    void updateUserBlockByAdmin(Long id);
-
-    void updateUserUnBlockByAdmin(Long id);
+    boolean updateUserBlockByAdmin(Long id);
 
     void deleteUserById(Long id);
 
@@ -96,4 +94,6 @@ public interface UserService {
     }
 
     boolean isUserAdmin(Long id);
+
+    boolean isUserBlocked(Long id);
 }

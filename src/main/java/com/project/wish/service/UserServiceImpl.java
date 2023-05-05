@@ -112,14 +112,15 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void updateUserBlockByAdmin(Long id) {
-        userRepository.updateUserBlockByAdmin(id);
+    public boolean updateUserBlockByAdmin(Long id) {
+        return userRepository.updateUserBlockByAdmin(id);
     }
 
     @Override
-    public void updateUserUnBlockByAdmin(Long id) {
-        userRepository.updateUserUnBlockByAdmin(id);
+    public boolean isUserBlocked(Long id) {
+        return userRepository.isUserBlocked(id);
     }
+
 
     @Override
     public void deleteUserById(Long id) {

@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>회원 정보</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+        integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script th:replace="fragments/tailwind-config-head :: script"></script>
   <style>
@@ -17,7 +18,7 @@
       margin-bottom: 10%;
     }
 
-    span {
+    #title {
       width: 30%;
       height: 10%;
       font-size: 30px;
@@ -85,7 +86,7 @@
 </aside>
 <article>
   <div style="text-align: center; width: 50%">
-    <span>회원 리스트</span>
+    <span id="title">회원 리스트</span>
     <table style="width: 100%; border-collapse: collapse;">
       <thead>
       <tr style="background-color: #f2f2f2;">
@@ -95,21 +96,16 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="user : ${users}">
+      <tr th:each="user,userStat : ${users}">
         <td style="padding: 10px; border: 1px solid #ddd;" th:text="${user.nickname}"></td>
         <td style="padding: 10px; border: 1px solid #ddd;" th:text="위시보기" th:href="@{/users/}"></td>
         <td style="padding: 10px; border: 1px solid #ddd;">
-          <form th:if="${user.isBlock}" th:method="post" th:action="@{/users/{id}/unblock(id=${user.id})}">
-            <button type="submit" style="background-color: #f44336; color: white; padding: 5px 10px; border: none; cursor: pointer;"  th:onclick="'submitForm(\'' + ${user.id} + '\')'">
-              블락 됨
-            </button>
-          </form>
-
-          <form th:unless="${user.isBlock}" th:method="post" th:action="@{/users/{id}/block(id=${user.id})}">
-            <button type="submit" style="background-color: #4CAF50; color: white; padding: 5px 10px; border: none; cursor: pointer;" th:onclick="'submitForm(\'' + ${user.id} + '\')'">
-              블락 안 됨
-            </button>
-          </form>
+          <button style="padding: 5px 10px; border: none; cursor: pointer;"
+                  th:style="${'background-color: ' + (user.isBlock ? '#f44336' : '#4CAF50')}"
+                  th:onclick="'blockUser(' + ${user.id} +',' + ${userStat.index}  + ')'"
+                  th:id="'blockButton-' + ${userStat.index}">
+            <span th:id="'blockSpan-' + ${userStat.index}" th:text="${user.isBlock ? '블락 됨' : '블락 안 됨'}" style="color: white;"></span>
+          </button>
         </td>
       </tr>
       </tbody>
@@ -119,16 +115,25 @@
 
 <footer th:replace="fragments/footer :: footer"></footer>
 <script>
-  function submitForm(id) {
+  function blockUser(id,index) {
     $.ajax({
-      url: '/users/user-admin-check',
-      type: 'post', //POST 방식으로 전달
-      data: {id: id},
-      success: function (isAdminUser) {
-        if (isAdminUser) {
-          toastr.warning('관리자는 블락할 수 없습니둥');
+      url: '/users/' + id + '/block',
+      type: 'get', //POST 방식으로 전달
+      success: function (blockUserResponse) {
+        if (!blockUserResponse.updated) {
+          toastr.error('관리자를 블락할 수 없습니둥');
         } else {
-          toastr.success('성공적으로 블락되었습니둥');
+          var button = document.querySelector('#blockButton-' + index);
+          var span = document.querySelector('#blockSpan-' + index);
+          if (blockUserResponse.userBlocked) {
+            button.style.backgroundColor = '#f44336';
+            span.textContent = '블락 됨';
+            toastr.success("블락 성공");
+          } else if (!blockUserResponse.userBlocked) {
+            button.style.backgroundColor = '#4CAF50';
+            span.textContent = '블락 안 됨';
+            toastr.success("블락 해제");
+          }
         }
       },
       error: function () {
@@ -137,5 +142,8 @@
     })
   }
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 </html>

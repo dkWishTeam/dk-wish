@@ -1,6 +1,7 @@
 package com.project.wish.controller;
 
 import com.project.wish.domain.Role;
+import com.project.wish.dto.BlockUserResponse;
 import com.project.wish.dto.UserCreateRequestDto;
 import com.project.wish.dto.UserUpdateRequestDto;
 import com.project.wish.exception.UnAuthorizedAccessException;
@@ -113,27 +114,12 @@ public class UserController {
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      * @return 마이페이지로 이동합니다.
      */
-    @PostMapping("/{id}/block")
-    public String updateUserBlockByAdmin(@PathVariable("id") Long id, HttpSession session)
+    @GetMapping("/{id}/block")
+    @ResponseBody
+    public BlockUserResponse updateUserBlockByAdmin(@PathVariable("id") Long id, HttpSession session)
         throws UnAuthorizedAccessException {
         isRoleEqualsAdmin(session);
-        userService.updateUserBlockByAdmin(id);
-        return "redirect:/users";
-    }
-
-    /**
-     * 관리자가 회원을 unBlock 할 때 쓰이는 메서드입니다.
-     *
-     * @param id      회원의 고유번호
-     * @param session session 에 있는 회원의 고유번호를 얻기 위한 객체
-     * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
-     */
-    @PostMapping("/{id}/unblock")
-    public String updateUserUnBlockByAdmin(@PathVariable("id") Long id, HttpSession session)
-        throws UnAuthorizedAccessException {
-        isRoleEqualsAdmin(session);
-        userService.updateUserUnBlockByAdmin(id);
-        return "redirect:/users";
+        return new BlockUserResponse(userService.updateUserBlockByAdmin(id), userService.isUserBlocked(id));
     }
 
     /**
