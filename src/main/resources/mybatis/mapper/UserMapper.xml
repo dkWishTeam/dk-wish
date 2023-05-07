@@ -43,15 +43,15 @@
 
   <update id="updateUserBlockByAdmin" parameterType="java.lang.Long">
     UPDATE user
-    SET is_block = true
-    WHERE id = #{id}
+    SET is_block = CASE WHEN is_block = true THEN false ELSE true END
+    WHERE id = #{id} AND role_id != 1
   </update>
 
-  <update id="updateUserUnBlockByAdmin" parameterType="java.lang.Long">
-    UPDATE user
-    SET is_block = false
+  <select id="isUserBlocked" parameterType="java.lang.Long" resultType="boolean">
+    SELECT is_block
+    FROM user
     WHERE id = #{id}
-  </update>
+  </select>
 
   <update id="deleteUser" parameterType="java.lang.Long">
     UPDATE user

@@ -20,9 +20,9 @@ public interface UserRepository {
 
     void updateUser(User user);
 
-    void updateUserBlockByAdmin(Long id);
+    boolean updateUserBlockByAdmin(Long id);
 
-    void updateUserUnBlockByAdmin(Long id);
+    boolean isUserBlocked(Long id);
 
     void deleteUser(Long userId);
 
@@ -33,4 +33,5 @@ public interface UserRepository {
     User findUserByEmail(String email);
 
     User findUserByNickname(String nickname);
+
 }

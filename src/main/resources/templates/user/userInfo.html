@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>회원 정보</title>
+  <link rel="stylesheet" href="style/nav-article.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script th:replace="fragments/tailwind-config-head :: script"></script>
@@ -12,6 +13,8 @@
       font-family: Arial, sans-serif;
       margin-top: 5%;
       margin-bottom: 10%;
+      justify-content: center;
+      width: 100%;
     }
 
     span {
@@ -72,56 +75,50 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <hr>
-<aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
-  <div th:if="${session.role.toString() == 'ADMIN'}">
-    <ul>
-      <li><a th:href="@{/users}">회원 리스트</a></li>
-<!--      <li><a th:href="@{/wish}">위시 리스트</a></li>-->
-    </ul>
-  </div>
-</aside>
-<article>
-  <div style=" text-align: center;">
-    <span style="color: rgb(33, 80, 187);" th:text="${user.name}"></span>
-    <span>님의 마이페이지</span>
-  </div>
-  <div>
-    <form th:action="@{/users/{id}(id=${user.id})}" method="POST">
-      <input type="hidden" name="_method" value="PUT"/>
-      <div>
-        <label for="userId">아이디</label>
-        <input type="text" id="userId" name="userId" th:value="${user.userId}" required>
-      </div>
-      <div>
-        <label for="email">이메일</label>
-        <input type="email" id="email" name="email" th:value="${user.email}" required>
-      </div>
-      <div>
-        <label for="name">이름</label>
-        <input type="text" id="name" name="name" th:value="${user.name}" required>
-      </div>
-      <div>
-        <label for="birth">생년월일</label>
-        <input type="date" id="birth" name="birth" th:value="${#dates.format(user.birth, 'yyyy-MM-dd')}" required>
-      </div>
-      <div>
-        <label for="phone">휴대폰 번호</label>
-        <input type="text" id="phone" name="phone" th:value="${user.phone}" required>
-      </div>
-      <div>
-        <label for="nickname">닉네임</label>
-        <input type="text" id="nickname" name="nickname" th:value="${user.nickname}" required>
-      </div>
-      <div style="margin-top: 20px">
-        <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4
+<div class="flex">
+  <div th:replace="fragments/nav :: nav"></div>
+  <article>
+    <div style=" text-align: center;">
+      <span style="color: rgb(33, 80, 187);" th:text="${user.name}"></span>
+      <span>님의 마이페이지</span>
+    </div>
+    <div>
+      <form th:action="@{/users/{id}(id=${user.id})}" method="POST">
+        <input type="hidden" name="_method" value="PUT"/>
+        <div>
+          <label for="userId">아이디</label>
+          <input type="text" id="userId" name="userId" th:value="${user.userId}" required>
+        </div>
+        <div>
+          <label for="email">이메일</label>
+          <input type="email" id="email" name="email" th:value="${user.email}" required>
+        </div>
+        <div>
+          <label for="name">이름</label>
+          <input type="text" id="name" name="name" th:value="${user.name}" required>
+        </div>
+        <div>
+          <label for="birth">생년월일</label>
+          <input type="date" id="birth" name="birth" th:value="${#dates.format(user.birth, 'yyyy-MM-dd')}" required>
+        </div>
+        <div>
+          <label for="phone">휴대폰 번호</label>
+          <input type="text" id="phone" name="phone" th:value="${user.phone}" required>
+        </div>
+        <div>
+          <label for="nickname">닉네임</label>
+          <input type="text" id="nickname" name="nickname" th:value="${user.nickname}" required>
+        </div>
+        <div style="margin-top: 20px">
+          <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4
           focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center
           dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">회원 정보 수정
-        </button>
-      </div>
-    </form>
-  </div>
-</article>
-
+          </button>
+        </div>
+      </form>
+    </div>
+  </article>
+</div>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>

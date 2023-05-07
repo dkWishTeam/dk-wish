@@ -76,15 +76,15 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void updateUserBlockByAdmin(Long id) {
+    public boolean updateUserBlockByAdmin(Long id) {
         String statement = "wishdb.updateUserBlockByAdmin";
-        session.update(statement, id);
+        return session.update(statement, id) == 1;
     }
 
     @Override
-    public void updateUserUnBlockByAdmin(Long id) {
-        String statement = "wishdb.updateUserUnBlockByAdmin";
-        session.update(statement, id);
+    public boolean isUserBlocked(Long id) {
+        String statement = "wishdb.isUserBlocked";
+        return session.selectOne(statement, id);
     }
 
     @Override
