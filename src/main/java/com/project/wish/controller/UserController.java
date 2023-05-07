@@ -71,6 +71,7 @@ public class UserController {
         isRoleEqualsAdmin(session);
         model.addAttribute("user", userService.findUserByIdByAdmin(id));
         return "";
+
         //todo Hierarchy check
     }
 
