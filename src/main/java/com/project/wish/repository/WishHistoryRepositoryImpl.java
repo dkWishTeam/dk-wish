@@ -1,6 +1,7 @@
 package com.project.wish.repository;
 
 import com.project.wish.domain.WishHistory;
+import com.project.wish.dto.WishHistoryRateDto;
 import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,13 @@ public class WishHistoryRepositoryImpl implements WishHistoryRepository {
     public WishHistory findWishHistoryInfoById(Long id) {
         String statement = "WishHistoryMapper.findHistoryInfoById";
         return session.selectOne(statement, id);
+    }
+
+    @Override
+    public WishHistoryRateDto findRateByWishId(Long wishId) {
+        String statement = "WishHistoryMapper.findRateByWishId";
+        WishHistoryRateDto wishHistoryRateDto = session.selectOne(statement, wishId);
+        return wishHistoryRateDto;
     }
 
     @Override

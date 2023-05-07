@@ -37,5 +37,12 @@ public class WishRepositoryImpl implements WishRepository {
     }
 
 
+    @Override
+    public Wish findWishByWishId(Long wishId) {
+        String sql = "WishHistoryMapper.findWishByWishId";
+        return session.selectOne(sql, wishId);
+    }
+
+
 
 }

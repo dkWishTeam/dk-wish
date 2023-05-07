@@ -15,6 +15,8 @@ public interface WishService {
 
     void deleteWish(Long id);
 
+    WishDto findWishByWishId(Long wishId);
+
     default WishDto toDto(Wish wish) {
         return WishDto.builder()
                 .id(wish.getId())

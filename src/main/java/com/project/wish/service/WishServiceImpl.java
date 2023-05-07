@@ -38,4 +38,10 @@ public class WishServiceImpl implements WishService{
     public void deleteWish(Long id) {
         wishRepository.deleteWish(id);
     }
+
+    @Override
+    public WishDto findWishByWishId(Long wishId) {
+        return toDto(wishRepository.findWishById(wishId));
+    }
+
 }

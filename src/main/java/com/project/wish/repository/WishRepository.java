@@ -7,6 +7,8 @@ public interface WishRepository {
     //Create
     void insertWish(Wish inputWish);
 
+    Wish findWishByWishId(Long wishId);
+
     //Read
     Wish findWishById(Long id);
 

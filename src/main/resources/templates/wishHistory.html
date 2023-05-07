@@ -3,6 +3,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>wishHistory Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     #sec1 {
@@ -10,15 +11,6 @@
       margin: auto;
     }
 
-    #progressBarBox {
-      width: 100%;
-    }
-
-    td {
-      padding-right: 150px;
-    }
-
-    /* 모달창 스타일링 */
     .wishHistoryContent {
       position: fixed;
       z-index: 1;
@@ -57,33 +49,48 @@
   </style>
 </head>
 <body>
+<header th:replace="fragments/header :: header"></header>
 
-<header>
-</header>
-<section id="sec1">
-  <div id="progressBarBox">
+<section id="sec1" class="container mx-auto py-8">
+  <div id="wishBox" class="px-8 pt-6">
+    <div id="wishTitleBox" class="flex">
+      <div class="iconBox bg-blue-200 rounded-full p-4">
+        <i class="fa-solid fa-user text-5xl text-blue-400" ></i>
+      </div>
+      <div>
+        <h2 id="wishTitle" class="leading-10 ml-8 mr-10 text-xl text-gray-800" th:text="|${wishDto.userId}님의 ${wishDto.title}위시입니다.|"></h2>
+        <i class="fa-solid fa-gear"></i>
+      </div>
+    </div>
+    <button id="statusBtn" name="status" value="public" class="float-right mb-4 bg-blue-600 w-28 py-2 rounded-lg text-sm text-white">공개위시</button>
+  </div>
+  <div id="progressBarBox" class="clear-both m-3 pt-12 px-7 pb-5 border border-gray-200 rounded-lg">
+    <div class="flex items-center justify-between mb-3 pr-16">
+      <span class="text-xl font-bold text-base text-yellow-500 dark:text-yellow-500 mr-4" th:text="|${rate.percent}%|"></span>
+      <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-200">
+        <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 75%"></div>
+      </div>
+    </div>
+    <div class="bg-yellow-50 px-5 py-3 rounded-xl">
+      <p th:text="|${rate.wishId}|"></p>
+    </div>
+  </div>
 
-  </div>
-  <div id="listBox">
-    <button></button>
-  </div>
-  <button id="createButton" th:onclick="showCreateModal()">생성하기</button>
-  <table th:if="${wishHistoryResponseDtoList}">
-    <tr class="wishHistoryList" th:each="wishHistoryResponseDto,index : ${wishHistoryResponseDtoList}">
+  <button id="createButton" class="float-right bg-blue-600 w-28 py-2 rounded-lg text-sm text-white" th:onclick="showCreateModal()">위시기록하기</button>
+  <table class="clear-both w-full mt-2 border-t-2 border-b-2 border-gray-300" th:if="${wishHistoryResponseDtoList}">
+    <tr class="wishHistoryList w-full border-b border-gray-200" th:each="wishHistoryResponseDto,index : ${wishHistoryResponseDtoList}">
       <td th:text="|${index.count}회차-${wishHistoryResponseDto.historyDatetime}|"
           th:onclick="|displayHistoryContents(${wishHistoryResponseDto.id})|"></td>
       <td th:text="|${wishHistoryResponseDto.amount}원|"></td>
       <td>
-<!--        <button id="modifyButton" th:onclick="|showModifyModal(${wishHistoryResponseDto.amount},${wishHistoryResponseDto.historyDatetime})|">수정하기</button>-->
         <button id="modifyButton" th:data-dto="${wishHistoryResponseDto}" th:onclick="|showModifyModal(this)|">수정하기</button>
-        <!--        <button id="deleteButton" th:onclick="|deleteWishHistory(1)">삭제하기</button>-->
+        <button id="deleteButton" th:onclick="|deleteWishHistory(${wishHistoryResponseDto.id})|">삭제하기</button>
       </td>
     </tr>
   </table>
-
-  <div style="display:none" id="wishHistoryCreateContent">
-    <span class="close">&times;</span>
-    <div class="content">
+  <div style="display:none" id="wishHistoryCreateContent" class="w-full h-full fixed left-0 top-0 z-10">
+    <span class="updateModalCloseBtn float-right text-2xl font-bold cursor:pointer" >&times;</span>
+    <div class="content bg-gray-50 my-auto mx-60">
       <form action="/wishHistory/create" method="POST">
         <input type="hidden" name="wishId" th:value="${wishId}">
         <label for="cteDatetime">기록 날: </label>
@@ -98,20 +105,52 @@
   <div style="display: none" id="wishHistoryUpdateContent">
     <span id="updateModalCloseBtn">&times;</span>
     <div class="content">
-      <form th:action="@{/wishHistory/update}" method="POST">
-        <input type="hidden" name="id" value="" id="id"/>
-        <input type="hidden" name="wishId" value="" id="wishId"/>
+      <form th:action="@{/wishHistory/update}" th:object="${dto}" method="POST">
+        <input type="hidden" name="id" th:field="*{id}" value="" id="id"/>
+        <input type="hidden" name="wishId" th:field="*{wishId}" value="" id="wishId"/>
         <label for="updateDatetime">기록 날:</label>
-        <input type="date" name="historyDatetime" id="updateDatetime" value="">
-        <label for="updateAmount">금액:</label>
-        <input type="text" name="amount" id="updateAmount" value="">
+        <input type="date" name="historyDatetime" th:field="*{historyDatetime}" id="updateDatetime" value="">
+        <label for="updateAmount" >금액:</label>
+        <input type="text" name="amount" id="updateAmount" th:field="*{amount}" value="">
         <input type="submit" value="수정하기">
       </form>
     </div>
   </div>
 </section>
 
-<script th:inline="javascript">
+<script>
+  let status = "public";
+  const statusBtn = document.getElementById("statusBtn");
+
+  statusBtn.addEventListener("click", () => {
+    if (status === "public") {
+      status = "private";
+      statusBtn.innerText = "비공개위시";
+      statusBtn.style.backgroundColor = "#666"
+    } else {
+      status = "public";
+      statusBtn.innerText = "공개위시";
+      statusBtn.style.backgroundColor = "rgba(37,99,235)"
+    }
+    statusBtn.value = status;
+  });
+
+  function showCreateModal() {
+    let modal = document.getElementById("wishHistoryCreateContent");
+    let closeButton = document.getElementById("updateModalCloseBtn");
+
+    modal.style.display = "block";
+    closeButton.onclick = () => {
+      modal.style.display = "none";
+    }
+
+    window.onclick = (event) => {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  }
+
   function showModifyModal(target) {
     console.log(target.getAttribute("data-dto"));
     let updateDto = target.getAttribute("data-dto").split(" ");
@@ -130,10 +169,6 @@
 
     let modal = document.getElementById("wishHistoryUpdateContent");
     let closeButton = document.getElementById("updateModalCloseBtn");
-
-
-
-
 
     modal.style.display = "block";
     closeButton.onclick = () => {
@@ -159,8 +194,8 @@
     }
   }
 
-
 </script>
 
+<footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>

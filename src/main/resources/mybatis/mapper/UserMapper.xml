@@ -14,7 +14,6 @@
     SELECT *
     FROM user
     WHERE id = #{id}
-
   </select>
 
   <select id="findUserByIdByAdmin" parameterType="java.lang.Long" resultType="User">
