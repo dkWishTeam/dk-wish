@@ -16,16 +16,16 @@ public class WishPlaceServiceImpl implements WishPlaceService {
         List<WishPlaceDto> list = null;
         switch (path) {
             case "all" :
-                list = repo.getAllWishPlaceList();
+                list = repo.findAllWishPlaceList();
                 break;
             case "completion" :
-                list = repo.getCompletionWishPlaceList();
+                list = repo.findCompletionWishPlaceList();
                 break;
             case "ongoing" :
-                list = repo.getOngoingWishPlaceList();
+                list = repo.findOngoingWishPlaceList();
                 break;
             case "new" :
-                list = repo.getNewWishPlaceList();
+                list = repo.findNewWishPlaceList();
                 break;
             default:
                 break;

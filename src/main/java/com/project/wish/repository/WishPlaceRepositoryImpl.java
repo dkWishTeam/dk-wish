@@ -12,7 +12,7 @@ public class WishPlaceRepositoryImpl implements WishPlaceRepository {
     SqlSession session;
 
     @Override
-    public List<WishPlaceDto> getAllWishPlaceList() {
+    public List<WishPlaceDto> findAllWishPlaceList() {
         List<WishPlaceDto> list = null;
         try {
             String statement = "wishPlace.all";
@@ -25,7 +25,7 @@ public class WishPlaceRepositoryImpl implements WishPlaceRepository {
     }
 
     @Override
-    public List<WishPlaceDto> getCompletionWishPlaceList() {
+    public List<WishPlaceDto> findCompletionWishPlaceList() {
         List<WishPlaceDto> list = null;
         try {
             String statement = "wishPlace.completion";
@@ -38,7 +38,7 @@ public class WishPlaceRepositoryImpl implements WishPlaceRepository {
     }
 
     @Override
-    public List<WishPlaceDto> getOngoingWishPlaceList() {
+    public List<WishPlaceDto> findOngoingWishPlaceList() {
         List<WishPlaceDto> list = null;
         try {
             String statement = "wishPlace.ongoing";
@@ -51,7 +51,7 @@ public class WishPlaceRepositoryImpl implements WishPlaceRepository {
     }
 
     @Override
-    public List<WishPlaceDto> getNewWishPlaceList() {
+    public List<WishPlaceDto> findNewWishPlaceList() {
         List<WishPlaceDto> list = null;
         try {
             String statement = "wishPlace.new";
