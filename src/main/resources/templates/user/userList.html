@@ -104,7 +104,7 @@
   function blockUser(id, index) {
     $.ajax({
       url: '/users/' + id + '/block',
-      type: 'get', //POST 방식으로 전달
+      type: 'get',
       success: function (blockUserResponse) {
         if (!blockUserResponse.updated) {
           toastr.error('관리자를 블락할 수 없습니둥');
