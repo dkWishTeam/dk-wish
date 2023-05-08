@@ -17,6 +17,7 @@
       margin: auto;
     }
 
+<<<<<<< Updated upstream
     /* 모달창 내용 스타일링 */
     .content {
       background-color: #fefefe;
@@ -24,23 +25,27 @@
       padding: 20px;
       border: 1px solid #888;
       width: 80%;
+=======
+    /*@keyframes fadein {*/
+    /*  from {opacity: 0} to {opacity: 1}*/
+    /*}*/
+
+    @keyframes zoom {
+      from {
+        transform: scale(0);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+>>>>>>> Stashed changes
     }
 
-    /* 닫기 버튼 스타일링 */
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
+    .content {
+      animation: zoom .5s;
     }
 
-    /* 닫기 버튼 호버 스타일링 */
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
@@ -119,23 +124,49 @@
 
   <!--위시 기록하기 create모달창-->
   <div style="display:none" id="wishHistoryCreateContent"
+<<<<<<< Updated upstream
        class="w-full h-full fixed justify-center items-center left-0 top-0 z-50 bg-gray-700 bg-opacity-60">
     <div class="content w-2/5 bg-white rounded-lg px-6 py-6 lg:px-8">
       <span id="createCloseBtn"
           class="updateModalCloseBtn .fixed top-7 right-7 fixed justify-center items-center text-white text-2xl font-bold cursor:pointer">&times;</span>
+=======
+       class="w-full h-full fixed left-0 top-0 z-50 bg-gray-700 bg-opacity-60 animate-zoom ">
+    <div class="flex justify-center items-center h-full">
+    <div class="content w-2/6 bg-white rounded-lg px-6 py-12 lg:px-8">
+      <span id="createCloseBtn"
+            class="fixed top-10 right-10 fixed justify-center items-center text-white text-3xl font-bold cursor-pointer">&times;</span>
+>>>>>>> Stashed changes
       <form action="/wishHistory/create" method="POST">
+        <h2 class="font-semibold text-xl pb-4 text-gray-800 w-full border-b-2 border-gray-20">위시기록하기</h2>
+        <br>
         <input type="hidden" name="wishId" th:value="${wishId}">
-        <label for="cteDatetime">기록 날: </label>
-        <input type="date" name="historyDatetime" id="cteDatetime">
-        <label for="createAmount">넣을 금액: </label>
-        <input type="text" name="amount" id="createAmount">
-        <input type="submit">
+        <div class="mb-5 mt-3">
+          <label for="cteDatetime" class="mb-2 text-sm font-medium text-gray-700 mb-1">기록 날 </label>
+          <input type="date" name="historyDatetime" id="cteDatetime"
+                 class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-3 dark:border-gray-500 dark:placeholder-gray-400 ">
+        </div>
+        <div class="mb-8">
+          <label for="createAmount" class="mb-2 text-sm font-medium text-gray-700 mb-1">넣을 금액 </label>
+          <input type="text" name="amount" id="createAmount"
+                 class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-3 dark:border-gray-500 dark:placeholder-gray-400 ">
+        </div>
+        <div class="w-full flex justify-center flex-wrap px-5">
+          <!--        <input type="submit" value="기록하기" class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-3 text-center mr-2 cursor-pointer">-->
+          <!--        <input type=“reset” value="취소하기" class="text-gray-500 border-gray-200 hover:text-gray-700 bg-white hover:bg-gray-100 hover:border-gray-500 font-medium rounded-lg text-sm px-5 py-3 text-center cursor-pointer">-->
+
+          <input type="submit" value="기록하기"
+                 class="mr-3 w-1/4 text-center text-white font-medium py-2 rounded-lg cursor-pointer bg-blue-600 hover:bg-blue-700">
+          <input type="reset" value="취소하기"
+                 class="cancelBtn ml-3 w-1/4 text-center font-medium py-2 rounded-lg cursor-pointer border border-gray-200 hover:text-gray-700 hover:bg-gray-100 hover:border-gray-300 focus:border-gray-400">
+        </div>
       </form>
+    </div>
     </div>
   </div>
 
 
   <!--위시 기록하기 update모달창-->
+<<<<<<< Updated upstream
   <div style="display: none" id="wishHistoryUpdateContent">
     <span id="updateModalCloseBtn">&times;</span>
     <div class="content">
@@ -148,6 +179,23 @@
         <input type="text" name="amount" id="updateAmount" th:field="*{amount}" value="">
         <input type="submit" value="수정하기">
       </form>
+=======
+  <div style="display: none" id="wishHistoryUpdateContent"
+       class="w-full h-full fixed justify-center items-center left-0 top-0 z-50 bg-gray-700 bg-opacity-60 animate-zoom ">
+    <div class="w-2/6 bg-white rounded-lg px-6 py-12 lg:px-8">
+      <span id="updateModalCloseBtn">&times;</span>
+      <div class="content">
+        <form th:action="@{/wishHistory/update}" th:object="${dto}" method="POST">
+          <input type="hidden" name="id" th:field="*{id}" value="" id="id"/>
+          <input type="hidden" name="wishId" th:field="*{wishId}" value="" id="wishId"/>
+          <label for="updateDatetime">기록 날:</label>
+          <input type="date" name="historyDatetime" th:field="*{historyDatetime}" id="updateDatetime" value="">
+          <label for="updateAmount">금액:</label>
+          <input type="text" name="amount" id="updateAmount" th:field="*{amount}" value="">
+          <input type="submit" value="수정하기">
+        </form>
+      </div>
+>>>>>>> Stashed changes
     </div>
   </div>
 </section>
@@ -157,7 +205,11 @@
     let historyDatetime = document.querySelectorAll(".historyDatetime");
     let historyDate;
     historyDatetime.forEach(function (el) {
+<<<<<<< Updated upstream
        historyDate = el.textContent.slice(0, 10);
+=======
+      historyDate = el.textContent.slice(0, 10);
+>>>>>>> Stashed changes
       el.textContent = historyDate;
     });
   }
@@ -181,10 +233,18 @@
   function showCreateModal() {
     let modal = document.getElementById("wishHistoryCreateContent");
     let createCloseBtn = document.getElementById("createCloseBtn");
+<<<<<<< Updated upstream
+=======
+    let cancelBtn = document.querySelector(".cancelBtn");
+>>>>>>> Stashed changes
 
     modal.style.display = "block";
     createCloseBtn.onclick = () => {
       modal.style.display = "none";
+    }
+
+    cancelBtn.onclick = () => {
+      modal.style.display = "none"
     }
 
     window.onclick = (event) => {
