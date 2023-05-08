@@ -2,6 +2,8 @@ package com.project.wish.repository;
 
 import com.project.wish.domain.Wish;
 
+import java.util.List;
+
 public interface WishRepository {
 
     //Create
@@ -14,5 +16,8 @@ public interface WishRepository {
 
     //Delete
     void deleteWish(Long id);
+
+    List<Wish> findWishListByUserID(Long id);
+
 
 }

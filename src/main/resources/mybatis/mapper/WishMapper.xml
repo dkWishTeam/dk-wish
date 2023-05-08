@@ -15,7 +15,7 @@
     <insert id="insertWish" parameterType="Wish">
         insert into wish.wish( user_id, title, content, image, product_name, goal_amount, goal_date, is_public,
                               completion_status, register_datetime, modify_datetime)
-        VALUES (#{userId}, #{title}, #{content}, #{image}, #{productName}, #{goalAmount}, #{goalDate}, #{isPublic},
+        VALUES (#{userId}, #{title}, #{content}, #{image, jdbcType=BLOB}, #{productName}, #{goalAmount}, #{goalDate}, #{isPublic},
                 #{completionStatus}, #{registerDatetime}, #{modifyDatetime});
     </insert>
 
@@ -24,7 +24,7 @@
         update wish.wish
         set title        = #{title},
             content      = #{content},
-            image        = #{image},
+            image        = #{image, jdbcType=BLOB},
             product_name = #{productName},
             goal_amount  = #{goalAmount},
             goal_date    = #{goalDate},
@@ -34,10 +34,21 @@
     </update>
 
     <!--  위시 삭제  -->
-    <delete id="deleteWish" parameterType="long">
+    <delete id="deleteWish" parameterType="java.lang.Long">
         delete
         from wish.wish
         where id = #{id}
     </delete>
+
+    <!--  유저의 위시리스트 조회  -->
+    <select id="userWishList" parameterType="java.lang.Long" resultType="Wish">
+        select *
+        from wish
+                 join user u on u.id = wish.user_id
+        where u.id = #{id};
+    </select>
+
+
+    <!--  위시 삭제  -->
 
 </mapper>
