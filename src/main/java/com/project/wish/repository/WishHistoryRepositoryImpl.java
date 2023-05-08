@@ -2,7 +2,9 @@ package com.project.wish.repository;
 
 import com.project.wish.domain.WishHistory;
 import com.project.wish.dto.WishHistoryRateDto;
+import com.project.wish.exception.NotFoundWishHistoryException;
 import java.util.List;
+import java.util.Objects;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,9 +28,10 @@ public class WishHistoryRepositoryImpl implements WishHistoryRepository {
     }
 
     @Override
-    public WishHistoryRateDto findRateByWishId(Long wishId) {
+    public WishHistoryRateDto findRateByWishId(Long wishId) throws NotFoundWishHistoryException {
         String statement = "WishHistoryMapper.findRateByWishId";
         WishHistoryRateDto wishHistoryRateDto = session.selectOne(statement, wishId);
+        System.out.println("WishHistoryRepositoryImpl.findRateByWishId" + wishHistoryRateDto.toString());
         return wishHistoryRateDto;
     }
 

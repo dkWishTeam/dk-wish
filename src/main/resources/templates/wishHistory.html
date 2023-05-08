@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/" xmlns:tr="http://www.thymeleaf.org/">
+<html xmlns:th="http://www.thymeleaf.org/">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>wishHistory Page</title>
@@ -17,10 +17,6 @@
       margin: auto;
     }
 
-    /*@keyframes fadein {*/
-    /*  from {opacity: 0} to {opacity: 1}*/
-    /*}*/
-
     @keyframes zoom {
       from {
         transform: scale(0);
@@ -36,12 +32,16 @@
       animation: zoom .5s;
     }
 
+    #historyList tr:nth-child(2n) {
+      background-color: #eee;
+    }
+
   </style>
 </head>
 <body>
 <header th:replace="fragments/header :: header"></header>
 
-<section id="sec1" class="container mx-auto py-8">
+<section id="sec1" class="container mx-auto pt-8 pb-20">
   <div id="wishBox" class="px-8 pt-6">
     <div id="wishTitleBox" class="flex">
       <!--      <div class="iconBox bg-blue-200 rounded-full p-4">-->
@@ -62,7 +62,6 @@
       <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-200">
         <div class="bg-yellow-500 h-2.5 rounded-full"
              th:style="|width:${(rate.percent > 100 ? 100 : rate.percent)}%|"></div>
-        <i th:if="|${rate.percent>=100}|" class="fa-solid fa-thumbs-up"></i>
       </div>
     </div>
     <div class="bg-yellow-50 px-5 py-3 rounded-xl">
@@ -76,24 +75,28 @@
   </button>
 
   <!--위시기록리스트-->
-  <table class="clear-both w-full mt-2 border-t-2 border-b-2 border-gray-300" th:if="${wishHistoryResponseDtoList}">
-    <tr class = "w-full border-b border-gray-200">
-      <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">회차</th>
-      <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">기록날짜</th>
-      <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">임금금액</th>
-      <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">수정</th>
+  <table class="clear-both w-full mt-2 border-t-2 border-b-2 border-gray-300 text-center"
+         th:if="${wishHistoryResponseDtoList}" id="historyList">
+    <tr class="w-full border-b border-gray-200 font-bold">
+      <th class="px-5 py-3 text-sm font-normal text-gray-600 bg-white border-b border-gray-200 font-semibold">회차</th>
+      <th class="px-5 py-3 text-sm font-normal text-gray-600 bg-white border-b border-gray-200 font-semibold">기록날짜</th>
+      <th class="px-5 py-3 text-sm font-normal text-gray-600 bg-white border-b border-gray-200 font-semibold w-1/4">
+        임금금액
+      </th>
+      <th class="px-5 py-3 text-sm font-normal text-gray-600 bg-white border-b border-gray-200 font-semibold w-1/10"></th>
+      <th class="px-5 py-3 text-sm font-normal text-gray-600 bg-white border-b border-gray-200 font-semibold"></th>
     </tr>
     <tr class="wishHistoryList w-full border-b border-gray-200"
         th:each="wishHistoryResponseDto,userStat : ${wishHistoryResponseDtoList}"
         th:id="'wishHistory-' + ${userStat.index}">
       <td th:text="|${userStat.index + 1}회차|"
-          class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200 wishListCount"></td>
+          class="px-5 py-3 text-sm font-normal text-gray-800 border-b border-gray-200 wishListCount"></td>
       <td th:text="|${wishHistoryResponseDto.historyDatetime}|"
           th:onclick="|displayHistoryContents(${wishHistoryResponseDto.id})|"
-          class="historyDatetime px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white"></td>
+          class="historyDatetime px-5 py-3 text-sm font-normal text-gray-800"></td>
       <td th:text="|${wishHistoryResponseDto.amount}원|"
-          class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white"></td>
-      <td class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white">
+          class="px-5 py-3 text-sm font-normal"></td>
+      <td class="px-5 py-3 text-sm font-normal text-left text-gray-800" style="width: 15%;">
         <span class="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
             <span aria-hidden="true" class="absolute inset-0 bg-green-200 rounded-full opacity-50">
             </span>
@@ -101,7 +104,7 @@
                     class="relative cursor-pointer">수정하기</button>
         </span>
       </td>
-      <td class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white">
+      <td class="px-5 py-3 text-sm font-normal text-left text-gray-800">
         <button th:id="'deleteButton-' + ${userStat.index}"
                 th:onclick="'deleteWishHistory(' + ${userStat.index} + ',' + ${wishHistoryResponseDto.id} + ')'"
                 class="text-indigo-600 hover:text-indigo-900 cursor-pointer">삭제하기
@@ -110,6 +113,11 @@
       </div>
     </tr>
   </table>
+
+  <div th:unless="${wishHistoryResponseDtoList}" class="text-center text-gray-500">
+    <p th:text="${msg}"></p>
+  </div>
+
 
   <!--위시 기록하기 create모달창-->
   <div style="display:none" id="wishHistoryCreateContent"
@@ -154,18 +162,34 @@
       <div class="content w-2/6 m-auto bg-white rounded-lg px-6 py-12 lg:px-8">
         <span id="updateModalCloseBtn"
               class="fixed top-10 right-10 fixed justify-center items-center text-white text-3xl font-bold cursor-pointer">&times;</span>
-        <div class="content">
-          <form th:action="@{/wishHistory/update}" th:object="${dto}" method="POST">
-            <input type="hidden" name="id" th:field="*{id}" value="" id="id"/>
-            <input type="hidden" name="wishId" th:field="*{wishId}" value="" id="wishId"/>
-            <label for="updateDatetime">기록 날:</label>
-            <input type="date" name="historyDatetime" th:field="*{historyDatetime}" id="updateDatetime" value="">
-            <label for="updateAmount">금액:</label>
-            <input type="text" name="amount" id="updateAmount" th:field="*{amount}" value="">
-            <input type="submit" value="수정하기">
-          </form>
-        </div>
+
+        <form th:action="@{/wishHistory/update}" th:object="${dto}" method="POST">
+          <h2 class="font-semibold text-xl pb-4 text-gray-800 w-full border-b-2 border-gray-20">위시수정하기</h2>
+          <br>
+          <input type="hidden" name="id" th:field="*{id}" value="" id="id"/>
+          <input type="hidden" name="wishId" th:field="*{wishId}" value="" id="wishId"/>
+          <div class="mb-5 mt-3">
+            <label for="updateDatetime" class="mb-2 text-sm font-medium text-gray-700 mb-1">기록 날:</label>
+            <input type="date" name="historyDatetime" th:field="*{historyDatetime}" id="updateDatetime" value=""
+                   class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-3 dark:border-gray-500 dark:placeholder-gray-400 ">
+          </div>
+          <div class="mb-8">
+            <label for="updateAmount" class="mb-2 text-sm font-medium text-gray-700 mb-1">금액:</label>
+            <input type="text" name="amount" id="updateAmount" th:field="*{amount}" value=""
+                   class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-3 dark:border-gray-500 dark:placeholder-gray-400 ">
+          </div>
+          <div class="w-full flex justify-center flex-wrap px-5">
+            <!--        <input type="submit" value="기록하기" class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-3 text-center mr-2 cursor-pointer">-->
+            <!--        <input type=“reset” value="취소하기" class="text-gray-500 border-gray-200 hover:text-gray-700 bg-white hover:bg-gray-100 hover:border-gray-500 font-medium rounded-lg text-sm px-5 py-3 text-center cursor-pointer">-->
+
+            <input type="submit" value="수정하기"
+                   class="mr-3 w-1/4 text-center text-white font-medium py-2 rounded-lg cursor-pointer bg-blue-600 hover:bg-blue-700">
+            <input type="reset" value="취소하기"
+                   class="cancelBtn ml-3 w-1/4 text-center font-medium py-2 rounded-lg cursor-pointer border border-gray-200 hover:text-gray-700 hover:bg-gray-100 hover:border-gray-300 focus:border-gray-400">
+          </div>
+        </form>
       </div>
+
     </div>
   </div>
   </div>
