@@ -17,15 +17,6 @@
       margin: auto;
     }
 
-<<<<<<< Updated upstream
-    /* 모달창 내용 스타일링 */
-    .content {
-      background-color: #fefefe;
-      margin: 15% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
-=======
     /*@keyframes fadein {*/
     /*  from {opacity: 0} to {opacity: 1}*/
     /*}*/
@@ -39,7 +30,6 @@
         transform: scale(1);
         opacity: 1;
       }
->>>>>>> Stashed changes
     }
 
     .content {
@@ -54,18 +44,16 @@
 <section id="sec1" class="container mx-auto py-8">
   <div id="wishBox" class="px-8 pt-6">
     <div id="wishTitleBox" class="flex">
-      <div class="iconBox bg-blue-200 rounded-full p-4">
-        <i class="fa-solid fa-user text-5xl text-blue-400"></i>
-      </div>
-      <div>
-        <h2 id="wishTitle" class="leading-10 ml-8 mr-10 text-xl text-gray-800"
-            th:text="|${wishDto.userId}님의 ${wishDto.title}위시입니다.|"></h2>
-        <i class="fa-solid fa-gear"></i>
-      </div>
+      <!--      <div class="iconBox bg-blue-200 rounded-full p-4">-->
+      <!--        <i class="fa-solid fa-user text-5xl text-blue-400"></i>-->
+      <!--      </div>-->
+      <h2 id="wishTitle" class="leading-10 ml-8 mr-10 text-xl text-gray-800 mb-6 mt-"
+          th:text="|${wishDto.userId}님의 ${wishDto.title}위시입니다.|"></h2>
+      <a href="#"><i class="fa-solid fa-gear"></i></a>
     </div>
-    <button id="statusBtn" name="status" value="public"
-            class="float-right mb-4 bg-blue-600 w-28 py-2 rounded-lg text-sm text-white">공개위시
-    </button>
+    <!--    <button id="statusBtn" name="status" value="public"-->
+    <!--            class="float-right mb-4 bg-blue-600 w-28 py-2 rounded-lg text-sm text-white">공개위시-->
+    <!--    </button>-->
   </div>
   <div id="progressBarBox" class="clear-both m-3 pt-12 px-7 pb-5 border border-gray-200 rounded-lg">
     <div class="flex items-center justify-between mb-3 pr-16">
@@ -82,13 +70,14 @@
     </div>
   </div>
 
-  <button id="createButton" class="float-right bg-blue-600 w-28 py-2 rounded-lg text-sm text-white cursor-pointer"
+  <button id="createButton"
+          class="float-right bg-blue-600 w-28 py-3 rounded-lg text-sm text-white cursor-pointer mt-5 mb-3 hover:bg-gradient-to-br from-purple-600 to-blue-500"
           th:onclick="showCreateModal()">위시기록하기
   </button>
 
   <!--위시기록리스트-->
   <table class="clear-both w-full mt-2 border-t-2 border-b-2 border-gray-300" th:if="${wishHistoryResponseDtoList}">
-    <tr>
+    <tr class = "w-full border-b border-gray-200">
       <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">회차</th>
       <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">기록날짜</th>
       <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">임금금액</th>
@@ -101,10 +90,10 @@
           class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200 wishListCount"></td>
       <td th:text="|${wishHistoryResponseDto.historyDatetime}|"
           th:onclick="|displayHistoryContents(${wishHistoryResponseDto.id})|"
-          class="historyDatetime px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200"></td>
+          class="historyDatetime px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white"></td>
       <td th:text="|${wishHistoryResponseDto.amount}원|"
-          class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200"></td>
-      <td class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">
+          class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white"></td>
+      <td class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white">
         <span class="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
             <span aria-hidden="true" class="absolute inset-0 bg-green-200 rounded-full opacity-50">
             </span>
@@ -112,7 +101,7 @@
                     class="relative cursor-pointer">수정하기</button>
         </span>
       </td>
-      <td class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">
+      <td class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white">
         <button th:id="'deleteButton-' + ${userStat.index}"
                 th:onclick="'deleteWishHistory(' + ${userStat.index} + ',' + ${wishHistoryResponseDto.id} + ')'"
                 class="text-indigo-600 hover:text-indigo-900 cursor-pointer">삭제하기
@@ -124,79 +113,61 @@
 
   <!--위시 기록하기 create모달창-->
   <div style="display:none" id="wishHistoryCreateContent"
-<<<<<<< Updated upstream
-       class="w-full h-full fixed justify-center items-center left-0 top-0 z-50 bg-gray-700 bg-opacity-60">
-    <div class="content w-2/5 bg-white rounded-lg px-6 py-6 lg:px-8">
-      <span id="createCloseBtn"
-          class="updateModalCloseBtn .fixed top-7 right-7 fixed justify-center items-center text-white text-2xl font-bold cursor:pointer">&times;</span>
-=======
-       class="w-full h-full fixed left-0 top-0 z-50 bg-gray-700 bg-opacity-60 animate-zoom ">
+       class="w-full h-full fixed left-0 top-0 z-50 bg-gray-700 bg-opacity-60 animate-zoom">
     <div class="flex justify-center items-center h-full">
-    <div class="content w-2/6 bg-white rounded-lg px-6 py-12 lg:px-8">
+      <div class="content w-2/6 m-auto bg-white rounded-lg px-6 py-12 lg:px-8">
       <span id="createCloseBtn"
             class="fixed top-10 right-10 fixed justify-center items-center text-white text-3xl font-bold cursor-pointer">&times;</span>
->>>>>>> Stashed changes
-      <form action="/wishHistory/create" method="POST">
-        <h2 class="font-semibold text-xl pb-4 text-gray-800 w-full border-b-2 border-gray-20">위시기록하기</h2>
-        <br>
-        <input type="hidden" name="wishId" th:value="${wishId}">
-        <div class="mb-5 mt-3">
-          <label for="cteDatetime" class="mb-2 text-sm font-medium text-gray-700 mb-1">기록 날 </label>
-          <input type="date" name="historyDatetime" id="cteDatetime"
-                 class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-3 dark:border-gray-500 dark:placeholder-gray-400 ">
-        </div>
-        <div class="mb-8">
-          <label for="createAmount" class="mb-2 text-sm font-medium text-gray-700 mb-1">넣을 금액 </label>
-          <input type="text" name="amount" id="createAmount"
-                 class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-3 dark:border-gray-500 dark:placeholder-gray-400 ">
-        </div>
-        <div class="w-full flex justify-center flex-wrap px-5">
-          <!--        <input type="submit" value="기록하기" class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-3 text-center mr-2 cursor-pointer">-->
-          <!--        <input type=“reset” value="취소하기" class="text-gray-500 border-gray-200 hover:text-gray-700 bg-white hover:bg-gray-100 hover:border-gray-500 font-medium rounded-lg text-sm px-5 py-3 text-center cursor-pointer">-->
+        <form action="/wishHistory/create" method="POST">
+          <h2 class="font-semibold text-xl pb-4 text-gray-800 w-full border-b-2 border-gray-20">위시기록하기</h2>
+          <br>
+          <input type="hidden" name="wishId" th:value="${wishId}">
+          <div class="mb-5 mt-3">
+            <label for="cteDatetime" class="mb-2 text-sm font-medium text-gray-700 mb-1">기록 날 </label>
+            <input type="date" name="historyDatetime" id="cteDatetime"
+                   class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-3 dark:border-gray-500 dark:placeholder-gray-400 ">
+          </div>
+          <div class="mb-8">
+            <label for="createAmount" class="mb-2 text-sm font-medium text-gray-700 mb-1">넣을 금액 </label>
+            <input type="text" name="amount" id="createAmount"
+                   class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-3 dark:border-gray-500 dark:placeholder-gray-400 ">
+          </div>
+          <div class="w-full flex justify-center flex-wrap px-5">
+            <!--        <input type="submit" value="기록하기" class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-3 text-center mr-2 cursor-pointer">-->
+            <!--        <input type=“reset” value="취소하기" class="text-gray-500 border-gray-200 hover:text-gray-700 bg-white hover:bg-gray-100 hover:border-gray-500 font-medium rounded-lg text-sm px-5 py-3 text-center cursor-pointer">-->
 
-          <input type="submit" value="기록하기"
-                 class="mr-3 w-1/4 text-center text-white font-medium py-2 rounded-lg cursor-pointer bg-blue-600 hover:bg-blue-700">
-          <input type="reset" value="취소하기"
-                 class="cancelBtn ml-3 w-1/4 text-center font-medium py-2 rounded-lg cursor-pointer border border-gray-200 hover:text-gray-700 hover:bg-gray-100 hover:border-gray-300 focus:border-gray-400">
-        </div>
-      </form>
-    </div>
+            <input type="submit" value="기록하기"
+                   class="mr-3 w-1/4 text-center text-white font-medium py-2 rounded-lg cursor-pointer bg-blue-600 hover:bg-blue-700">
+            <input type="reset" value="취소하기"
+                   class="cancelBtn ml-3 w-1/4 text-center font-medium py-2 rounded-lg cursor-pointer border border-gray-200 hover:text-gray-700 hover:bg-gray-100 hover:border-gray-300 focus:border-gray-400">
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
 
   <!--위시 기록하기 update모달창-->
-<<<<<<< Updated upstream
-  <div style="display: none" id="wishHistoryUpdateContent">
-    <span id="updateModalCloseBtn">&times;</span>
-    <div class="content">
-      <form th:action="@{/wishHistory/update}" th:object="${dto}" method="POST">
-        <input type="hidden" name="id" th:field="*{id}" value="" id="id"/>
-        <input type="hidden" name="wishId" th:field="*{wishId}" value="" id="wishId"/>
-        <label for="updateDatetime">기록 날:</label>
-        <input type="date" name="historyDatetime" th:field="*{historyDatetime}" id="updateDatetime" value="">
-        <label for="updateAmount">금액:</label>
-        <input type="text" name="amount" id="updateAmount" th:field="*{amount}" value="">
-        <input type="submit" value="수정하기">
-      </form>
-=======
   <div style="display: none" id="wishHistoryUpdateContent"
-       class="w-full h-full fixed justify-center items-center left-0 top-0 z-50 bg-gray-700 bg-opacity-60 animate-zoom ">
-    <div class="w-2/6 bg-white rounded-lg px-6 py-12 lg:px-8">
-      <span id="updateModalCloseBtn">&times;</span>
-      <div class="content">
-        <form th:action="@{/wishHistory/update}" th:object="${dto}" method="POST">
-          <input type="hidden" name="id" th:field="*{id}" value="" id="id"/>
-          <input type="hidden" name="wishId" th:field="*{wishId}" value="" id="wishId"/>
-          <label for="updateDatetime">기록 날:</label>
-          <input type="date" name="historyDatetime" th:field="*{historyDatetime}" id="updateDatetime" value="">
-          <label for="updateAmount">금액:</label>
-          <input type="text" name="amount" id="updateAmount" th:field="*{amount}" value="">
-          <input type="submit" value="수정하기">
-        </form>
+       class="w-full h-full fixed left-0 top-0 z-50 bg-gray-700 bg-opacity-60 animate-zoom">
+    <div class="flex justify-center items-center h-full">
+      <div class="content w-2/6 m-auto bg-white rounded-lg px-6 py-12 lg:px-8">
+        <span id="updateModalCloseBtn"
+              class="fixed top-10 right-10 fixed justify-center items-center text-white text-3xl font-bold cursor-pointer">&times;</span>
+        <div class="content">
+          <form th:action="@{/wishHistory/update}" th:object="${dto}" method="POST">
+            <input type="hidden" name="id" th:field="*{id}" value="" id="id"/>
+            <input type="hidden" name="wishId" th:field="*{wishId}" value="" id="wishId"/>
+            <label for="updateDatetime">기록 날:</label>
+            <input type="date" name="historyDatetime" th:field="*{historyDatetime}" id="updateDatetime" value="">
+            <label for="updateAmount">금액:</label>
+            <input type="text" name="amount" id="updateAmount" th:field="*{amount}" value="">
+            <input type="submit" value="수정하기">
+          </form>
+        </div>
       </div>
->>>>>>> Stashed changes
     </div>
+  </div>
   </div>
 </section>
 
@@ -205,38 +176,31 @@
     let historyDatetime = document.querySelectorAll(".historyDatetime");
     let historyDate;
     historyDatetime.forEach(function (el) {
-<<<<<<< Updated upstream
-       historyDate = el.textContent.slice(0, 10);
-=======
       historyDate = el.textContent.slice(0, 10);
->>>>>>> Stashed changes
       el.textContent = historyDate;
     });
   }
 
-  let status = "public";
-  const statusBtn = document.getElementById("statusBtn");
-
-  statusBtn.addEventListener("click", () => {
-    if (status === "public") {
-      status = "private";
-      statusBtn.innerText = "비공개위시";
-      statusBtn.style.backgroundColor = "#666"
-    } else {
-      status = "public";
-      statusBtn.innerText = "공개위시";
-      statusBtn.style.backgroundColor = "rgba(37,99,235)"
-    }
-    statusBtn.value = status;
-  });
+  // let status = "public";
+  // const statusBtn = document.getElementById("statusBtn");
+  //
+  // statusBtn.addEventListener("click", () => {
+  //   if (status === "public") {
+  //     status = "private";
+  //     statusBtn.innerText = "비공개위시";
+  //     statusBtn.style.backgroundColor = "#666"
+  //   } else {
+  //     status = "public";
+  //     statusBtn.innerText = "공개위시";
+  //     statusBtn.style.backgroundColor = "rgba(37,99,235)"
+  //   }
+  //   statusBtn.value = status;
+  // });
 
   function showCreateModal() {
     let modal = document.getElementById("wishHistoryCreateContent");
     let createCloseBtn = document.getElementById("createCloseBtn");
-<<<<<<< Updated upstream
-=======
     let cancelBtn = document.querySelector(".cancelBtn");
->>>>>>> Stashed changes
 
     modal.style.display = "block";
     createCloseBtn.onclick = () => {
