@@ -11,7 +11,6 @@ public class ControllerAdvice {
     public String handleSignUpFailException(SignUpFailException ex, Model model) {
         String errorMessage = ex.getMessage();
         model.addAttribute("errorMessage", errorMessage);
-        // 예외 처리 결과를 보여줄 페이지의 이름을 반환합니다.
         return "error/4xx";
     }
 

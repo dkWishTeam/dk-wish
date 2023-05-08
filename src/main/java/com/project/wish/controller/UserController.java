@@ -96,11 +96,11 @@ public class UserController {
      * @param id      회원의 고유번호
      * @param dto     UserUpdateRequestDto(회원 정보수정사항을 담는 객체) 객체입니다.
      * @param session session 에 있는 회원의 고유번호를 얻기 위한 객체
-     * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      * @return 마이페이지로 이동합니다.
+     * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      */
     @PutMapping("/{id}")
-    public String updateUser(@PathVariable("id") Long id, @RequestBody UserUpdateRequestDto dto, HttpSession session)
+    public String updateUser(@PathVariable("id") Long id, UserUpdateRequestDto dto, HttpSession session)
         throws UnAuthorizedAccessException {
         isUserAuthorized(id, session);
         userService.updateUser(id, dto);
@@ -112,8 +112,8 @@ public class UserController {
      *
      * @param id      회원의 고유번호
      * @param session session 에 있는 회원의 고유번호를 얻기 위한 객체
-     * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      * @return 마이페이지로 이동합니다.
+     * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      */
     @GetMapping("/{id}/block")
     @ResponseBody
@@ -160,7 +160,6 @@ public class UserController {
     @PostMapping("/userid-duplicate-check")
     @ResponseBody
     public boolean isUserIdUnique(@RequestParam("userId") String userId) {
-        System.out.println("wd");
         boolean isEmailDuplicate = userService.isUserIdUnique(userId);
         return !isEmailDuplicate;
     }
@@ -212,16 +211,15 @@ public class UserController {
     }
 
 
-
     /**
      * uri Path 와 session 의 id 값의 동일여부를(권한이 있는지) 체크하는 메서드입니다.
      *
-     * @param id  회원의 고유번호
+     * @param id      회원의 고유번호
      * @param session 로그인 시 session 에 저장되는 id 값을 얻기 위해 사용되는 session 객체
      * @throws UnAuthorizedAccessException
      */
     private void isUserAuthorized(Long id, HttpSession session) throws UnAuthorizedAccessException {
-        Long loggedUserId = (Long)session.getAttribute("id");
+        Long loggedUserId = (Long) session.getAttribute("id");
         if (loggedUserId == null || !Objects.equals(loggedUserId, id)) {
             throw new UnAuthorizedAccessException();
             //todo 권한이 없는 페이지 오류 처리
