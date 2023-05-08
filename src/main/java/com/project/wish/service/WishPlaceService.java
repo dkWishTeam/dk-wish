@@ -6,4 +6,5 @@ import java.util.List;
 public interface WishPlaceService {
     public List<WishPlaceDto> getWishPlace(String path);
 
+    public void setWishImage(List<WishPlaceDto> list);
 }

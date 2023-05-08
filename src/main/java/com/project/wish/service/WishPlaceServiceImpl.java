@@ -30,6 +30,20 @@ public class WishPlaceServiceImpl implements WishPlaceService {
             default:
                 break;
         }
+        setWishImage(list);
         return list;
+    }
+
+    @Override
+    public void setWishImage(List<WishPlaceDto> list) {
+        String temp;
+        for(WishPlaceDto l : list) {
+            if(l.getImage() == null || l.getImage().indexOf("/uploadImages") == -1) {
+                l.setImageSrc("/images/default.png");
+            } else {
+                temp = l.getImage().substring(l.getImage().indexOf("/uploadImages"));
+                l.setImageSrc(temp);
+            }
+        }
     }
 }

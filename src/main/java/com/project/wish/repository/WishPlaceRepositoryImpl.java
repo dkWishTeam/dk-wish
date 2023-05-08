@@ -59,7 +59,6 @@ public class WishPlaceRepositoryImpl implements WishPlaceRepository {
         } catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println(list);
         return list;
     }
 

@@ -1,7 +1,9 @@
 package com.project.wish.controller;
 
 import com.project.wish.dto.LoginDto;
+import com.project.wish.dto.WishDto;
 import com.project.wish.service.UserService;
+import java.time.LocalDateTime;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -71,20 +73,5 @@ public class LoginController {
     public String logout(HttpSession session) {
         userService.logout(session);
         return "redirect:/";
-    }
-
-    /** 메인페이지에 있는 등록버튼 메서드
-     *
-     * @param session 세션에 아이디가 있나 없나(로그인이 되있나)
-     * @return 있으면 wish 등록 페이지 없으면 로그인페이지
-     */
-    @RequestMapping("/main/add")
-    public String mainPageWishAdd(HttpSession session) {
-        boolean result = userService.loginMaintain(session);
-        if(result == true) {
-            return "redirect:/"; // myWish merge하면 수정 예정
-        }
-
-        return "login";
     }
 }
