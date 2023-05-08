@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>위시 등록</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="/css/wishCreateForm.css">
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<div class="mt-8 mb-8">
+    <h2 class="text-4xl text-center">위시 등록하기</h2>
+    <p class="text-center">당신의 위시를 실현하는 첫걸음 이에요!</p>
+</div>
+
+<section>
+    <script>
+        function getCheckedValue() {
+            const checkBoxValue = document.getElementById("isPublicToggle");
+            const submitValueBox = document.getElementById("isPublicSubmit");
+            if ((checkBoxValue.checked)) {
+                submitValueBox.value = "true";
+            } else {
+                submitValueBox.value = "false";
+            }
+        }
+    </script>
+    <form action="/wish/create" th:object="${wishDto}" method="post" enctype="multipart/form-data">
+
+        <div id="image-container">
+            <div class="w-150px" id="image-preview-container">
+                <img class="w-100%" id="upload-image-preview">
+            </div>
+
+            <div id="input-image-container">
+                <label class="rounded-lg " for="image-input">
+                    이미지 등록
+                </label>
+                <input type="file" id="image-input" name="imageFile" accept="image/jpeg, image/png">
+                <button onclick="deleteUploadImage()">삭제</button>
+            </div>
+        </div>
+
+        <input type="hidden" name="userId" value=2>
+
+        <div class="mt-4 mb-4 float-right" id="input-isPublic-container">
+            <input type="checkbox" id="isPublicToggle" hidden name="isPublic" onclick="getCheckedValue()" checked>
+            <label for="isPublicToggle" id="toggleSwitch">
+                <span id="toggleButton"></span>
+            </label>
+        </div>
+        <input type="hidden" id="isPublicSubmit" name="isPublic" value="">
+
+
+        <div class="mt-4 mb-4">
+            <label for="wish-title">위시 제목</label>
+            <input type="text" placeholder="위시의 제목을 입력해주세요" class="h-7 rounded-lg bg-slate-200" id="wish-title"
+                   name="title">
+        </div>
+        <hr>
+
+        <div class="mt-4 mb-4">
+            <label for="wish-content">위시 내용</label>
+            <textarea placeholder="위시의 내용을 간략하게 작성해 주세요✏️" class=" rounded-lg w-full h-52 resize-none bg-slate-200"
+                      id="wish-content" name="content"></textarea>
+        </div>
+
+        <div class="mt-4 mb-4">
+            <label for="product-name">상품 이름</label>
+            <input type="text" placeholder="상품 이름을 자유롭게 작성해 주세요. ex) MacBook Pro M2 13인치"
+                   class="rounded-lg bg-slate-200" id="product-name" name="productName">
+        </div>
+
+        <div class="mt-4 mb-4">
+            <label for="goal-amount">목표 금액</label>
+            <input type="number" placeholder="목표 금액을 입력해 주세요. ex) 2200000원" class="rounded-lg bg-slate-200"
+                   id="goal-amount" name="goalAmount">
+        </div>
+
+        <input type="hidden" name="completionStatus" value=false>
+        <input type="hidden" name="completionStatus" value=false>
+
+        <div class="mt-4 mb-4">
+            <label for="goal-date">목표 날짜</label>
+            <input type="date" placeholder="년. 월. 일" class="rounded-lg bg-slate-200" id="goal-date"
+                   name="goalDateString">
+        </div>
+
+        <div class="items-center justify-center flex" id="button-container">
+            <button type="submit" class="w-1/6 h-8 rounded-lg text-white" id="submit-button">등록하기</button>
+            <button type="reset" class="w-1/6 h-8 rounded-lg bg-slate-300 text-zinc-400" id="reset-button">초기화</button>
+        </div>
+
+        <input type="hidden" name="registerDatetimeString"
+               th:value="${#temporals.format(localDateTime, 'yyyy-MM-dd HH:mm:ss')}">
+        <input type="hidden" name="modifyDatetimeString"
+               th:value="${#temporals.format(localDateTime, 'yyyy-MM-dd HH:mm:ss')}">
+    </form>
+</section>
+
+
+<!--<footer th:replace="fragments/footer :: footer"></footer>-->
+<script>
+
+
+    //이미지 업로드시 미리보기 기능
+    const uploadImage = document.querySelector('#image-input');
+    const imagePreview = document.querySelector('#upload-image-preview');
+    uploadImage.addEventListener("input", (event) => {
+        const image = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            imagePreview.src = URL.createObjectURL(image);
+        };
+        reader.readAsDataURL(image);
+    });
+
+    function deleteUploadImage() {
+
+    }
+
+</script>
+</body>
+</html>
