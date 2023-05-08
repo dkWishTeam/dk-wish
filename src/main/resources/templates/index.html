@@ -63,7 +63,7 @@
       <h1 class="text-center my-9 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">We wish your wishes</h1>
       <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-24 xl:px-56 dark:text-gray-400">당신의 소망을 이루는 첫 걸음, Wish와 함께하세요! 당신이 원하는 물건을 구매할 수 있게 도와주며 다른 이들의 위시 내역을 보며 자극을 받을 수 있습니다. <br>Wish는 함께하는 여정에서 당신의 꿈을 현실로 만들어드립니다. 지금 Wish와 함께 꿈을 이루어나가보세요!</p>
 
-      <a href="/main/add" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
+      <a href="/wish/create" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
         등록하기
       </a>
     </article>
@@ -85,7 +85,7 @@
 
 <footer th:replace="fragments/footer :: footer"></footer>
 
-<script>
+<script th:inline="javascript">
   const outputBox = document.querySelector("#list-output-box");
 
   const selectClass = document.querySelector("#all").className;
@@ -108,22 +108,16 @@
     xhr.onload = function () {
       if(xhr.status == 200) {
         let data = JSON.parse(this.responseText);
-
         outputBox.innerHTML = "";
         for(let i = 0; i < data.length; i++) {
           outputBox.innerHTML += `<div class="max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <th:block th:if="${data[i].image != null}">
-              <a href="#">
-                <img class="rounded-t-lg" th:src="@{|data:image/png;base64,${data[i].image}|}" />
+            <div>
+              <a href="/wishHistory/${data[i].id}">
+                <img class="rounded-t-lg" src="${data[i].imageSrc}" alt="default" />
               </a>
-            </th:block>
-            <th:block th:if="${data[i].image == null}">
-              <a href="#">
-                <img class="rounded-t-lg" src="/images/default.png" alt="default" />
-              </a>
-            </th:block>
+            </div>
             <div class="p-5">
-              <a href="#">
+              <a href="/wishHistory/${data[i].id}">
                 <h5 class="mb-6 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${data[i].productName}</h5>
               </a>
 
@@ -131,7 +125,7 @@
               <p class="mb-2 font-normal text-gray-700 dark:text-gray-400">목표금액 : <span class="text-blue-700">${data[i].goalAmountFormat} 원</span></p>
               <p class="mb-2 font-normal text-gray-700 dark:text-gray-400">달성률 : <span class="text-blue-700">${data[i].percentage} %</span></p>
               <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">모금액 : <span class="text-blue-700">${data[i].ongoingAmountFormat} 원</span></p>
-              <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              <a  href="/wishHistory/${data[i].id}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 Read more
                 <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
               </a>

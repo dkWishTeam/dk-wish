@@ -12,7 +12,9 @@ public class WishPlaceDto {
     Long userId;
 
     // 이미지
-    byte[] image;
+    String image;
+    String imageSrc;
+
     // product name
     String productName;
     // goal amount
