@@ -5,8 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @Getter
 @Setter
@@ -14,7 +15,6 @@ import java.util.Date;
 @ToString
 public class WishDto {
 
-    private long id;
     private long userId;
     private String title;
     private String content;

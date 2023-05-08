@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<div class="mt-8 mb-8">
+    <h2 class="text-4xl text-center">위시 등록하기</h2>
+    <p class="text-center">당신의 위시를 실현하는 첫걸음 이에요!</p>
+</div>
+
+<section>
+
+    <form action="/wish/create" method="post">
+
+        <div class="" id="input-image-container">
+            <label for="image"></label>
+            <input type="file" id="image" name="image" onclick="">
+
+        </div>
+
+        <div class="mt-4 mb-4 float-right" id="input-isPublic-container">
+            <input type="checkbox" id="isPublic" hidden name="isPublic" th:value="${wishDto.isPublic()}">
+            <label for="isPublic" id="toggleSwitch">
+                <span id="toggleButton"></span>
+            </label>
+        </div>
+
+        <div class="mt-4 mb-4">
+            <label for="wish-title">위시 제목</label>
+            <input type="text" placeholder="위시의 제목을 입력해주세요" class="h-7 rounded-lg bg-slate-200" id="wish-title" name="wish-title" th:value="${wishDto.getTitle()}">
+        </div>
+        <hr>
+
+        <div class="mt-4 mb-4">
+            <label for="wish-content">위시 내용</label>
+            <textarea placeholder="위시의 내용을 간략하게 작성해 주세요✏️" class=" rounded-lg w-full h-52 resize-none bg-slate-200"
+                      id="wish-content" name="content" th:value="${wishDto.getContent()}"></textarea>
+        </div>
+
+        <div class="mt-4 mb-4">
+            <label for="product-name">상품 이름</label>
+            <input type="text" placeholder="상품 이름을 자유롭게 작성해 주세요. ex) MacBook Pro M2 13인치"
+                   class="rounded-lg bg-slate-200" id="product-name" name="productName" th:value="${wishDto.productName}">
+        </div>
+
+        <div class="mt-4 mb-4">
+            <label for="goal-amount">목표 금액</label>
+            <input type="number" placeholder="목표 금액을 입력해 주세요. ex) 2200000원" class="rounded-lg bg-slate-200"
+                   id="goal-amount" name="goalAmount" th:value="${wishDto.getGoalAmount()}">
+        </div>
+
+        <div class="mt-4 mb-4">
+            <label for="goal-date">목표 날짜</label>
+            <input type="date" placeholder="년. 월. 일" class="rounded-lg bg-slate-200" id="goal-date" name="goalDate" th:value="${wishDto.getGoalDate()}">
+        </div>
+
+        <div class="items-center justify-center flex" id="button-container">
+            <button type="submit" class="w-1/6 h-8 text-white" id="submit-button">등록하기</button>
+            <button type="reset" class="w-1/6 h-8 bg-slate-200 text-zinc-400">초기화</button>
+        </div>
+
+    </form>
+</section>
+
+
+<!--<footer th:replace="fragments/footer :: footer"></footer>-->
+</body>
+</html>
