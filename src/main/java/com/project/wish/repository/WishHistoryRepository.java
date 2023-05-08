@@ -15,5 +15,5 @@ public interface WishHistoryRepository {
 
     void updateWishHistory(WishHistory wishHistory);
 
-    void deleteWishHistory(Long id);
+    boolean deleteWishHistory(Long id);
 }

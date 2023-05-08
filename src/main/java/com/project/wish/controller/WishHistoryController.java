@@ -89,9 +89,9 @@ public class WishHistoryController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteWishHistory(@PathVariable Long id) {
-        wishHistoryService.deleteWishHistory(id);
-        WishHistoryResponseDto wishHistoryInfoById = wishHistoryService.findWishHistoryInfoById(id);
-        return "redirect:/wishHistory/" + wishHistoryInfoById.getWishId();
+    @ResponseBody
+    public boolean deleteWishHistory(@PathVariable Long id) {
+        System.out.println("---------------");
+        return wishHistoryService.deleteWishHistory(id);
     }
 }

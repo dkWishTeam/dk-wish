@@ -23,7 +23,7 @@ public interface WishHistoryService {
 
     void updateWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto);
 
-    void deleteWishHistory(Long id);
+    boolean deleteWishHistory(Long id);
 
     default WishHistoryResponseDto wishHistoryToWishHistoryResponseDto(WishHistory wishHistory) {
         return WishHistoryResponseDto.builder()

@@ -25,7 +25,8 @@
 
   <!--percent-->
   <select id="findRateByWishId" parameterType="java.lang.Long" resultType="WishHistoryRateDto">
-    SELECT w.id as wishId, FLOOR((SUM(wh.amount) / w.goal_amount)) as percent
+    SELECT w.id as wishId, FLOOR(((SUM(wh.amount) / w.goal_amount)*100)) as percent
+--     SELECT w.id as wishId, ((SUM(wh.amount) / w.goal_amount)*100)) as percent
     FROM wish w
     LEFT JOIN wish_history wh ON w.id = wh.wish_id
     WHERE w.id = #{id}

@@ -45,9 +45,10 @@ public class WishHistoryRepositoryImpl implements WishHistoryRepository {
     }
 
     @Override
-    public void deleteWishHistory(Long id) {
+    public boolean deleteWishHistory(Long id) {
         String statement = "WishHistoryMapper.deleteWishHistory";
-        session.delete(statement, id);
+        return session.delete(statement, id) == 1;
+
     }
 
 }
