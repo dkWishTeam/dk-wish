@@ -73,7 +73,6 @@ public class UserServiceImpl implements UserService {
     public boolean loginMaintain(HttpSession session) {
         if(session.getAttribute("id") != null)
             return true;
-
         return false;
     }
 

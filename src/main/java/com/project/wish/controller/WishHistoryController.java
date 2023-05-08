@@ -7,11 +7,13 @@ import com.project.wish.dto.WishHistoryRateDto;
 import com.project.wish.dto.WishHistoryResponseDto;
 import com.project.wish.dto.WishHistoryUpdateRequestDto;
 import com.project.wish.repository.WishHistoryRepositoryImpl;
+import com.project.wish.service.UserService;
 import com.project.wish.service.WishHistoryService;
 import com.project.wish.service.WishService;
 import com.sun.tools.jconsole.JConsoleContext;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +36,14 @@ public class WishHistoryController {
 
     private final WishHistoryService wishHistoryService;
     private final WishService wishService;
+    private final UserService userService;
 
     @GetMapping("/{wishId}")
-    public String findWishHistoryListByWishId(@PathVariable Long wishId, Model model) {
+    public String findWishHistoryListByWishId(@PathVariable Long wishId, Model model, HttpSession session) {
+        if(!userService.loginMaintain(session)) return "redirect:/";
         // 회원 user_id, title 보여줌
         WishDto wishDto = wishService.findWishByWishId(wishId);
+
         model.addAttribute("wishDto", wishDto);
 
         // 회원 기록 리스트 보여줌
@@ -70,7 +75,8 @@ public class WishHistoryController {
 //    }
 
     @PostMapping(value = "/create")
-    public String createWishHistory(WishHistoryCreateDto wishHistoryCreateDto) {
+    public String createWishHistory(WishHistoryCreateDto wishHistoryCreateDto, HttpSession session) {
+        if(!userService.loginMaintain(session)) return "redirect:/";
         wishHistoryService.createWishHistory(wishHistoryCreateDto);
         return "redirect:/wishHistory/" + wishHistoryCreateDto.getWishId();
     }
@@ -82,7 +88,8 @@ public class WishHistoryController {
     }
 
     @PostMapping(value = "/update")
-    public String updateWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto) {
+    public String updateWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto, HttpSession session) {
+        if(!userService.loginMaintain(session)) return "redirect:/";
         wishHistoryService.updateWishHistory(wishHistoryUpdateRequestDto);
         System.out.println(wishHistoryUpdateRequestDto);
         return "redirect:/wishHistory/" + wishHistoryUpdateRequestDto.getWishId();

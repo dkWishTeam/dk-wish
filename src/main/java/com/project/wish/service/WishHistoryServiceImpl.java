@@ -9,6 +9,7 @@ import com.project.wish.dto.WishHistoryUpdateRequestDto;
 import com.project.wish.repository.WishHistoryRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,13 @@ public class WishHistoryServiceImpl implements WishHistoryService {
     public WishHistoryRateDto findRateByWishId(Long wishId) {
         WishHistoryRateDto wishHistoryRateDto = wishHistoryRepository.findRateByWishId(wishId);
         wishHistoryRateDto.setWishId(wishId);
+
+        System.out.println("WishHistoryServiceImpl.findRateByWishId : " + wishHistoryRateDto);
         Long percent = wishHistoryRateDto.getPercent();
+        if (Objects.isNull(percent)){
+            wishHistoryRateDto.setPercent(0L);
+            percent = 0L;
+        }
         if (percent == 0) {
             wishHistoryRateDto.setCheerUpPhrase(
                 "시작이 중요한 거 아시죠? 지금은 아무것도 시작하지 않았지만, 내일이라도 시작하면 되잖아요. <br> 목표를 이루기 위한 첫 걸음을 내딛어보아요!");
