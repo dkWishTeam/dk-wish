@@ -22,6 +22,7 @@
     form {
       max-width: 350px;
       margin: 0 auto;
+      margin-top: 100px;
     }
 
     label {
@@ -70,7 +71,8 @@
     }
 
     input[type="submit"] {
-      background-color: #4CAF50;
+      margin-top: 20px;
+      background-color: #1976D2;
       color: white;
       padding: 12px 20px;
       border: none;
@@ -85,14 +87,13 @@
     }
 
     input[type="submit"]:hover {
-      background-color: #45a049;
+      background-color: #0764c0;
       width: 100%;
     }
 
   </style>
 </head>
 <body>
-<h1>회원가입 폼</h1>
 <form action="/users" method="POST">
   <label for="userId">사용자 아이디</label>
   <input type="text" id="userId" name="userId" placeholder="아이디를 입력해주세요" required>

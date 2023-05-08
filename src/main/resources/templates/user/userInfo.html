@@ -17,7 +17,7 @@
       width: 100%;
     }
 
-    span {
+    .mypageBox {
       width: 30%;
       height: 10%;
       font-size: 30px;
@@ -76,11 +76,11 @@
 <header th:replace="fragments/header :: header"></header>
 <hr>
 <div class="flex">
-  <div th:replace="fragments/nav :: nav"></div>
+  <div th:replace="fragments/navSide :: nav2"></div>
   <article>
     <div style=" text-align: center;">
-      <span style="color: rgb(33, 80, 187);" th:text="${user.name}"></span>
-      <span>님의 마이페이지</span>
+      <span class="mypageBox" style="color: rgb(33, 80, 187);" th:text="${user.name}"></span>
+      <span class="mypageBox">님의 마이페이지</span>
     </div>
     <div>
       <form th:action="@{/users/{id}(id=${user.id})}" method="POST">
