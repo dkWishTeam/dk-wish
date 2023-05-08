@@ -66,14 +66,22 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <hr>
+<div id = "message"></div>
 <div class="flex">
   <div th:replace="fragments/nav :: nav"></div>
   <div style="width: 100%;" class="flex flex-col items-center justify-center h-screen">
-    <div style="font-size: 24px; text-align: center; margin-top: 50px;">권한이 없습니다. 잘못된 경로로 접근하셨습니다.</div>
+    <div th:text="${errorMessage}" style="font-size: 24px; text-align: center; margin-top: 50px;"></div>
     <img src="images/forbidden.png" style="width: 30%; display: block; margin: auto;">
   </div>
 
 </div>
 <footer th:replace="fragments/footer :: footer"></footer>
+<!--<script>-->
+<!--  const doms = document.getElementById("message"); // NodeList, getElementsByClassName() : HTMLCollection-->
+<!--  window.setInterval(function() {-->
+<!--    var colorCode = '#'+Math.round(Math.random() * 0xffffff).toString(16);-->
+<!--    doms.elem.style.color = colorCode},2000);-->
+<!--</script>-->
+
 </body>
 </html>
