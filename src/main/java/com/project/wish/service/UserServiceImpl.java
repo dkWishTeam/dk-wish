@@ -61,9 +61,9 @@ public class UserServiceImpl implements UserService {
         session.setAttribute("nickname", loginUserInfo.getNickname());
         session.setAttribute("email", loginUserInfo.getEmail());
         if (loginUserInfo.getRoleId() == 1) {
-            session.setAttribute("role", Role.ADMIN);
+            session.setAttribute("role", Role.ADMIN.toString());
         } else {
-            session.setAttribute("role", Role.USER);
+            session.setAttribute("role", Role.USER.toString());
         }
 
         return true;
@@ -79,10 +79,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout(HttpSession session) {
-        session.removeAttribute("id");
-        session.removeAttribute("nickname");
-        session.removeAttribute("email");
-        session.removeAttribute("role");
+        session.invalidate();
     }
 
     @Override
@@ -127,14 +124,15 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void updateUserBlockByAdmin(Long id) {
-        userRepository.updateUserBlockByAdmin(id);
+    public boolean updateUserBlockByAdmin(Long id) {
+        return userRepository.updateUserBlockByAdmin(id);
     }
 
     @Override
-    public void updateUserUnBlockByAdmin(Long id) {
-        userRepository.updateUserUnBlockByAdmin(id);
+    public boolean isUserBlocked(Long id) {
+        return userRepository.isUserBlocked(id);
     }
+
 
     @Override
     public void deleteUserById(Long id) {
@@ -163,5 +161,11 @@ public class UserServiceImpl implements UserService {
     public boolean isPhoneUnique(String phone) {
         User user = userRepository.findUserByPhone(phone);
         return user == null;
+    }
+
+    @Override
+    public boolean isUserAdmin(Long id) {
+        User user = userRepository.findUserById(id);
+        return user.getRoleId() == 1;
     }
 }

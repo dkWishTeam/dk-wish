@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>회원가입</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script th:replace="fragments/tailwind-config-head :: script"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
         integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -22,6 +24,8 @@
     form {
       max-width: 350px;
       margin: 0 auto;
+      margin-top: 10%;
+      margin-bottom: 10%;
     }
 
     label {
@@ -70,7 +74,8 @@
     }
 
     input[type="submit"] {
-      background-color: #4CAF50;
+      margin-top: 20px;
+      background-color: #1976D2;
       color: white;
       padding: 12px 20px;
       border: none;
@@ -85,14 +90,16 @@
     }
 
     input[type="submit"]:hover {
-      background-color: #45a049;
+      background-color: #0764c0;
       width: 100%;
     }
 
   </style>
 </head>
 <body>
-<h1>회원가입 폼</h1>
+<header th:replace="fragments/header :: header"></header>
+<hr>
+<br>
 <form action="/users" method="POST">
   <label for="userId">사용자 아이디</label>
   <input type="text" id="userId" name="userId" placeholder="아이디를 입력해주세요" required>
@@ -136,6 +143,7 @@
 
   <input id="submitButton" type="submit" value="가입하기">
 </form>
+<footer th:replace="fragments/footer :: footer"></footer>
 <script>
   function checkUserId() {
     var userId = $('#userId').val();

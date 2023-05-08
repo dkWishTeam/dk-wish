@@ -1,9 +1,12 @@
 package com.project.wish.repository;
 
 import com.project.wish.domain.Wish;
+import com.project.wish.exception.WishCreateException;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class WishRepositoryImpl implements WishRepository {
@@ -14,7 +17,11 @@ public class WishRepositoryImpl implements WishRepository {
     @Override
     public void insertWish(Wish inputWish) {
         String sql = "wish.insertWish";
-        session.insert(sql, inputWish);
+        try {
+            session.insert(sql, inputWish);
+        } catch (WishCreateException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
@@ -36,6 +43,11 @@ public class WishRepositoryImpl implements WishRepository {
         session.delete(sql, id);
     }
 
+    @Override
+    public List<Wish> findWishListByUserID(Long id) {
+        String sql = "wish.userWishList";
+        return session.selectList(sql, id);
+    }
 
     @Override
     public Wish findWishByWishId(Long wishId) {

@@ -7,6 +7,10 @@ import com.project.wish.repository.WishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class WishServiceImpl implements WishService{
 
@@ -18,8 +22,10 @@ public class WishServiceImpl implements WishService{
     }
 
     @Override
-    public void insertWish(WishDto wishDto) {
-        wishRepository.insertWish(toEntity(wishDto));
+    public void createWish(WishDto wishDto, String dateString, String registerDatetimeString, String modifyDatetimeString) throws ParseException {
+        System.out.println("WishServiceImpl.createWish");
+        System.out.println("wishDto = " + wishDto);
+        wishRepository.insertWish(toEntity(wishDto, dateString, registerDatetimeString, modifyDatetimeString));
     }
 
     @Override
@@ -30,13 +36,20 @@ public class WishServiceImpl implements WishService{
     @Override
     public void updateWish(Long id, WishUpdateDto wishUpdateDto) {
         Wish findWish = wishRepository.findWishById(id);
-        WishDto updatedDto = toDtoFromUpdateDto(toDto(findWish), wishUpdateDto);
-        wishRepository.updateWish(toEntity(updatedDto));
+        WishDto updatedDto = dtoFromUpdateDto(toDto(findWish), wishUpdateDto);
+//        wishRepository.updateWish(updateDtoToEntity(updatedDto));
     }
 
     @Override
     public void deleteWish(Long id) {
         wishRepository.deleteWish(id);
+    }
+
+    @Override
+    public List<WishDto> findWishListByUserID(Long id) {
+        return wishRepository.findWishListByUserID(id).stream()
+                .map(wish -> toDto(wish))
+                .collect(Collectors.toList());
     }
 
     @Override

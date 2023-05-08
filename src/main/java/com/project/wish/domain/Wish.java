@@ -5,8 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @Getter
 @Builder
@@ -60,6 +61,18 @@ public class Wish {
 
     public void setModifyDatetime(LocalDateTime modifyDatetime) {
         this.modifyDatetime = modifyDatetime;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void setRegisterDatetime(LocalDateTime registerDatetime) {
+        this.registerDatetime = registerDatetime;
     }
 }
 

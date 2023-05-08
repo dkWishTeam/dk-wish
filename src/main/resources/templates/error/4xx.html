@@ -2,9 +2,79 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>에러 발생 페이지</title>
+  <title>회원 정보</title>
+  <link rel="stylesheet" href="style/nav-article.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script th:replace="fragments/tailwind-config-head :: script"></script>
+  <style>
+
+    span {
+      width: 30%;
+      height: 10%;
+      font-size: 30px;
+      margin-right: 0;
+    }
+
+    form {
+      max-width: 350px;
+      margin: 0 auto;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="datetime-local"],
+    input[type="checkbox"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 3px;
+    }
+
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    label {
+      padding-top: 20px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+      width: 100%;
+    }
+
+  </style>
 </head>
 <body>
+<header th:replace="fragments/header :: header"></header>
+<hr>
+<div id = "message"></div>
+<div class="flex">
+  <div th:replace="fragments/navSide :: nav2"></div>
+  <div style="width: 100%;" class="flex flex-col items-center justify-center h-screen">
+    <div th:text="${errorMessage}" style="font-size: 24px; text-align: center; margin-top: 50px;"></div>
+    <img src="images/forbidden.png" style="width: 30%; display: block; margin: auto;">
+  </div>
 
+</div>
+<footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>
