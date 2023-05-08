@@ -1,6 +1,6 @@
 section{
-    margin-left: 10%;
-    margin-right: 10%;
+    /*margin-left: 10%;*/
+    /*margin-right: 10%;*/
 }
 
 #image-preview-container{
@@ -56,7 +56,6 @@ section{
     background-color: gray;
     box-shadow: 0 0 16px 3px rgba(0 0 0 / 15%);
     cursor: pointer;
-    margin: 30px;
 }
 #toggleSwitch #toggleButton {
     width: 70px;
@@ -119,21 +118,21 @@ section{
     content: attr(date-placeholder);
 }
 
-#submit-button{
-    background-color: #0061f2;
-}
+/*#submit-button{*/
+/*    background-color: #0061f2;*/
+/*}*/
 
-#rest-button{
-    background-color: #0061f2;
-}
+/*#rest-button{*/
+/*    background-color: #0061f2;*/
+/*}*/
 
-#submit-button:hover{
-    background-color: #819FF7;
-}
+/*#submit-button:hover{*/
+/*    background-color: #819FF7;*/
+/*}*/
 
-#reset-button:hover{
-    color:white;
-    background-color: #A4A4A4;
-}
+/*#reset-button:hover{*/
+/*    color:white;*/
+/*    background-color: #A4A4A4;*/
+/*}*/
 
 
