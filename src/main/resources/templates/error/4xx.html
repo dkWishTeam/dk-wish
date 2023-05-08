@@ -68,7 +68,7 @@
 <hr>
 <div id = "message"></div>
 <div class="flex">
-  <div th:replace="fragments/nav :: nav"></div>
+  <div th:replace="fragments/navSide :: nav2"></div>
   <div style="width: 100%;" class="flex flex-col items-center justify-center h-screen">
     <div th:text="${errorMessage}" style="font-size: 24px; text-align: center; margin-top: 50px;"></div>
     <img src="images/forbidden.png" style="width: 30%; display: block; margin: auto;">
@@ -76,12 +76,5 @@
 
 </div>
 <footer th:replace="fragments/footer :: footer"></footer>
-<!--<script>-->
-<!--  const doms = document.getElementById("message"); // NodeList, getElementsByClassName() : HTMLCollection-->
-<!--  window.setInterval(function() {-->
-<!--    var colorCode = '#'+Math.round(Math.random() * 0xffffff).toString(16);-->
-<!--    doms.elem.style.color = colorCode},2000);-->
-<!--</script>-->
-
 </body>
 </html>
