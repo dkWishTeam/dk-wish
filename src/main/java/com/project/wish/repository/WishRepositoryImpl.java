@@ -26,6 +26,7 @@ public class WishRepositoryImpl implements WishRepository {
 
     @Override
     public Wish findWishById(Long id) {
+        System.out.println("WishRepositoryImpl.findWishById : " + id);
         String sql = "wish.findWishById";
         return session.selectOne(sql, id);
     }
@@ -47,4 +48,13 @@ public class WishRepositoryImpl implements WishRepository {
         String sql = "wish.userWishList";
         return session.selectList(sql, id);
     }
+
+    @Override
+    public Wish findWishByWishId(Long wishId) {
+        String sql = "WishHistoryMapper.findWishByWishId";
+        return session.selectOne(sql, wishId);
+    }
+
+
+
 }

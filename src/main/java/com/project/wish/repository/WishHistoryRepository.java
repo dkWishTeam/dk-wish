@@ -1,6 +1,7 @@
 package com.project.wish.repository;
 
 import com.project.wish.domain.WishHistory;
+import com.project.wish.dto.WishHistoryRateDto;
 import java.util.List;
 
 public interface WishHistoryRepository {
@@ -8,9 +9,11 @@ public interface WishHistoryRepository {
 
     WishHistory findWishHistoryInfoById(Long id);
 
+    WishHistoryRateDto findRateByWishId(Long wishId);
+
     void createWishHistory(WishHistory wishHistory);
 
     void updateWishHistory(WishHistory wishHistory);
 
-    void deleteWishHistory(Long id);
+    boolean deleteWishHistory(Long id);
 }

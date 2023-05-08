@@ -9,12 +9,27 @@
     JOIN wish_history ON wish.id = wish_history.wish_id
     WHERE wish_history.wish_id = #{wishId}
   </select>
-
-  <select id="findWishHistoryInfoById" parameterType="java.lang.Integer" resultType="WishHistory">
+  
+  <select id="findHistoryInfoById" parameterType="java.lang.Long" resultType="WishHistory">
     SELECT wish_history.*
     FROM wish_history
     WHERE id = #{id}
+  </select>
 
+  <!--id, title-->
+  <select id="findWishByWishId" parameterType="java.lang.Long" resultType="WishDto">
+    SELECT wish.*
+    FROM wish
+    INNER JOIN wish_history ON wish.id = wish_history.wish_id
+  </select>
+
+  <!--percent-->
+  <select id="findRateByWishId" parameterType="java.lang.Long" resultType="WishHistoryRateDto">
+    SELECT w.id as wishId, FLOOR(((SUM(wh.amount) / w.goal_amount)*100)) as percent
+--     SELECT w.id as wishId, ((SUM(wh.amount) / w.goal_amount)*100)) as percent
+    FROM wish w
+    LEFT JOIN wish_history wh ON w.id = wh.wish_id
+    WHERE w.id = #{id}
   </select>
 
   <insert id="insertWishHistory" parameterType="WishHistory">
@@ -23,10 +38,10 @@
   </insert>
 
   <update id="updateWishHistory" parameterType="WishHistory">
-    UPDATE wishHistory
-    SET history_datetime = #{historyDatetime},
+    UPDATE wish_history
+    SET history_datetime = #{historyDatetime, jdbcType=TIMESTAMP},
         amount           = #{amount},
-        modify_datetime = #{modifyDatetime}
+        modify_datetime = #{modifyDatetime, jdbcType=TIMESTAMP}
     WHERE id = #{id}
   </update>
 
@@ -35,6 +50,7 @@
     FROM wish_history
     WHERE id = #{id}
   </delete>
+
 </mapper>
 
 

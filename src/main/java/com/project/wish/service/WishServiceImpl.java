@@ -51,4 +51,10 @@ public class WishServiceImpl implements WishService{
                 .map(wish -> toDto(wish))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public WishDto findWishByWishId(Long wishId) {
+        return toDto(wishRepository.findWishById(wishId));
+    }
+
 }

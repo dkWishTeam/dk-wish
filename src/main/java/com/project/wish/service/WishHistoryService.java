@@ -1,7 +1,9 @@
 package com.project.wish.service;
 
 import com.project.wish.domain.WishHistory;
+import com.project.wish.dto.WishDto;
 import com.project.wish.dto.WishHistoryCreateDto;
+import com.project.wish.dto.WishHistoryRateDto;
 import com.project.wish.dto.WishHistoryResponseDto;
 import com.project.wish.dto.WishHistoryUpdateRequestDto;
 import java.sql.Date;
@@ -15,11 +17,13 @@ public interface WishHistoryService {
 
     WishHistoryResponseDto findWishHistoryInfoById(Long id);
 
+    WishHistoryRateDto findRateByWishId(Long wishId);
+
     void createWishHistory(WishHistoryCreateDto wishHistoryCreateDto);
 
     void updateWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto);
 
-    void deleteWishHistory(Long id);
+    boolean deleteWishHistory(Long id);
 
     default WishHistoryResponseDto wishHistoryToWishHistoryResponseDto(WishHistory wishHistory) {
         return WishHistoryResponseDto.builder()

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequiredArgsConstructor
 public class WishPlaceRestController {
-
     private final WishPlaceService wishPlaceService;
 
     @RequestMapping(value = "/test/{path}", produces = "application/json; charset=utf-8")

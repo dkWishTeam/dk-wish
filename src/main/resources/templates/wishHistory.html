@@ -3,6 +3,13 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>wishHistory Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+        integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     #sec1 {
@@ -10,108 +17,207 @@
       margin: auto;
     }
 
-    #progressBarBox {
-      width: 100%;
+    /*@keyframes fadein {*/
+    /*  from {opacity: 0} to {opacity: 1}*/
+    /*}*/
+
+    @keyframes zoom {
+      from {
+        transform: scale(0);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
-    td {
-      padding-right: 150px;
-    }
-
-    /* 모달창 스타일링 */
-    .wishHistoryContent {
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.4);
-    }
-
-    /* 모달창 내용 스타일링 */
     .content {
-      background-color: #fefefe;
-      margin: 15% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
+      animation: zoom .5s;
     }
 
-    /* 닫기 버튼 스타일링 */
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-
-    /* 닫기 버튼 호버 스타일링 */
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
+<header th:replace="fragments/header :: header"></header>
 
-<header>
-</header>
-<section id="sec1">
-  <div id="progressBarBox">
+<section id="sec1" class="container mx-auto py-8">
+  <div id="wishBox" class="px-8 pt-6">
+    <div id="wishTitleBox" class="flex">
+      <!--      <div class="iconBox bg-blue-200 rounded-full p-4">-->
+      <!--        <i class="fa-solid fa-user text-5xl text-blue-400"></i>-->
+      <!--      </div>-->
+      <h2 id="wishTitle" class="leading-10 ml-8 mr-10 text-xl text-gray-800 mb-6 mt-"
+          th:text="|${wishDto.userId}님의 ${wishDto.title}위시입니다.|"></h2>
+      <a href="#"><i class="fa-solid fa-gear"></i></a>
+    </div>
+    <!--    <button id="statusBtn" name="status" value="public"-->
+    <!--            class="float-right mb-4 bg-blue-600 w-28 py-2 rounded-lg text-sm text-white">공개위시-->
+    <!--    </button>-->
+  </div>
+  <div id="progressBarBox" class="clear-both m-3 pt-12 px-7 pb-5 border border-gray-200 rounded-lg">
+    <div class="flex items-center justify-between mb-3 pr-16">
+      <span class="text-xl font-bold text-base text-yellow-500 dark:text-yellow-500 mr-4"
+            th:text="|${rate.percent}%|"></span>
+      <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-200">
+        <div class="bg-yellow-500 h-2.5 rounded-full"
+             th:style="|width:${(rate.percent > 100 ? 100 : rate.percent)}%|"></div>
+        <i th:if="|${rate.percent>=100}|" class="fa-solid fa-thumbs-up"></i>
+      </div>
+    </div>
+    <div class="bg-yellow-50 px-5 py-3 rounded-xl">
+      <p th:utext="|${rate.cheerUpPhrase}|"></p>
+    </div>
+  </div>
 
-  </div>
-  <div id="listBox">
-    <button></button>
-  </div>
-  <button id="createButton" th:onclick="showCreateModal()">생성하기</button>
-  <table th:if="${wishHistoryResponseDtoList}">
-    <tr class="wishHistoryList" th:each="wishHistoryResponseDto,index : ${wishHistoryResponseDtoList}">
-      <td th:text="|${index.count}회차-${wishHistoryResponseDto.historyDatetime}|"
-          th:onclick="|displayHistoryContents(${wishHistoryResponseDto.id})|"></td>
-      <td th:text="|${wishHistoryResponseDto.amount}원|"></td>
-      <td>
-<!--        <button id="modifyButton" th:onclick="|showModifyModal(${wishHistoryResponseDto.amount},${wishHistoryResponseDto.historyDatetime})|">수정하기</button>-->
-        <button id="modifyButton" th:data-dto="${wishHistoryResponseDto}" th:onclick="|showModifyModal(this)|">수정하기</button>
-        <!--        <button id="deleteButton" th:onclick="|deleteWishHistory(1)">삭제하기</button>-->
+  <button id="createButton"
+          class="float-right bg-blue-600 w-28 py-3 rounded-lg text-sm text-white cursor-pointer mt-5 mb-3 hover:bg-gradient-to-br from-purple-600 to-blue-500"
+          th:onclick="showCreateModal()">위시기록하기
+  </button>
+
+  <!--위시기록리스트-->
+  <table class="clear-both w-full mt-2 border-t-2 border-b-2 border-gray-300" th:if="${wishHistoryResponseDtoList}">
+    <tr class = "w-full border-b border-gray-200">
+      <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">회차</th>
+      <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">기록날짜</th>
+      <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">임금금액</th>
+      <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">수정</th>
+    </tr>
+    <tr class="wishHistoryList w-full border-b border-gray-200"
+        th:each="wishHistoryResponseDto,userStat : ${wishHistoryResponseDtoList}"
+        th:id="'wishHistory-' + ${userStat.index}">
+      <td th:text="|${userStat.index + 1}회차|"
+          class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200 wishListCount"></td>
+      <td th:text="|${wishHistoryResponseDto.historyDatetime}|"
+          th:onclick="|displayHistoryContents(${wishHistoryResponseDto.id})|"
+          class="historyDatetime px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white"></td>
+      <td th:text="|${wishHistoryResponseDto.amount}원|"
+          class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white"></td>
+      <td class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white">
+        <span class="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
+            <span aria-hidden="true" class="absolute inset-0 bg-green-200 rounded-full opacity-50">
+            </span>
+            <button id="modifyButton" th:data-dto="${wishHistoryResponseDto}" th:onclick="|showModifyModal(this)|"
+                    class="relative cursor-pointer">수정하기</button>
+        </span>
       </td>
+      <td class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white">
+        <button th:id="'deleteButton-' + ${userStat.index}"
+                th:onclick="'deleteWishHistory(' + ${userStat.index} + ',' + ${wishHistoryResponseDto.id} + ')'"
+                class="text-indigo-600 hover:text-indigo-900 cursor-pointer">삭제하기
+        </button>
+      </td>
+      </div>
     </tr>
   </table>
 
-  <div style="display:none" id="wishHistoryCreateContent">
-    <span class="close">&times;</span>
-    <div class="content">
-      <form action="/wishHistory/create" method="POST">
-        <input type="hidden" name="wishId" th:value="${wishId}">
-        <label for="cteDatetime">기록 날: </label>
-        <input type="date" name="historyDatetime" id="cteDatetime">
-        <label for="createAmount">넣을 금액: </label>
-        <input type="text" name="amount" id="createAmount">
-        <input type="submit">
-      </form>
+  <!--위시 기록하기 create모달창-->
+  <div style="display:none" id="wishHistoryCreateContent"
+       class="w-full h-full fixed left-0 top-0 z-50 bg-gray-700 bg-opacity-60 animate-zoom">
+    <div class="flex justify-center items-center h-full">
+      <div class="content w-2/6 m-auto bg-white rounded-lg px-6 py-12 lg:px-8">
+      <span id="createCloseBtn"
+            class="fixed top-10 right-10 fixed justify-center items-center text-white text-3xl font-bold cursor-pointer">&times;</span>
+        <form action="/wishHistory/create" method="POST">
+          <h2 class="font-semibold text-xl pb-4 text-gray-800 w-full border-b-2 border-gray-20">위시기록하기</h2>
+          <br>
+          <input type="hidden" name="wishId" th:value="${wishId}">
+          <div class="mb-5 mt-3">
+            <label for="cteDatetime" class="mb-2 text-sm font-medium text-gray-700 mb-1">기록 날 </label>
+            <input type="date" name="historyDatetime" id="cteDatetime"
+                   class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-3 dark:border-gray-500 dark:placeholder-gray-400 ">
+          </div>
+          <div class="mb-8">
+            <label for="createAmount" class="mb-2 text-sm font-medium text-gray-700 mb-1">넣을 금액 </label>
+            <input type="text" name="amount" id="createAmount"
+                   class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-3 dark:border-gray-500 dark:placeholder-gray-400 ">
+          </div>
+          <div class="w-full flex justify-center flex-wrap px-5">
+            <!--        <input type="submit" value="기록하기" class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-3 text-center mr-2 cursor-pointer">-->
+            <!--        <input type=“reset” value="취소하기" class="text-gray-500 border-gray-200 hover:text-gray-700 bg-white hover:bg-gray-100 hover:border-gray-500 font-medium rounded-lg text-sm px-5 py-3 text-center cursor-pointer">-->
+
+            <input type="submit" value="기록하기"
+                   class="mr-3 w-1/4 text-center text-white font-medium py-2 rounded-lg cursor-pointer bg-blue-600 hover:bg-blue-700">
+            <input type="reset" value="취소하기"
+                   class="cancelBtn ml-3 w-1/4 text-center font-medium py-2 rounded-lg cursor-pointer border border-gray-200 hover:text-gray-700 hover:bg-gray-100 hover:border-gray-300 focus:border-gray-400">
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
-  <div style="display: none" id="wishHistoryUpdateContent">
-    <span id="updateModalCloseBtn">&times;</span>
-    <div class="content">
-      <form th:action="@{/wishHistory/update}" method="POST">
-        <input type="hidden" name="id" value="" id="id"/>
-        <input type="hidden" name="wishId" value="" id="wishId"/>
-        <label for="updateDatetime">기록 날:</label>
-        <input type="date" name="historyDatetime" id="updateDatetime" value="">
-        <label for="updateAmount">금액:</label>
-        <input type="text" name="amount" id="updateAmount" value="">
-        <input type="submit" value="수정하기">
-      </form>
+
+  <!--위시 기록하기 update모달창-->
+  <div style="display: none" id="wishHistoryUpdateContent"
+       class="w-full h-full fixed left-0 top-0 z-50 bg-gray-700 bg-opacity-60 animate-zoom">
+    <div class="flex justify-center items-center h-full">
+      <div class="content w-2/6 m-auto bg-white rounded-lg px-6 py-12 lg:px-8">
+        <span id="updateModalCloseBtn"
+              class="fixed top-10 right-10 fixed justify-center items-center text-white text-3xl font-bold cursor-pointer">&times;</span>
+        <div class="content">
+          <form th:action="@{/wishHistory/update}" th:object="${dto}" method="POST">
+            <input type="hidden" name="id" th:field="*{id}" value="" id="id"/>
+            <input type="hidden" name="wishId" th:field="*{wishId}" value="" id="wishId"/>
+            <label for="updateDatetime">기록 날:</label>
+            <input type="date" name="historyDatetime" th:field="*{historyDatetime}" id="updateDatetime" value="">
+            <label for="updateAmount">금액:</label>
+            <input type="text" name="amount" id="updateAmount" th:field="*{amount}" value="">
+            <input type="submit" value="수정하기">
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
   </div>
 </section>
 
-<script th:inline="javascript">
+<script>
+  window.onload = () => {
+    let historyDatetime = document.querySelectorAll(".historyDatetime");
+    let historyDate;
+    historyDatetime.forEach(function (el) {
+      historyDate = el.textContent.slice(0, 10);
+      el.textContent = historyDate;
+    });
+  }
+
+  // let status = "public";
+  // const statusBtn = document.getElementById("statusBtn");
+  //
+  // statusBtn.addEventListener("click", () => {
+  //   if (status === "public") {
+  //     status = "private";
+  //     statusBtn.innerText = "비공개위시";
+  //     statusBtn.style.backgroundColor = "#666"
+  //   } else {
+  //     status = "public";
+  //     statusBtn.innerText = "공개위시";
+  //     statusBtn.style.backgroundColor = "rgba(37,99,235)"
+  //   }
+  //   statusBtn.value = status;
+  // });
+
+  function showCreateModal() {
+    let modal = document.getElementById("wishHistoryCreateContent");
+    let createCloseBtn = document.getElementById("createCloseBtn");
+    let cancelBtn = document.querySelector(".cancelBtn");
+
+    modal.style.display = "block";
+    createCloseBtn.onclick = () => {
+      modal.style.display = "none";
+    }
+
+    cancelBtn.onclick = () => {
+      modal.style.display = "none"
+    }
+
+    window.onclick = (event) => {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  }
+
   function showModifyModal(target) {
     console.log(target.getAttribute("data-dto"));
     let updateDto = target.getAttribute("data-dto").split(" ");
@@ -125,15 +231,8 @@
     updateAmount.value = updateDto[2];
     updateDatetime.value = updateDto[3].split("T")[0];
 
-    console.log(updateDto[2]);
-    console.log(updateDto[3]);
-
     let modal = document.getElementById("wishHistoryUpdateContent");
     let closeButton = document.getElementById("updateModalCloseBtn");
-
-
-
-
 
     modal.style.display = "block";
     closeButton.onclick = () => {
@@ -147,20 +246,53 @@
     }
   }
 
-  function deleteWishHistory(id) {
-    if (confirm("정말로 삭제하시겠습니까?")) {
-      fetch(`/wishHistory/delete/${id}`, {
-        method: 'GET'
-      }).then(response => {
-        if (response.redirected) {
-          window.location.href = response.url;
+  function deleteWishHistory(index, id) {
+    $.ajax({
+      url: '/wishHistory/delete/' + id,
+      type: 'get',
+      success: function (isDeleted) {
+        console.log(index);
+        if (isDeleted) {
+          let wishHistory = document.querySelector('#wishHistory-' + index);
+          let wishListCount = document.querySelectorAll('.wishListCount');
+          for (let i = 0; i < wishListCount.length; i++) {
+            let num = wishListCount[i].innerHTML.replace("회차", "");
+            if (num > index) {
+              wishListCount[i].textContent = (num - 1) + "회차";
+            }
+          }
+
+          console.log(wishHistory);
+          console.log('#wishHistory-' + index);
+          wishHistory.style.display = "none";
+          toastr.success("삭제 완료");
+        } else {
+          toastr.error("삭제 실패");
         }
-      });
-    }
+      },
+      error: function () {
+        alert("error");
+      }
+    })
   }
 
+  // function deleteWishHistory(id) {
+  //   if (confirm("정말로 삭제하시겠습니까?")) {
+  //     fetch(`/wishHistory/delete/${id}`, {
+  //       method: 'GET'
+  //     }).then(response => {
+  //       if (response.redirected) {
+  //         window.location.href = response.url;
+  //       }
+  //     });
+  //   }
+  // }
 
 </script>
 
+<footer th:replace="fragments/footer :: footer"></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 </html>

@@ -25,6 +25,8 @@ public interface WishService {
 
     List<WishDto> findWishListByUserID(Long id);
 
+    WishDto findWishByWishId(Long wishId);
+
     default WishDto toDto(Wish wish) {
         return WishDto.builder()
                 .userId(wish.getUserId())
