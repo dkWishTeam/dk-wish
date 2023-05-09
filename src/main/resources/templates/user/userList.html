@@ -97,7 +97,10 @@
       <tbody>
       <tr th:each="user,userStat : ${users}">
         <td style="padding: 10px; border: 1px solid #ddd;" th:text="${user.nickname}"></td>
-        <td style="padding: 10px; border: 1px solid #ddd;" th:text="위시보기" th:href="@{/users/}"></td>
+        <td style="padding: 10px; border: 1px solid #ddd;">
+          <a th:text="위시보기" th:href="@{/users/{id}(id=${user.getId()})}"></a>
+        </td>
+
         <td style="padding: 10px; border: 1px solid #ddd;">
           <button class="rounded-button" style="padding: 5px 10px; border: none; cursor: pointer;"
                   th:style="${'background-color: ' + (user.isBlock ? '#f44336' : '#4CAF50')}"
