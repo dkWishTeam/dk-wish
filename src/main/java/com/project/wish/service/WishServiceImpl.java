@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class WishServiceImpl implements WishService{
+public class WishServiceImpl implements WishService {
 
     private final WishRepository wishRepository;
 
@@ -28,7 +28,6 @@ public class WishServiceImpl implements WishService{
 
     @Override
     public WishDto findWishById(Long id) {
-        System.out.println("WishServiceImpl.findWishById");
         return toDto(wishRepository.findWishById(id));
     }
 

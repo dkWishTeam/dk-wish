@@ -1,12 +1,12 @@
 package com.project.wish.repository;
 
 import com.project.wish.domain.Wish;
-import java.util.List;
-
 import com.project.wish.exception.WishCreateException;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class WishRepositoryImpl implements WishRepository {
