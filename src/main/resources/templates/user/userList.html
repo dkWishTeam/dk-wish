@@ -98,7 +98,7 @@
       <tr th:each="user,userStat : ${users}">
         <td style="padding: 10px; border: 1px solid #ddd;" th:text="${user.nickname}"></td>
         <td style="padding: 10px; border: 1px solid #ddd;">
-          <a th:text="위시보기" th:href="@{/users/{id}(id=${user.getId()})}"></a>
+          <a th:text="위시보기" th:href="@{/wish/{id}(id=${user.getId()})}"></a>
         </td>
 
         <td style="padding: 10px; border: 1px solid #ddd;">
