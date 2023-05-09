@@ -34,8 +34,8 @@ public class WishController {
 
     @GetMapping("/{userId}")
     public String showWishMain(@PathVariable("userId") Long id, Model model, HttpSession session) {
-        List<WishDto> userWishDto = wishService.findWishListByUserID(id);
         userService.loginMaintain(session);
+        List<WishDto> userWishDto = wishService.findWishListByUserID(id);
         model.addAttribute("userWishlist", userWishDto);
         return "wish/userWishMain";
     }

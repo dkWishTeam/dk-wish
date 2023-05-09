@@ -3,11 +3,11 @@ package com.project.wish.repository;
 import com.project.wish.domain.WishHistory;
 import com.project.wish.dto.WishHistoryRateDto;
 import com.project.wish.exception.NotFoundWishHistoryException;
-import java.util.List;
-import java.util.Objects;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class WishHistoryRepositoryImpl implements WishHistoryRepository {

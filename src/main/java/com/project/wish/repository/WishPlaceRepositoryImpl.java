@@ -1,10 +1,11 @@
 package com.project.wish.repository;
 
 import com.project.wish.dto.WishPlaceDto;
-import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class WishPlaceRepositoryImpl implements WishPlaceRepository {
