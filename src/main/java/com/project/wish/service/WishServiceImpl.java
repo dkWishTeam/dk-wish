@@ -22,14 +22,13 @@ public class WishServiceImpl implements WishService{
     }
 
     @Override
-    public void createWish(WishDto wishDto, String dateString, String registerDatetimeString, String modifyDatetimeString) throws ParseException {
-        System.out.println("WishServiceImpl.createWish");
-        System.out.println("wishDto = " + wishDto);
-        wishRepository.insertWish(toEntity(wishDto, dateString, registerDatetimeString, modifyDatetimeString));
+    public Long createWish(WishDto wishDto, String dateString, String registerDatetimeString, String modifyDatetimeString) throws ParseException {
+        return wishRepository.insertWish(toEntity(wishDto, dateString, registerDatetimeString, modifyDatetimeString));
     }
 
     @Override
     public WishDto findWishById(Long id) {
+        System.out.println("WishServiceImpl.findWishById");
         return toDto(wishRepository.findWishById(id));
     }
 

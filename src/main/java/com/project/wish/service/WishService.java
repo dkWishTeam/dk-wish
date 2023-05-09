@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface WishService {
 
-    void createWish(WishDto wishDto, String dateString, String registerDatetimeString, String modifyDatetimeString) throws ParseException;
+    Long createWish(WishDto wishDto, String dateString, String registerDatetimeString, String modifyDatetimeString) throws ParseException;
 
     WishDto findWishById(Long id);
 
@@ -29,6 +29,7 @@ public interface WishService {
 
     default WishDto toDto(Wish wish) {
         return WishDto.builder()
+                .id(wish.getId())
                 .userId(wish.getUserId())
                 .title(wish.getTitle())
                 .content(wish.getContent())

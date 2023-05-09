@@ -18,7 +18,8 @@ public class FileUploader {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(uploadFile.getOriginalFilename()));
         Path path = Paths.get("src/main/resources/static/uploadImages/" + fileName);
         Files.write(path, uploadFile.getBytes());
-        return path.toString();
+
+        return path.toString().replace("src/main/resources/static", "");
     }
 
 }

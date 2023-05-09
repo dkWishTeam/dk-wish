@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <title>위시 등록</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/wishCreateForm.css">
 </head>
 <body>
 <header th:replace="fragments/header :: header"></header>
 
-<div class="mt-8 mb-8">
-    <h2 class="text-4xl text-center">위시 등록하기</h2>
-    <p class="text-center">당신의 위시를 실현하는 첫걸음 이에요!</p>
-</div>
+<article class="my-16 text-center">
+    <h1 class="mb-4 text-2xl font-extrabold leading-none
+    tracking-tight text-gray-900 dark:text-white">위시 등록하기</h1>
+    <p class="mb-6 text-lg font-normal text-gray-500
+    lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">당신의 위시를 실현하는 첫걸음 이에요!</p>
+</article>
 
 <section>
     <script>
@@ -27,72 +29,83 @@
             }
         }
     </script>
-    <form action="/wish/create" th:object="${wishDto}" method="post" enctype="multipart/form-data">
+    <form class="w-7/12 mx-auto" action="/wish/create" th:object="${wishDto}" method="post" enctype="multipart/form-data">
 
-        <div id="image-container">
-            <div class="w-150px" id="image-preview-container">
-                <img class="w-100%" id="upload-image-preview">
+        <input type="hidden" name="userId" th:value="${session.get('id')}">
+
+        <hr class="w-full">
+
+        <div class="flex">
+            <div id="image-flex-container">
+                <div id="image-container" class="mt-28 w-96 p-2 bg-white border border-gray-200 rounded-lg shadow">
+                    <img class="rounded-lg object-cover" id="upload-image-preview" src="/images/default.png"/>
+                </div>
             </div>
 
-            <div id="input-image-container">
-                <label class="rounded-lg " for="image-input">
-                    이미지 등록
-                </label>
-                <input type="file" id="image-input" name="imageFile" accept="image/jpeg, image/png">
-                <button onclick="deleteUploadImage()">삭제</button>
+            <div id="wishCotent-container" class="flex-none mt-10 ml-14 w-full">
+                <div class="flex items-center" id="input-isPublic-container">
+                    <input type="checkbox" id="isPublicToggle" hidden name="isPublic" onclick="getCheckedValue()" checked>
+                    <label for="isPublicToggle" id="toggleSwitch">
+                        <span id="toggleButton"></span>
+                    </label>
+                </div>
+                <input type="hidden" id="isPublicSubmit" name="isPublic" value="">
+                <div class="my-6">
+                    <label for="wish-title" class="mb-2 mr-2 text-base font-medium text-gray-900">위시 제목</label>
+                    <input type="text" placeholder="위시의 제목을 입력해주세요" class="w-1/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5
+            bg-slate-200" id="wish-title"
+                           name="title">
+                </div>
+
+                <div class="my-4">
+                    <label for="product-name" class="mb-3 mr-2 text-base font-medium text-gray-900">상품 이름</label>
+                    <input type="text" placeholder="상품 이름을 자유롭게 작성해 주세요. ex) MacBook Pro M2"
+                           class="w-1/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                   focus:ring-blue-500 focus:border-blue-500 p-2.5 bg-slate-200" id="product-name" name="productName">
+                </div>
+
+                <div class="my-6">
+                    <label for="goal-amount" class="mr-2 text-base font-medium text-gray-900">목표 금액</label>
+                    <input type="number" placeholder="목표 금액을 입력해 주세요. ex) 2200000원" class="w-1/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                   focus:ring-blue-500 focus:border-blue-500 p-2.5 bg-slate-200" id="goal-amount" name="goalAmount">
+                </div>
+
+                <input type="hidden" name="completionStatus" value=false>
+                <input type="hidden" name="completionStatus" value=false>
+
+                <div class="my-6">
+                    <label for="goal-date" class="mr-2 text-base font-medium text-gray-900">목표 날짜</label>
+                    <input type="date" placeholder="년. 월. 일" class="w-1/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                   focus:ring-blue-500 focus:border-blue-500 p-2.5 bg-slate-200" id="goal-date"
+                           name="goalDateString">
+                </div>
+
+                <div class="my-6">
+                    <label for="image-input" class="rounded-lg text-base font-medium text-gray-900">이미지등록</label>
+                    <input class="w-1/3 text-sm text-gray-900 border border-gray-300 rounded-lg
+                    cursor-pointer bg-slate-200 focus:outline-none" id="image-input" type="file"
+                           name="imageFile" accept="image/jpeg, image/png">
+                    <button onclick="deleteUploadImage()" type="button" class="ml-2 text-white bg-blue-700
+                    hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium
+                    rounded-lg text-sm px-6 py-2.5 mb-2focus:outline-none">삭제</button>
+
+                </div>
             </div>
         </div>
 
-        <input type="hidden" name="userId" value=2>
-
-        <div class="mt-4 mb-4 float-right" id="input-isPublic-container">
-            <input type="checkbox" id="isPublicToggle" hidden name="isPublic" onclick="getCheckedValue()" checked>
-            <label for="isPublicToggle" id="toggleSwitch">
-                <span id="toggleButton"></span>
-            </label>
-        </div>
-        <input type="hidden" id="isPublicSubmit" name="isPublic" value="">
-
-
-        <div class="mt-4 mb-4">
-            <label for="wish-title">위시 제목</label>
-            <input type="text" placeholder="위시의 제목을 입력해주세요" class="h-7 rounded-lg bg-slate-200" id="wish-title"
-                   name="title">
-        </div>
-        <hr>
-
-        <div class="mt-4 mb-4">
-            <label for="wish-content">위시 내용</label>
-            <textarea placeholder="위시의 내용을 간략하게 작성해 주세요✏️" class=" rounded-lg w-full h-52 resize-none bg-slate-200"
+        <div class="my-4 ">
+            <label for="wish-content" class="my-3 block text-base font-medium text-gray-900">위시 내용</label>
+            <textarea placeholder="위시의 내용을 간략하게 작성해 주세요✏️" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm
+            rounded-lg focus:ring-blue-500 focus:border-blue-500 p-4 w-full h-52 resize-none bg-slate-200"
                       id="wish-content" name="content"></textarea>
         </div>
 
-        <div class="mt-4 mb-4">
-            <label for="product-name">상품 이름</label>
-            <input type="text" placeholder="상품 이름을 자유롭게 작성해 주세요. ex) MacBook Pro M2 13인치"
-                   class="rounded-lg bg-slate-200" id="product-name" name="productName">
+        <div class="items-center justify-center flex my-20" id="button-container">
+            <button type="submit" class="mr-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4
+            focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center" id="submit-button">등록하기</button>
+            <button type="reset" class="text-white bg-slate-400 hover:bg-slate-500 focus:ring-4
+            focus:outline-none focus:ring-slate-500 font-medium rounded-lg text-base px-7 py-3.5 text-center" id="reset-button">돌아가기</button>
         </div>
-
-        <div class="mt-4 mb-4">
-            <label for="goal-amount">목표 금액</label>
-            <input type="number" placeholder="목표 금액을 입력해 주세요. ex) 2200000원" class="rounded-lg bg-slate-200"
-                   id="goal-amount" name="goalAmount">
-        </div>
-
-        <input type="hidden" name="completionStatus" value=false>
-        <input type="hidden" name="completionStatus" value=false>
-
-        <div class="mt-4 mb-4">
-            <label for="goal-date">목표 날짜</label>
-            <input type="date" placeholder="년. 월. 일" class="rounded-lg bg-slate-200" id="goal-date"
-                   name="goalDateString">
-        </div>
-
-        <div class="items-center justify-center flex" id="button-container">
-            <button type="submit" class="w-1/6 h-8 rounded-lg text-white" id="submit-button">등록하기</button>
-            <button type="reset" class="w-1/6 h-8 rounded-lg bg-slate-300 text-zinc-400" id="reset-button">초기화</button>
-        </div>
-
         <input type="hidden" name="registerDatetimeString"
                th:value="${#temporals.format(localDateTime, 'yyyy-MM-dd HH:mm:ss')}">
         <input type="hidden" name="modifyDatetimeString"
@@ -100,8 +113,7 @@
     </form>
 </section>
 
-
-<!--<footer th:replace="fragments/footer :: footer"></footer>-->
+<footer th:replace="fragments/footer :: footer"></footer>
 <script>
 
 
@@ -122,5 +134,7 @@
     }
 
 </script>
+<header th:replace="fragments/footer :: footer"></header>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 </body>
 </html>

@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @ToString
 public class WishDto {
 
+    private Long id;
     private long userId;
     private String title;
     private String content;
