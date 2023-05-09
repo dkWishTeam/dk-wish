@@ -36,31 +36,41 @@
       background-color: #eee;
     }
 
+    @keyframes fill {
+      from {
+        width: 0%;
+      }
+      to {
+        width: ${rate.percent}%;
+      }
+    }
+
+    .animate-fill {
+      animation: fill 1s ease-in-out;
+    }
+
+
   </style>
 </head>
 <body>
 <header th:replace="fragments/header :: header"></header>
 
-<section id="sec1" class="container mx-auto pt-8 pb-20">
+<section id="sec1" class="container mx-auto pt-8 pb-20"
+         th:style="${rate.percent >= 100} ? 'background-image: url(\'/images/congratulation.gif\');' : ''">
   <div id="wishBox" class="px-8 pt-6">
     <div id="wishTitleBox" class="flex">
-      <!--      <div class="iconBox bg-blue-200 rounded-full p-4">-->
-      <!--        <i class="fa-solid fa-user text-5xl text-blue-400"></i>-->
-      <!--      </div>-->
+
       <h2 id="wishTitle" class="leading-10 ml-8 mr-10 text-xl text-gray-800 mb-6 mt-"
           th:text="|${wishDto.userId}님의 ${wishDto.title}위시입니다.|"></h2>
-      <a href="#"><i class="fa-solid fa-gear"></i></a>
+<!--      <a href=""><i class="fa-solid fa-gear"></i></a>-->
     </div>
-    <!--    <button id="statusBtn" name="status" value="public"-->
-    <!--            class="float-right mb-4 bg-blue-600 w-28 py-2 rounded-lg text-sm text-white">공개위시-->
-    <!--    </button>-->
   </div>
   <div id="progressBarBox" class="clear-both m-3 pt-12 px-7 pb-5 border border-gray-200 rounded-lg">
     <div class="flex items-center justify-between mb-3 pr-16">
       <span class="text-xl font-bold text-base text-yellow-500 dark:text-yellow-500 mr-4"
             th:text="|${rate.percent}%|"></span>
       <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-200">
-        <div class="bg-yellow-500 h-2.5 rounded-full"
+        <div class="bg-yellow-500 h-2.5 rounded-full" th:classappend="${rate.percent > 0 ? 'animate-fill' : ''}"
              th:style="|width:${(rate.percent > 100 ? 100 : rate.percent)}%|"></div>
       </div>
     </div>
@@ -249,6 +259,12 @@
     const updateWishId = document.getElementById("wishId");
     const updateAmount = document.getElementById("updateAmount");
     const updateDatetime = document.getElementById("updateDatetime");
+
+    let cancelBtn = document.querySelector(".cancelBtn");
+
+    cancelBtn.onclick = () => {
+      modal.style.display = "none";
+    }
 
     updateId.value = updateDto[0];
     updateWishId.value = updateDto[1];
