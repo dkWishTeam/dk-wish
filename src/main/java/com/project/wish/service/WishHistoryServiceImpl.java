@@ -37,8 +37,6 @@ public class WishHistoryServiceImpl implements WishHistoryService {
     public WishHistoryRateDto findRateByWishId(Long wishId) {
         WishHistoryRateDto wishHistoryRateDto = wishHistoryRepository.findRateByWishId(wishId);
         wishHistoryRateDto.setWishId(wishId);
-
-        System.out.println("WishHistoryServiceImpl.findRateByWishId : " + wishHistoryRateDto);
         Long percent = wishHistoryRateDto.getPercent();
         if (Objects.isNull(percent)){
             wishHistoryRateDto.setPercent(0L);

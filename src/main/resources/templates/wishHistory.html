@@ -62,6 +62,7 @@
       <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-200">
         <div class="bg-yellow-500 h-2.5 rounded-full"
              th:style="|width:${(rate.percent > 100 ? 100 : rate.percent)}%|"></div>
+<!--        <i th:if="|${rate.percent>=100}|" class="fa-solid fa-thumbs-up"></i>-->
       </div>
     </div>
     <div class="bg-yellow-50 px-5 py-3 rounded-xl">
@@ -75,16 +76,12 @@
   </button>
 
   <!--위시기록리스트-->
-  <table class="clear-both w-full mt-2 border-t-2 border-b-2 border-gray-300 text-center"
-         th:if="${wishHistoryResponseDtoList}" id="historyList">
-    <tr class="w-full border-b border-gray-200 font-bold">
-      <th class="px-5 py-3 text-sm font-normal text-gray-600 bg-white border-b border-gray-200 font-semibold">회차</th>
-      <th class="px-5 py-3 text-sm font-normal text-gray-600 bg-white border-b border-gray-200 font-semibold">기록날짜</th>
-      <th class="px-5 py-3 text-sm font-normal text-gray-600 bg-white border-b border-gray-200 font-semibold w-1/4">
-        임금금액
-      </th>
-      <th class="px-5 py-3 text-sm font-normal text-gray-600 bg-white border-b border-gray-200 font-semibold w-1/10"></th>
-      <th class="px-5 py-3 text-sm font-normal text-gray-600 bg-white border-b border-gray-200 font-semibold"></th>
+  <table class="clear-both w-full mt-2 border-t-2 border-b-2 border-gray-300" th:if="${wishHistoryResponseDtoList}">
+    <tr class="w-full border-b border-gray-200">
+      <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">회차</th>
+      <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">기록날짜</th>
+      <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">임금금액</th>
+      <th class="px-5 py-3 text-sm font-normal text-left text-gray-800 bg-white border-b border-gray-200">수정</th>
     </tr>
     <tr class="wishHistoryList w-full border-b border-gray-200"
         th:each="wishHistoryResponseDto,userStat : ${wishHistoryResponseDtoList}"

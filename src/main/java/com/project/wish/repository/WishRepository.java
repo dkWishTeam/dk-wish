@@ -7,7 +7,7 @@ import java.util.List;
 public interface WishRepository {
 
     //Create
-    void insertWish(Wish inputWish);
+    Long insertWish(Wish inputWish);
 
     Wish findWishByWishId(Long wishId);
 
