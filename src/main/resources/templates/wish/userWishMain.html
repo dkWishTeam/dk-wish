@@ -46,7 +46,7 @@
                         <img src="/images/default.png" class="w-100% rounded-t-lg">
                     </th:block>
                     <th:block th:unless="${userWish.getImage() == null}">
-                        <img src="/images/default.png" th:src="${userWish.getImage()}" class="w-100% rounded-t-lg" onerror="this.src='/images/default.png'">
+                        <img src="/images/default.png" th:src="${userWish.getImage()}" class="w-100% rounded-t-lg">
                     </th:block>
                 </a>
 
