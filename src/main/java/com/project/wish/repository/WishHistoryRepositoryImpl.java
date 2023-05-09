@@ -39,18 +39,25 @@ public class WishHistoryRepositoryImpl implements WishHistoryRepository {
     public void createWishHistory(WishHistory wishHistory) {
         String statement = "WishHistoryMapper.insertWishHistory";
         session.insert(statement, wishHistory);
+        String statement2 = "WishHistoryMapper.updateCompletionStatus";
+        session.update(statement2, wishHistory.getWishId());
     }
 
     @Override
     public void updateWishHistory(WishHistory wishHistory) {
         String statement = "WishHistoryMapper.updateWishHistory";
         session.update(statement, wishHistory);
+        String statement2 = "WishHistoryMapper.updateCompletionStatus";
+        session.update(statement2, wishHistory.getWishId());
     }
 
     @Override
     public boolean deleteWishHistory(Long id) {
         String statement = "WishHistoryMapper.deleteWishHistory";
-        return session.delete(statement, id) == 1;
+        String statement2 = "WishHistoryMapper.updateCompletionStatusByDelete";
+        int delete = session.delete(statement, id);
+        session.update(statement2, id);
+        return delete == 1;
 
     }
 
