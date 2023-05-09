@@ -40,6 +40,7 @@ public class WishHistoryController {
 
     @GetMapping("/{wishId}")
     public String findWishHistoryListByWishId(@PathVariable Long wishId, Model model, HttpSession session) {
+        System.out.println("WishHistoryController.findWishHistoryListByWishId");
         if(!userService.loginMaintain(session)) return "redirect:/";
         // 회원 user_id, title 보여줌
         WishDto wishDto = wishService.findWishByWishId(wishId);

@@ -5,17 +5,25 @@
 <mapper namespace="wish">
 
     <!--  단일 위시 조회  -->
-    <select id="findWishById" parameterType="long" resultType="Wish">
+    <select id="findWishById" parameterType="Long" resultType="Wish">
         select *
         from wish
         where id = #{id};
     </select>
 
+    <!--  사용자별 위시 조회  -->
+    <select id="findWishListByUserId" parameterType="Long" resultType="Wish">
+        select *
+        from wish
+                 join user u on u.id = wish.user_id
+        where u.id = #{id};
+    </select>
+
     <!--    위시 입력    -->
-    <insert id="insertWish" parameterType="Wish">
+    <insert id="insertWish" parameterType="Wish" useGeneratedKeys="true" keyProperty="id">
         insert into wish.wish( user_id, title, content, image, product_name, goal_amount, goal_date, is_public,
                               completion_status, register_datetime, modify_datetime)
-        VALUES (#{userId}, #{title}, #{content}, #{image, jdbcType=BLOB}, #{productName}, #{goalAmount}, #{goalDate}, #{isPublic},
+        VALUES (#{userId}, #{title}, #{content}, #{image}, #{productName}, #{goalAmount}, #{goalDate}, #{isPublic},
                 #{completionStatus}, #{registerDatetime}, #{modifyDatetime});
     </insert>
 
