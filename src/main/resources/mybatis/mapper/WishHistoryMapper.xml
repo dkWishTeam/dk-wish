@@ -76,6 +76,13 @@
     WHERE id = (SELECT wish_id FROM wish_history WHERE id = #{id})
   </update>
 
+  <!-- 위시 아이디와 닉네임 조회 -->
+  <select id="findWishUser" parameterType="java.lang.Long" resultType="WishUserDto">
+    SELECT w.user_id, u.nickname
+    FROM wish w
+    JOIN user u ON w.user_id = u.id
+    WHERE w.id = #{id};
+  </select>
 </mapper>
 
 

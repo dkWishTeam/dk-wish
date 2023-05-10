@@ -61,7 +61,7 @@
     <div id="wishTitleBox" class="flex">
 
       <h2 id="wishTitle" class="leading-10 ml-8 mr-10 text-xl text-gray-800 mb-6 mt-"
-          th:text="|${wishDto.userId}님의 ${wishDto.title}위시입니다.|"></h2>
+          th:text="|${wishUserDto.nickname}님의 ${wishDto.title}위시입니다.|"></h2>
 <!--      <a href=""><i class="fa-solid fa-gear"></i></a>-->
     </div>
   </div>
@@ -80,10 +80,23 @@
     </div>
   </div>
 
-  <button id="createButton"
-          class="float-right bg-blue-600 w-28 py-3 rounded-lg text-sm text-white cursor-pointer mt-5 mb-3 hover:bg-gradient-to-br from-purple-600 to-blue-500"
-          th:onclick="showCreateModal()">위시기록하기
-  </button>
+  <th:block th:if="${wishUserDto.userId == session.id}">
+    <button id="createButton"
+            class="float-right bg-blue-600 w-28 py-3 rounded-lg text-sm text-white cursor-pointer mt-5 mb-3 hover:bg-gradient-to-br from-purple-600 to-blue-500"
+            th:onclick="showCreateModal()">위시기록하기
+    </button>
+  </th:block>
+<!--  <th:block th:if="${wishUserDto.userId != session.id}">-->
+<!--    <button id="createButton"-->
+<!--            class="float-right bg-blue-600 w-28 py-3 rounded-lg text-sm text-white cursor-pointer mt-5 mb-3 hover:bg-gradient-to-br from-purple-600 to-blue-500"-->
+<!--            th:onclick="showCreateModal()">위시기록하기-->
+<!--    </button>-->
+<!--  </th:block>-->
+<!--  <button id="createButton"-->
+<!--          class="float-right bg-blue-600 w-28 py-3 rounded-lg text-sm text-white cursor-pointer mt-5 mb-3 hover:bg-gradient-to-br from-purple-600 to-blue-500"-->
+<!--          th:if=""-->
+<!--          th:onclick="showCreateModal()">위시기록하기-->
+<!--  </button>-->
 
   <!--위시기록리스트-->
   <table class="clear-both w-full mt-2 border-t-2 border-b-2 border-gray-300" th:if="${wishHistoryResponseDtoList}">
@@ -107,15 +120,23 @@
         <span class="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
             <span aria-hidden="true" class="absolute inset-0 bg-green-200 rounded-full opacity-50">
             </span>
+          <th:block th:if="${wishUserDto.userId == session.id}">
             <button id="modifyButton" th:data-dto="${wishHistoryResponseDto}" th:onclick="|showModifyModal(this)|"
                     class="relative cursor-pointer">수정하기</button>
+          </th:block>
         </span>
       </td>
       <td class="px-5 py-3 text-sm font-normal text-left text-gray-800">
-        <button th:id="'deleteButton-' + ${userStat.index}"
-                th:onclick="'deleteWishHistory(' + ${userStat.index} + ',' + ${wishHistoryResponseDto.id} + ')'"
-                class="text-indigo-600 hover:text-indigo-900 cursor-pointer">삭제하기
-        </button>
+        <th:block th:if="${wishUserDto.userId == session.id}">
+          <button th:id="'deleteButton-' + ${userStat.index}"
+                  th:onclick="'deleteWishHistory(' + ${userStat.index} + ',' + ${wishHistoryResponseDto.id} + ')'"
+                  class="text-indigo-600 hover:text-indigo-900 cursor-pointer">삭제하기
+          </button>
+        </th:block>
+<!--        <button th:id="'deleteButton-' + ${userStat.index}"-->
+<!--                th:onclick="'deleteWishHistory(' + ${userStat.index} + ',' + ${wishHistoryResponseDto.id} + ')'"-->
+<!--                class="text-indigo-600 hover:text-indigo-900 cursor-pointer">삭제하기-->
+<!--        </button>-->
       </td>
       </div>
     </tr>

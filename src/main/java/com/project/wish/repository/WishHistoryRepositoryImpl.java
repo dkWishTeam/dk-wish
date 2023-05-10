@@ -1,7 +1,9 @@
 package com.project.wish.repository;
 
 import com.project.wish.domain.WishHistory;
+import com.project.wish.dto.LoginDto;
 import com.project.wish.dto.WishHistoryRateDto;
+import com.project.wish.dto.WishUserDto;
 import com.project.wish.exception.NotFoundWishHistoryException;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +61,18 @@ public class WishHistoryRepositoryImpl implements WishHistoryRepository {
         session.update(statement2, id);
         return delete == 1;
 
+    }
+
+    @Override
+    public WishUserDto findWishUserInfo(Long id) {
+        WishUserDto result = null;
+        try {
+            String statement = "WishHistoryMapper.findWishUser";
+            result = session.selectOne(statement, id);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }

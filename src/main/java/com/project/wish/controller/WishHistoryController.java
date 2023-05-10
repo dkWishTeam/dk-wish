@@ -25,6 +25,10 @@ public class WishHistoryController {
     public String findWishHistoryListByWishId(@PathVariable Long wishId, Model model, HttpSession session) {
         if (!userService.loginMaintain(session)) return "redirect:/";
 
+        // user 닉네임 추가
+        WishUserDto userInfo = wishHistoryService.getWishUserInfo(wishId);
+        model.addAttribute("wishUserDto", userInfo);
+
         WishDto wishDto = wishService.findWishByWishId(wishId);
 
         model.addAttribute("wishDto", wishDto);
