@@ -6,6 +6,7 @@ import com.project.wish.dto.WishHistoryCreateDto;
 import com.project.wish.dto.WishHistoryRateDto;
 import com.project.wish.dto.WishHistoryResponseDto;
 import com.project.wish.dto.WishHistoryUpdateRequestDto;
+import com.project.wish.dto.WishUserDto;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -64,7 +65,7 @@ public interface WishHistoryService {
 //v
 //    }
 
-
+    WishUserDto getWishUserInfo(Long id);
 }
 
 

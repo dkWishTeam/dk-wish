@@ -20,9 +20,9 @@
                 <p class="mt-6 text-lg leading-8 text-gray-600">아직 위시가 없네요. </p>
                 <p class="mt-6 text-lg leading-8 text-gray-600">새로운 위시를 등록해보세요!</p>
                 <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="#"
+                    <a th:href="@{/wish/create}"
                        class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">등록하기</a>
-                    <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Learn more <span
+                    <a href="/" class="text-sm font-semibold leading-6 text-gray-900">홈으로<span
                             aria-hidden="true">→</span></a>
                 </div>
             </div>
@@ -41,12 +41,12 @@
         <div th:each="userWish : ${userWishlist}" class="rounded-m p-6 w-1/3">
             <div class="w-100% shadow-2xl rounded-lg border-2 hover:border-gray-500 hover:border-2 transition duration-300">
 
-                <a th:href="@{/wishHistory/{wishId}(wishId=${userWish.getId()})}" class="w-100% h-60 overflow-hidden block">
+                <a th:href="@{/wishHistory/{wishId}(wishId=${userWish.getId()})}" class="h-60 overflow-hidden block">
                     <th:block th:if="${userWish.getImage() == null}">
-                        <img src="/images/default.png" class="w-100% rounded-t-lg">
+                        <img src="/images/default.png" class="w-full h-full rounded-t-lg">
                     </th:block>
                     <th:block th:unless="${userWish.getImage() == null}">
-                        <img src="/images/default.png" th:src="${userWish.getImage()}" class="w-100% rounded-t-lg">
+                        <img src="/images/default.png" th:src="${userWish.getImage()}" class="w-full h-full rounded-t-lg">
                     </th:block>
                 </a>
 

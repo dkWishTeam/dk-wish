@@ -5,6 +5,7 @@ import com.project.wish.dto.WishHistoryCreateDto;
 import com.project.wish.dto.WishHistoryRateDto;
 import com.project.wish.dto.WishHistoryResponseDto;
 import com.project.wish.dto.WishHistoryUpdateRequestDto;
+import com.project.wish.dto.WishUserDto;
 import com.project.wish.repository.WishHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -84,5 +85,10 @@ public class WishHistoryServiceImpl implements WishHistoryService {
     @Override
     public boolean deleteWishHistory(Long id) {
         return wishHistoryRepository.deleteWishHistory(id);
+    }
+
+    @Override
+    public WishUserDto getWishUserInfo(Long id) {
+        return wishHistoryRepository.findWishUserInfo(id);
     }
 }
