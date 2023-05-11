@@ -52,10 +52,10 @@
 
   </style>
 </head>
-<body>
+<body class="flex flex-col h-screen">
 <header th:replace="fragments/header :: header"></header>
 
-<section id="sec1" class="container mx-auto pt-8 pb-20"
+<section id="sec1" class="container mx-auto pt-8 pb-20 flex-grow"
          th:style="${rate.percent >= 100} ? 'background-image: url(\'/images/congratulation.gif\');' : ''">
   <div id="wishBox" class="px-8 pt-6">
     <div id="wishTitleBox" class="flex">

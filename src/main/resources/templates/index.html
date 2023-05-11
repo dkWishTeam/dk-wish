@@ -115,9 +115,9 @@
         outputBox.innerHTML = "";
         for(let i = 0; i < data.length; i++) {
           outputBox.innerHTML += `<div class="max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <div class="w-100%">
+            <div class="w-full">
               <a href="/wishHistory/${data[i].id}" class="h-60 overflow-hidden block">
-                <img class="w-full h-full rounded-t-lg" src="${data[i].imageSrc}" alt="default" />
+                <img class="w-full rounded-t-lg" src="${data[i].imageSrc}" alt="default" />
               </a>
             </div>
             <div class="p-5">
