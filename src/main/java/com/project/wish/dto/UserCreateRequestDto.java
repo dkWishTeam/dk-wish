@@ -14,4 +14,16 @@ public class UserCreateRequestDto {
     private java.sql.Date birth;
     private String phone;
     private String nickname;
+
+    @Override
+    public String toString() {
+        return "UserCreateRequestDto{" +
+            "userId='" + userId + '\'' +
+            ", email='" + email + '\'' +
+            ", name='" + name + '\'' +
+            ", birth=" + birth +
+            ", phone='" + phone + '\'' +
+            ", nickname='" + nickname + '\'' +
+            '}';
+    }
 }
