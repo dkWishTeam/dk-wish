@@ -30,13 +30,13 @@ public class UserController {
      */
     @PostMapping
     public String createUser(UserCreateRequestDto dto) {
-        log.info("[START]User registration");
+        log.debug("[START]User registration with " + dto);
         try {
             userService.insertUser(dto);
         } catch (Exception e) {
             log.error("[Error]User registration failed", e);
         }
-        log.info("[END]User registration");
+        log.debug("[END]User registration");
         // think 입력 시점에 중복체크 싹다 한 번 다시? 아니면 unique 제약 조건을 걸어주나?
         // todo 회원 가입 시 회원가입이 안되면 띄워주는 에러페이지
         return "redirect:/";
@@ -53,7 +53,6 @@ public class UserController {
     @GetMapping("/{id}")
     public String findUserById(HttpSession session, Model model, @PathVariable("id") Long id)
         throws UnAuthorizedAccessException {
-        log.info("[START] User Page id=" + id);
         isUserAuthorized(id, session);
         model.addAttribute("user", userService.findUserById(id));
         return "user/userInfo";
