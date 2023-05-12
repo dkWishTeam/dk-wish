@@ -3,6 +3,7 @@ package com.project.wish.controller;
 import com.project.wish.dto.LoginDto;
 import com.project.wish.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -12,6 +13,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
@@ -55,11 +57,14 @@ public class LoginController {
      */
     @RequestMapping("/loginCheck")
     public String loginCheck(Model model, LoginDto user, HttpSession session, boolean remember, HttpServletResponse response) {
+        log.debug("[Login]login user " + user);
         boolean result = userService.loginCheck(user, session, model, remember, response);
         if(result == true) {
+            log.debug("[Login]Success login");
             return "redirect:/";
         }
 
+        log.debug("[Login]Failed login");
         return "login";
     }
 

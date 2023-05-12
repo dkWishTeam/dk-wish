@@ -28,7 +28,10 @@
         <appender-ref ref="STDOUT" />
     </root>
 
-    <logger name="com.example.springedu.controller.UserController" level="INFO">
+    <logger name="com.project.wish.controller.UserController" level="DEBUG">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.project.wish.controller.LoginController" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
 </configuration>
