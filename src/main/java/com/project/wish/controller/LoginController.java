@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class LoginController {
 
     private final UserService userService;
@@ -44,6 +45,7 @@ public class LoginController {
             model.addAttribute("rememberCookie", rememberCookie.getValue());
             model.addAttribute("rememberCheckBox", true);
         }
+        log.info("================== 회원 로그인 ==================");
         return "login";
     }
 
