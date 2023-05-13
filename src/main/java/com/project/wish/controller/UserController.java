@@ -39,6 +39,7 @@ public class UserController {
         log.debug("[END]User registration");
         // think 입력 시점에 중복체크 싹다 한 번 다시? 아니면 unique 제약 조건을 걸어주나?
         // todo 회원 가입 시 회원가입이 안되면 띄워주는 에러페이지
+        log.info("================== 신규 회원 가입 ==================");
         return "redirect:/";
     }
 

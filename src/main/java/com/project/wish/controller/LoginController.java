@@ -3,6 +3,7 @@ package com.project.wish.controller;
 import com.project.wish.dto.LoginDto;
 import com.project.wish.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class LoginController {
 
     private final UserService userService;
@@ -42,6 +44,7 @@ public class LoginController {
             model.addAttribute("rememberCookie", rememberCookie.getValue());
             model.addAttribute("rememberCheckBox", true);
         }
+        log.info("================== 회원 로그인 ==================");
         return "login";
     }
 

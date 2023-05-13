@@ -5,6 +5,7 @@ import com.project.wish.dto.WishUpdateDto;
 import com.project.wish.service.FileUploader;
 import com.project.wish.service.UserService;
 import com.project.wish.service.WishService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/wish")
+@Slf4j
 public class WishController {
 
     private final WishService wishService;
@@ -40,10 +42,6 @@ public class WishController {
         return "wish/userWishMain";
     }
 
-
-    /**
-     * todo 뷰 파일 연결
-     */
     @GetMapping("/{userId}/{wishId}")
     public String userWish(@PathVariable Long wishId, HttpSession session){
         userService.loginMaintain(session);
@@ -75,6 +73,7 @@ public class WishController {
         Long createdWishId = wishService.createWish(wishDto, goalDateString, registerDatetimeString, modifyDatetimeString);
 
         redirectAttributes.addAttribute("isCreateSuccess", true);
+        log.info("================== 새로운 wish 생성 ==================");
         return "redirect:/wishHistory/" + createdWishId;
     }
 
