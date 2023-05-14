@@ -9,6 +9,8 @@
 
 - 사용자가 원하는 물건을 살때 목표금액을 모으는 과정을 기록하면서 동기부여를 받을 수 있게 도와주는 서비스
 
+<br>
+
 ### 🙋‍♂️ 서비스 대상
 
 - 큰 지출을 앞두고 있는 사람
@@ -46,6 +48,8 @@
 - CSS3 (Tailwind CSS)
 - ES6 JavaScript
 - [Toastr](https://github.com/CodeSeven/toastr)
+- [flowbite](https://flowbite.com)
+- jquery
 - AJAX
 - Thymeleaf
 
@@ -57,41 +61,38 @@
 
 ### ✅ 코딩 컨벤션
 
-- [구글 자바 코딩 스타일 가이드](https://google.github.io/styleguide/javaguide.html) 을 채택
-   </div>
+- [wish 코딩 컨벤션](https://github.com/dkWishTeam/dk-wish/blob/main/docs/coding_convention.md)
+- [구글 자바 코딩 스타일 가이드](https://google.github.io/styleguide/javaguide.html) 을 기반으로 작성
+
 
 <br>
 
 ### ✅ 커밋 브랜치 규칙
 
-- 기능별 브랜치 생성
-- 커밋 메세지 양식
+- [wish 협업 컨벤션](https://github.com/dkWishTeam/dk-wish/blob/main/docs/cowork_convention.md)
+- develope 브랜치의 feat 아래에 기능별 브랜치 생성 
+  ```text
+  main
+  └── develope
+      └── feat
+          ├── ex) user-wish
+          ├── ex) user-login
+          ...
+  ```
 
-```text
-//타입: 제목 
-Feat: "추가 로그인 함수"
-  
-//본문
-로그인 API 개발
-
-//꼬리말 (생략가능)
-Resolves: #123
-Ref: #456
-Related to: #48, #45
-```
 
 <br>
-<hr>
 
-### ⚙️ 서비스 기능
+
+## ⚙️ 서비스 기능
 
 ### 🧑‍💻 회원 관련 기능
 
 - 회원가입 및 로그인 기능(사이트 자체 회원가입)
 - 다른 사용자들이 등록한 챌린지(이하 위시) 열람 가능
-  - 비회원은 상세보기는 불가능
 - 로그인한 사용자에 한해서 위시 등록 가능
 - 마이페이지 기능
+
 
 ### 🛠️ 관리자 기능
 
@@ -100,15 +101,15 @@ Related to: #48, #45
 
 ### 🍀 위시 관련 기능
 
-- 로그인한 사용자가 마이 위시 페이지에서 자신이 등록한 위시 확인 가능
+- 로그인한 사용자가 위시 리스트 페이지에서 자신이 등록한 위시 확인 가능
 - 로그인한 사용자가 새로운 위시 등록 가능
   - 사용자는 자신의 위시를 `공개` 또는 `비공개`로 설정 가능
-  - 위시에는 `위시제목`, `위시내용`, `상품이름`, `목표금액`, `목표날짜` 정보를 입력할 수 있음
-- 마이 위시에서 상세보기를 클릭한 `위시기록` 의 추가 및 수정과 위시 상세정보 수정 가능
+  - 위시에는 `위시제목`, `위시내용`, `상품이름`, `목표금액`, `목표날짜` 등의 정보를 입력할 수 있음
+- 위시 리스트 페이지에서 상세보기를 클릭한 위시의 `위시기록` 추가 및 수정과 위시 상세정보 수정 가능
 
 ### ⌛️ 추가 예정 기능
 
-- 위시에 좋아요 기능정
+- 위시에 `좋아요` 기능
 - 다른 사람과 같이 위시 진행하기 기능
 
 <br>
