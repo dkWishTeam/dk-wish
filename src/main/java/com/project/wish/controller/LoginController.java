@@ -25,8 +25,9 @@ public class LoginController {
      * @return 메인페이지로 리턴해줍니다.
      */
     @RequestMapping("/")
-    public String mainPage() {
+    public String mainView() {
         return "index";
+
     }
 
     /**
@@ -34,9 +35,9 @@ public class LoginController {
      * @return 로그인페이지로 리턴
      */
     @RequestMapping("/login")
-    public String login(HttpSession session, Model model,
+    public String loginView(HttpSession session, Model model,
         @CookieValue(value = "rememberUserId", required = false) Cookie rememberCookie) {
-        boolean result = userService.loginMaintain(session);
+        boolean result = userService.isLogin(session);
         if(result == true)
             return "redirect:/";
 
@@ -57,9 +58,9 @@ public class LoginController {
      * @return 성공하면 메인페이지 실패하면 다시 로그인 페이지
      */
     @RequestMapping("/loginCheck")
-    public String loginCheck(Model model, LoginDto user, HttpSession session, boolean remember, HttpServletResponse response) {
+    public String login(Model model, LoginDto user, HttpSession session, boolean remember, HttpServletResponse response) {
         log.debug("[Login]login user " + user);
-        boolean result = userService.loginCheck(user, session, model, remember, response);
+        boolean result = userService.findLoginUser(user, session, model, remember, response);
         if(result == true) {
             log.debug("[Login]Success login");
             return "redirect:/";

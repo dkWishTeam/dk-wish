@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    public static final int IS_BLCOK = 1;
+    public static final int IS_QUIT = 1;
     // think 중복체크 시 user 반환과 boolean 반환중 뭘 쓸까
 
     //todo 트랜잭션
@@ -24,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public boolean loginCheck(LoginDto user, HttpSession session, Model model,
+    public boolean findLoginUser(LoginDto user, HttpSession session, Model model,
         boolean remember, HttpServletResponse response) {
         LoginDto loginUser = userRepository.findLoginUser(user);
         if (loginUser == null || !loginUser.getPassword().equals(user.getPassword())) {
@@ -32,12 +34,12 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        LoginDto loginUserInfo = getLoginUserInfo(user);
-        if(loginUserInfo.getIsBlock() == 1) {
+        LoginDto loginUserInfo = findLoginUserInfo(user);
+        if(loginUserInfo.getIsBlock() == IS_BLCOK) {
             model.addAttribute("msg", "블락된 회원입니다. 관리자에게 문의하세요.");
             return false;
         }
-        if(loginUserInfo.getIsQuit() == 1) {
+        if(loginUserInfo.getIsQuit() == IS_QUIT) {
             model.addAttribute("msg", "탈퇴하였습니다. 다시 회원가입하세요.");
             return false;
         }
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean loginMaintain(HttpSession session) {
+    public boolean isLogin(HttpSession session) {
         if(session.getAttribute("id") != null)
             return true;
         return false;
@@ -78,7 +80,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public LoginDto getLoginUserInfo(LoginDto user) {
+    public LoginDto findLoginUserInfo(LoginDto user) {
         LoginDto userInfo = userRepository.findLoginUserInfo(user);
         return userInfo;
     }

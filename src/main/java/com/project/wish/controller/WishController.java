@@ -36,7 +36,7 @@ public class WishController {
 
     @GetMapping("/{userId}")
     public String showWishMain(@PathVariable("userId") Long id, Model model, HttpSession session) {
-        userService.loginMaintain(session);
+        userService.isLogin(session);
         List<WishDto> userWishDto = wishService.findWishListByUserID(id);
         model.addAttribute("userWishlist", userWishDto);
         return "wish/userWishMain";
@@ -44,13 +44,13 @@ public class WishController {
 
     @GetMapping("/{userId}/{wishId}")
     public String userWish(@PathVariable Long wishId, HttpSession session){
-        userService.loginMaintain(session);
+        userService.isLogin(session);
         return "redirect:wishHistory/" + wishId;
     }
 
     @GetMapping("/create")
     public String createWishForm(Model model, HttpSession session) {
-        userService.loginMaintain(session);
+        userService.isLogin(session);
         model.addAttribute("localDateTime", LocalDateTime.now());
         model.addAttribute("wishDto", WishDto.builder());
         return "wish/wishCreateForm";
@@ -67,7 +67,7 @@ public class WishController {
                              @RequestParam String modifyDatetimeString,
                              RedirectAttributes redirectAttributes,
                              HttpSession session) throws ParseException, IOException {
-        userService.loginMaintain(session);
+        userService.isLogin(session);
         FileUploader fileUploader = new FileUploader();
         wishDto.setImage(fileUploader.getUploadFilePath(imageFile));
         Long createdWishId = wishService.createWish(wishDto, goalDateString, registerDatetimeString, modifyDatetimeString);
@@ -79,7 +79,7 @@ public class WishController {
 
     @GetMapping("/update")
     public String updateWishForm(WishDto wishDto, Model model, HttpSession session) {
-        userService.loginMaintain(session);
+        userService.isLogin(session);
         model.addAttribute("wishDto", wishDto);
         return "wish/updateWishForm";
     }
@@ -89,7 +89,7 @@ public class WishController {
      */
     @PostMapping("/update/{wishId}")
     public String updateWish(@PathVariable long wishId, WishUpdateDto wishUpdateDto, HttpSession session) {
-        userService.loginMaintain(session);
+        userService.isLogin(session);
         wishService.updateWish(wishId, wishUpdateDto);
         return "";
     }
