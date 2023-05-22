@@ -26,7 +26,7 @@ public class WishHistoryController {
     @GetMapping("/{wishId}")
     public String findWishHistoryListByWishId(@PathVariable Long wishId, Model model, HttpSession session) {
         session.setAttribute("wishId", wishId);
-        if (!userService.loginMaintain(session)) return "redirect:/";
+        if (!userService.isLogin(session)) return "redirect:/";
 
         // user 닉네임 추가
         WishUserDto userInfo = wishHistoryService.getWishUserInfo(wishId);
@@ -64,7 +64,7 @@ public class WishHistoryController {
 
     @PostMapping(value = "/create")
     public String createWishHistory(WishHistoryCreateDto wishHistoryCreateDto, HttpSession session) {
-        if (!userService.loginMaintain(session)) return "redirect:/";
+        if (!userService.isLogin(session)) return "redirect:/";
         wishHistoryService.createWishHistory(wishHistoryCreateDto);
         return "redirect:/wishHistory/" + wishHistoryCreateDto.getWishId();
     }
@@ -77,7 +77,7 @@ public class WishHistoryController {
 
     @PostMapping(value = "/update")
     public String updateWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto, HttpSession session) {
-        if (!userService.loginMaintain(session)) return "redirect:/";
+        if (!userService.isLogin(session)) return "redirect:/";
         wishHistoryService.updateWishHistory(wishHistoryUpdateRequestDto);
         return "redirect:/wishHistory/" + wishHistoryUpdateRequestDto.getWishId();
     }

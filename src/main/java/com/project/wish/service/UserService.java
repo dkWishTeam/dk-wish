@@ -15,13 +15,13 @@ import org.springframework.ui.Model;
 
 public interface UserService {
 
-    public boolean loginCheck(LoginDto user, HttpSession session, Model model, boolean remember, HttpServletResponse response);
+    public boolean findLoginUser(LoginDto user, HttpSession session, Model model, boolean remember, HttpServletResponse response);
 
-    public boolean loginMaintain(HttpSession session);
+    public boolean isLogin(HttpSession session);
 
     public void logout(HttpSession session);
 
-    public LoginDto getLoginUserInfo(LoginDto user);
+    public LoginDto findLoginUserInfo(LoginDto user);
 
     void insertUser(UserCreateRequestDto dto);
 
