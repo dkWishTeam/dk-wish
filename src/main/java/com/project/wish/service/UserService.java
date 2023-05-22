@@ -1,6 +1,6 @@
 package com.project.wish.service;
 
-import com.project.wish.domain.Role;
+import com.project.wish.domain.RoleType;
 import com.project.wish.domain.User;
 import com.project.wish.dto.UserCreateRequestDto;
 import com.project.wish.dto.UserResponseDto;
@@ -47,7 +47,7 @@ public interface UserService {
 
     default User userCreateRequestDtoToUser(UserCreateRequestDto dto) {
         return User.builder()
-            .roleId(Role.USER.getRoleId())
+            .roleId(RoleType.USER.getRoleId())
             .userId(dto.getUserId())
             .password(dto.getPassword())
             .email(dto.getEmail())

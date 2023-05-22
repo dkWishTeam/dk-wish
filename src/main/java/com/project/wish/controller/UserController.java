@@ -1,6 +1,6 @@
 package com.project.wish.controller;
 
-import com.project.wish.domain.Role;
+import com.project.wish.domain.RoleType;
 import com.project.wish.dto.BlockUserResponse;
 import com.project.wish.dto.UserCreateRequestDto;
 import com.project.wish.dto.UserUpdateRequestDto;
@@ -239,7 +239,7 @@ public class UserController {
 
         String role = (String) session.getAttribute("role");
         //todo 로그인 시 session.add(role,"ADMIN") 추가
-        if (role == null || !Objects.equals(role, Role.ADMIN.toString())) {
+        if (role == null || !Objects.equals(role, RoleType.ADMIN.toString())) {
             throw new UnAuthorizedAccessException();
         }
     }

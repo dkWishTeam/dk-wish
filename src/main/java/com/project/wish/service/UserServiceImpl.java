@@ -1,6 +1,6 @@
 package com.project.wish.service;
 
-import com.project.wish.domain.Role;
+import com.project.wish.domain.RoleType;
 import com.project.wish.domain.User;
 import com.project.wish.dto.*;
 import com.project.wish.repository.UserRepository;
@@ -59,9 +59,9 @@ public class UserServiceImpl implements UserService {
         session.setAttribute("nickname", loginUserInfo.getNickname());
         session.setAttribute("email", loginUserInfo.getEmail());
         if (loginUserInfo.getRoleId() == 1) {
-            session.setAttribute("role", Role.ADMIN.toString());
+            session.setAttribute("role", RoleType.ADMIN.toString());
         } else {
-            session.setAttribute("role", Role.USER.toString());
+            session.setAttribute("role", RoleType.USER.toString());
         }
 
         return true;
