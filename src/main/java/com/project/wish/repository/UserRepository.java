@@ -3,35 +3,20 @@ package com.project.wish.repository;
 import com.project.wish.domain.User;
 import com.project.wish.dto.LoginDto;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository {
+public interface UserRepository extends JpaRepository<User,Long> {
 
-    public LoginDto findLoginUser(LoginDto user);
+    Optional<User> findByUserId(String userId);
+
+    List<User> findAll();
     
-    public LoginDto findLoginUserInfo(LoginDto user);
-    
-    void insertUser(User user);
+    boolean existsByUserId(String userId);
 
-    User findUserById(Long id);
+    boolean existsByEmail(String email);
 
-    User findUserByIdByAdmin(Long id);
+    boolean existsByNickname(String nickname);
 
-    List<User> findUsers();
-
-    void updateUser(User user);
-
-    boolean updateUserBlockByAdmin(Long id);
-
-    boolean isUserBlocked(Long id);
-
-    void deleteUser(Long userId);
-
-    User findUserByPhone(String phone);
-
-    User findUserByUserId(String userId);
-
-    User findUserByEmail(String email);
-
-    User findUserByNickname(String nickname);
-
+    boolean existsByPhone(String phone);
 }

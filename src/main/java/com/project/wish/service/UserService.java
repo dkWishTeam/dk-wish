@@ -21,8 +21,6 @@ public interface UserService {
 
     public void logout(HttpSession session);
 
-    public LoginDto findLoginUserInfo(LoginDto user);
-
     void insertUser(UserCreateRequestDto dto);
 
     UserResponseDto findUserById(Long id);
@@ -31,7 +29,7 @@ public interface UserService {
 
     List<UserResponseDtoByAdmin> findUsers();
 
-    void updateUser(Long userId, UserUpdateRequestDto dto);
+    void updateUser(UserUpdateRequestDto dto);
 
     boolean updateUserBlockByAdmin(Long id);
 
@@ -47,7 +45,6 @@ public interface UserService {
 
     default User userCreateRequestDtoToUser(UserCreateRequestDto dto) {
         return User.builder()
-            .roleId(RoleType.USER.getRoleId())
             .userId(dto.getUserId())
             .password(dto.getPassword())
             .email(dto.getEmail())
@@ -62,7 +59,7 @@ public interface UserService {
             .build();
     }
 
-    default User userUpdateRequestDtoToUser(User user, UserUpdateRequestDto dto) {
+    default User userUpdateByDto(User user, UserUpdateRequestDto dto) {
         user.setUserId(dto.getUserId());
         user.setPassword(dto.getPassword());
         user.setEmail(dto.getEmail());

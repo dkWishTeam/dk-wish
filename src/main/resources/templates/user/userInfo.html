@@ -85,6 +85,7 @@
     <div>
       <form th:action="@{/users/{id}(id=${user.id})}" method="POST">
         <input type="hidden" name="_method" value="PUT">
+        <input type="hidden" id="id" name="id" th:value="${user.id}">
         <div>
           <label for="userId">아이디</label>
           <input type="text" id="userId" name="userId" th:value="${user.userId}" required>
