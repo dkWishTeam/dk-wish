@@ -1,15 +1,20 @@
 package com.project.wish.domain;
 
-public enum Role {
-    ADMIN(1), USER(2);
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Getter;
 
-    private final int roleId;
+@Entity
+@Table(name = "role")
+@Getter
+public class Role {
 
-    Role(int roleId){
-        this.roleId = roleId;
-    }
+    @Id
+    private Integer id;
 
-    public int getRoleId() {
-        return roleId;
-    }
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
 }

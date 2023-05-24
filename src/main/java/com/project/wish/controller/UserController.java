@@ -1,6 +1,6 @@
 package com.project.wish.controller;
 
-import com.project.wish.domain.Role;
+import com.project.wish.domain.RoleType;
 import com.project.wish.dto.BlockUserResponse;
 import com.project.wish.dto.UserCreateRequestDto;
 import com.project.wish.dto.UserUpdateRequestDto;
@@ -37,9 +37,6 @@ public class UserController {
             log.error("[Error]User registration failed", e);
         }
         log.debug("[END]User registration");
-        // think 입력 시점에 중복체크 싹다 한 번 다시? 아니면 unique 제약 조건을 걸어주나?
-        // todo 회원 가입 시 회원가입이 안되면 띄워주는 에러페이지
-        log.info("================== 신규 회원 가입 ==================");
         return "redirect:/";
     }
 
@@ -95,18 +92,17 @@ public class UserController {
     /**
      * 회원이 자신의 정보를 수정할 때 쓰는 메서드입니다.
      *
-     * @param id      회원의 고유번호
      * @param dto     UserUpdateRequestDto(회원 정보수정사항을 담는 객체) 객체입니다.
      * @param session session 에 있는 회원의 고유번호를 얻기 위한 객체
      * @return 마이페이지로 이동합니다.
      * @throws UnAuthorizedAccessException 회원 정보 페이지에 대한 권한이 없을 때 발생하는 오류입니다.
      */
     @PutMapping("/{id}")
-    public String updateUser(@PathVariable("id") Long id, UserUpdateRequestDto dto, HttpSession session)
+    public String updateUser(UserUpdateRequestDto dto, HttpSession session)
         throws UnAuthorizedAccessException {
-        isUserAuthorized(id, session);
-        userService.updateUser(id, dto);
-        return "redirect:/users/" + id;
+        isUserAuthorized(dto.getId(), session);
+        userService.updateUser(dto);
+        return "redirect:/users/" + dto.getId();
     }
 
     /**
@@ -239,7 +235,7 @@ public class UserController {
 
         String role = (String) session.getAttribute("role");
         //todo 로그인 시 session.add(role,"ADMIN") 추가
-        if (role == null || !Objects.equals(role, Role.ADMIN.toString())) {
+        if (role == null || !Objects.equals(role, RoleType.ADMIN.toString())) {
             throw new UnAuthorizedAccessException();
         }
     }

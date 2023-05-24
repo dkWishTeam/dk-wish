@@ -2,12 +2,13 @@ package com.project.wish.domain;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,13 +19,17 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
+@Entity
+@Table(name = "user")
 public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
+    @ManyToOne
     @JoinColumn(name = "role_id")
-    private Role roleId;
+    private Role role;
 
     private String userId;
     private String password;
@@ -38,12 +43,11 @@ public class User {
     private LocalDateTime modifyDatetime;
     private boolean isQuit;
 
-
     @Builder
-    public User(Role roleId, String userId, String password, String email, String name, Date birth, String phone,
+    public User(Role role, String userId, String password, String email, String name, Date birth, String phone,
         String nickname, boolean isBlock, LocalDateTime registerDatetime, LocalDateTime modifyDatetime,
         boolean isQuit) {
-        this.roleId = roleId;
+        this.role = role;
         this.userId = userId;
         this.password = password;
         this.email = email;
