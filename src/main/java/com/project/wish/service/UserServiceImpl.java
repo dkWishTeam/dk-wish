@@ -1,11 +1,14 @@
 package com.project.wish.service;
 
 import com.project.wish.domain.Role;
+import com.project.wish.domain.RoleType;
 import com.project.wish.domain.User;
 import com.project.wish.dto.*;
+import com.project.wish.repository.RoleRepository;
 import com.project.wish.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.Cookie;
@@ -17,35 +20,29 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    public static final int IS_BLCOK = 1;
-    public static final int IS_QUIT = 1;
     // think 중복체크 시 user 반환과 boolean 반환중 뭘 쓸까
 
     //todo 트랜잭션
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
 
     @Override
-    public boolean findLoginUser(LoginDto user, HttpSession session, Model model,
+    public boolean findLoginUser(LoginDto loginDto, HttpSession session, Model model,
         boolean remember, HttpServletResponse response) {
-        LoginDto loginUser = userRepository.findLoginUser(user);
-        if (loginUser == null || !loginUser.getPassword().equals(user.getPassword())) {
+        User user = userRepository.findByUserId(loginDto.getUserId()).orElseThrow();
+        if (!loginDto.getPassword().equals(user.getPassword())) {
             model.addAttribute("msg", "아이디 혹은 비밀번호가 다릅니다.");
             return false;
         }
 
-        LoginDto loginUserInfo = findLoginUserInfo(user);
-        if(loginUserInfo.getIsBlock() == IS_BLCOK) {
+        if(user.isBlock()) {
             model.addAttribute("msg", "블락된 회원입니다. 관리자에게 문의하세요.");
-            return false;
-        }
-        if(loginUserInfo.getIsQuit() == IS_QUIT) {
-            model.addAttribute("msg", "탈퇴하였습니다. 다시 회원가입하세요.");
             return false;
         }
 
         // 아이디 기억 : 쿠키에 아이디를 저장
-        Cookie rememberCookie = new Cookie("rememberUserId", loginUserInfo.getUserId());
+        Cookie rememberCookie = new Cookie("rememberUserId", loginDto.getUserId());
         rememberCookie.setPath("/");
         if(remember == true) {
             rememberCookie.setMaxAge(60*60*24*3); // 3일 동안 쿠키에 저장
@@ -55,13 +52,14 @@ public class UserServiceImpl implements UserService {
         response.addCookie(rememberCookie);
 
         // 세션에 유저 정보를 필요한 만큼 넣음
-        session.setAttribute("id", loginUserInfo.getId());
-        session.setAttribute("nickname", loginUserInfo.getNickname());
-        session.setAttribute("email", loginUserInfo.getEmail());
-        if (loginUserInfo.getRoleId() == 1) {
-            session.setAttribute("role", Role.ADMIN.toString());
+        session.setAttribute("id", user.getId());
+        session.setAttribute("nickname", user.getNickname());
+        session.setAttribute("email", user.getEmail());
+        if (user.getRole().getRoleType() == RoleType.ADMIN) {
+            session.setAttribute("role", RoleType.ADMIN.toString());
         } else {
-            session.setAttribute("role", Role.USER.toString());
+            session.setAttribute("role", RoleType.USER.toString());
+            System.out.println(RoleType.USER.toString());
         }
 
         return true;
@@ -79,90 +77,93 @@ public class UserServiceImpl implements UserService {
         session.invalidate();
     }
 
-    @Override
-    public LoginDto findLoginUserInfo(LoginDto user) {
-        LoginDto userInfo = userRepository.findLoginUserInfo(user);
-        return userInfo;
-    }
-
+    @Transactional
     @Override
     public void insertUser(UserCreateRequestDto dto) {
         User user = userCreateRequestDtoToUser(dto);
-        userRepository.insertUser(user);
+        user.setRole(roleRepository.findByRoleType(RoleType.USER).orElseThrow());
+        userRepository.save(user);
     }
 
     @Override
     public UserResponseDto findUserById(Long id) {
-        User user = userRepository.findUserById(id);
+        User user = userRepository.findById(id).orElseThrow();
         return userToUserResponseDto(user);
         //todo 찾았는데 없을 경우
     }
 
     @Override
     public UserResponseDtoByAdmin findUserByIdByAdmin(Long id) {
-        User user = userRepository.findUserByIdByAdmin(id);
+        //todo 현재 세션에 있는 아이디가 해당 유저 또는 admin 인지
+        //todo 미구현
+        User user = userRepository.findById(id).orElseThrow();
         return userToUserResponseDtoByAdmin(user);
-        //todo 찾았는데 없을 경우
     }
 
     @Override
     public List<UserResponseDtoByAdmin> findUsers() {
-        List<User> users = userRepository.findUsers();
+        // todo 관리자인지 체크
+        List<User> users = userRepository.findAll();
         return users.stream().map(this::userToUserResponseDtoByAdmin).collect(Collectors.toList());
         //todo paging
     }
 
+    @Transactional
     @Override
-    public void updateUser(Long id, UserUpdateRequestDto dto) {
-        User user = userRepository.findUserById(id);
-        User updatedUser = userUpdateRequestDtoToUser(user, dto);
-        userRepository.updateUser(updatedUser);
+    public void updateUser(UserUpdateRequestDto dto) {
+        User user = userRepository.findById(dto.getId()).orElseThrow();
+        userUpdateByDto(user, dto);
     }
 
 
+    @Transactional
     @Override
     public boolean updateUserBlockByAdmin(Long id) {
-        return userRepository.updateUserBlockByAdmin(id);
+        User user = userRepository.findById(id).orElseThrow();
+        if(user.getRole().getRoleType() == RoleType.ADMIN){
+            return false;
+        }
+        boolean beforeBlockMethod = user.isBlock();
+        user.setBlock(!user.isBlock());
+        boolean afterBlockMethod = user.isBlock();
+        return beforeBlockMethod != afterBlockMethod;
     }
 
     @Override
     public boolean isUserBlocked(Long id) {
-        return userRepository.isUserBlocked(id);
+        return userRepository.findById(id).orElseThrow().isBlock();
     }
 
 
+    @Transactional
     @Override
     public void deleteUserById(Long id) {
-        userRepository.deleteUser(id);
+        userRepository.deleteById(id);
     }
 
     @Override
     public boolean isUserIdUnique(String userId) {
-        User user = userRepository.findUserByUserId(userId);
-        return user == null;
+        return !userRepository.existsByUserId(userId);
     }
 
     @Override
     public boolean isEmailUnique(String email) {
-        User user = userRepository.findUserByEmail(email);
-        return user == null;
+        return !userRepository.existsByEmail(email);
     }
 
     @Override
     public boolean isNicknameUnique(String nickname) {
-        User user = userRepository.findUserByNickname(nickname);
-        return user == null;
+        return !userRepository.existsByNickname(nickname);
     }
 
     @Override
     public boolean isPhoneUnique(String phone) {
-        User user = userRepository.findUserByPhone(phone);
-        return user == null;
+        return !userRepository.existsByPhone(phone);
     }
 
     @Override
     public boolean isUserAdmin(Long id) {
-        User user = userRepository.findUserById(id);
-        return user.getRoleId() == 1;
+        User user = userRepository.findById(id).orElseThrow();
+        return user.getRole().getRoleType() == RoleType.ADMIN;
     }
 }

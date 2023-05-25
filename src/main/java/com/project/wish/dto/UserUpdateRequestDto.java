@@ -10,6 +10,7 @@ import lombok.Setter;
 @Builder
 public class UserUpdateRequestDto {
 
+    private Long id;
     private String userId;
     private String password;
     private String email;

@@ -15,22 +15,21 @@ import java.util.List;
 
 public interface WishService {
 
-    Long createWish(WishDto wishDto, String dateString, String registerDatetimeString, String modifyDatetimeString) throws ParseException;
+    void createWish(WishDto wishDto);
 
     WishDto findWishById(Long id);
 
-    void updateWish(Long id, WishUpdateDto wishUpdateDto);
+
+    void updateWish(WishUpdateDto wishUpdateDto);
 
     void deleteWish(Long id);
 
     List<WishDto> findWishListByUserID(Long id);
 
-    WishDto findWishByWishId(Long wishId);
-
     default WishDto toDto(Wish wish) {
         return WishDto.builder()
                 .id(wish.getId())
-                .userId(wish.getUserId())
+                .user(wish.getUser())
                 .title(wish.getTitle())
                 .content(wish.getContent())
                 .image(wish.getImage())
@@ -44,26 +43,10 @@ public interface WishService {
                 .build();
     }
 
-    default Wish toEntity(WishDto wishDTO, String dateString, String registerDatetimeString, String modifyDatetimeString) throws ParseException {
+    default Wish toEntity(WishDto wishDTO) {
         return Wish.builder()
-                .userId(wishDTO.getUserId())
-                .title(wishDTO.getTitle())
-                .content(wishDTO.getContent())
-                .image(wishDTO.getImage())
-                .productName(wishDTO.getProductName())
-                .goalAmount(wishDTO.getGoalAmount())
-                .goalDate((java.sql.Date) convertStringToDate(dateString))
-                .isPublic(wishDTO.isPublic())
-                .completionStatus(wishDTO.isCompletionStatus())
-                .registerDatetime(convertStringToLocalDateTime(registerDatetimeString))
-                .modifyDatetime(convertStringToLocalDateTime(modifyDatetimeString))
-                .build();
-    }
-
-    default Wish updateDtoToEntity(WishDto wishDTO, String modifyDatetimeString) {
-        return Wish.builder()
-//                .id(wishDTO.getId())
-                .userId(wishDTO.getUserId())
+                .id(wishDTO.getId())
+                .user(wishDTO.getUser())
                 .title(wishDTO.getTitle())
                 .content(wishDTO.getContent())
                 .image(wishDTO.getImage())
@@ -78,17 +61,15 @@ public interface WishService {
     }
 
 
-    default WishDto dtoFromUpdateDto(WishDto wishDto, WishUpdateDto wishUpdateDto) {
-        wishDto.setTitle(wishUpdateDto.getTitle());
-        wishDto.setContent(wishUpdateDto.getContent());
-        wishDto.setImage(wishUpdateDto.getImage());
-        wishDto.setProductName(wishUpdateDto.getProductName());
-        wishDto.setGoalAmount(wishUpdateDto.getGoalAmount());
-        wishDto.setGoalDate(wishUpdateDto.getGoalDate());
-        wishDto.setPublic(wishUpdateDto.isPublic());
-        wishDto.setCompletionStatus(wishDto.isCompletionStatus());
-        wishDto.setModifyDatetime(wishUpdateDto.getModifyDatetime());
-        return wishDto;
+    default Wish updateDtoToEntity(Wish wish,WishUpdateDto wishUpdateDto){
+        wish.setTitle(wishUpdateDto.getTitle());
+        wish.setContent(wishUpdateDto.getContent());
+        wish.setImage(wishUpdateDto.getImage());
+        wish.setProductName(wishUpdateDto.getProductName());
+        wish.setGoalAmount(wishUpdateDto.getGoalAmount());
+        wish.setGoalDate(wishUpdateDto.getGoalDate());
+        wish.setPublic(wishUpdateDto.isPublic());
+        return wish;
     }
 
     default Date convertStringToDate(String dateString) throws ParseException {

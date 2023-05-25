@@ -29,7 +29,7 @@
             }
         }
     </script>
-    <form class="w-full" action="/wish/create" th:object="${wishDto}" method="post"
+    <form class="w-full" th:action="users/${userId}/wishes/" action="users/{userId}/wishes/" th:object="${wishDto}" method="post"
           enctype="multipart/form-data">
 
         <input type="hidden" name="userId" th:value="${session.get('id')}">
