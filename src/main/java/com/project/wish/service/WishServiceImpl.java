@@ -4,55 +4,45 @@ import com.project.wish.domain.Wish;
 import com.project.wish.dto.WishDto;
 import com.project.wish.dto.WishUpdateDto;
 import com.project.wish.repository.WishRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class WishServiceImpl implements WishService {
 
     private final WishRepository wishRepository;
 
-    @Autowired
     public WishServiceImpl(WishRepository wishRepository) {
         this.wishRepository = wishRepository;
     }
 
     @Override
-    public Long createWish(WishDto wishDto, String dateString, String registerDatetimeString, String modifyDatetimeString) throws ParseException {
-        return wishRepository.insertWish(toEntity(wishDto, dateString, registerDatetimeString, modifyDatetimeString));
+    public void createWish(WishDto wishDto){
+        wishRepository.save(toEntity(wishDto));
     }
 
     @Override
     public WishDto findWishById(Long id) {
-        return toDto(wishRepository.findWishById(id));
+        return toDto(wishRepository.findById(id).orElseThrow());
     }
-
+    @Transactional
     @Override
-    public void updateWish(Long id, WishUpdateDto wishUpdateDto) {
-        Wish findWish = wishRepository.findWishById(id);
-        WishDto updatedDto = dtoFromUpdateDto(toDto(findWish), wishUpdateDto);
-//        wishRepository.updateWish(updateDtoToEntity(updatedDto));
+    public void updateWish(WishUpdateDto wishUpdateDto) {
+        Wish findWish = wishRepository.findById(wishUpdateDto.getId()).orElseThrow();
+        updateDtoToEntity(findWish, wishUpdateDto);
     }
 
     @Override
     public void deleteWish(Long id) {
-        wishRepository.deleteWish(id);
+        Wish findWish = wishRepository.findById(id).orElseThrow();
+        wishRepository.delete(findWish);
     }
 
     @Override
     public List<WishDto> findWishListByUserID(Long id) {
-        return wishRepository.findWishListByUserID(id).stream()
-                .map(wish -> toDto(wish))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public WishDto findWishByWishId(Long wishId) {
-        return toDto(wishRepository.findWishById(wishId));
+        return null;
     }
 
 }

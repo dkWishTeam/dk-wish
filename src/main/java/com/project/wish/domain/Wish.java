@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Wish {
@@ -20,8 +21,10 @@ public class Wish {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
     @JoinColumn(name = "user_Id")
-    private Long userId;
+    private User user;
+
     private String title;
     private String content;
     private String image;
@@ -33,20 +36,5 @@ public class Wish {
     private LocalDateTime registerDatetime;
     private LocalDateTime modifyDatetime;
 
-
-    @Builder
-    public Wish(Long userId, String title, String content, String image, String productName, Long goalAmount, Date goalDate, boolean isPublic, boolean completionStatus, LocalDateTime registerDatetime, LocalDateTime modifyDatetime) {
-        this.userId = userId;
-        this.title = title;
-        this.content = content;
-        this.image = image;
-        this.productName = productName;
-        this.goalAmount = goalAmount;
-        this.goalDate = goalDate;
-        this.isPublic = isPublic;
-        this.completionStatus = completionStatus;
-        this.registerDatetime = registerDatetime;
-        this.modifyDatetime = modifyDatetime;
-    }
 }
 
