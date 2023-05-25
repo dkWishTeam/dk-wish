@@ -1,5 +1,6 @@
 package com.project.wish.dto;
 
+import com.project.wish.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 public class WishDto {
 
     private Long id;
-    private long userId;
+    private User user;
     private String title;
     private String content;
     private String image;
