@@ -22,6 +22,7 @@ public class WishHistoryController {
     private final WishService wishService;
     private final UserService userService;
 
+
     @GetMapping
     public String findWishHistoryListByWishId(@PathVariable Long wishId, Model model, HttpSession session) {
         session.setAttribute("wishId", wishId);

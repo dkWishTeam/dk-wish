@@ -29,7 +29,7 @@
             }
         }
     </script>
-    <form class="w-full" th:action="users/${userId}/wishes/" action="users/{userId}/wishes/" th:object="${wishDto}" method="post"
+    <form class="w-full" th:action="@{/users/{userId}/wishes(userId=${session.get('id')})}"  th:object="${wishDto}" method="post"
           enctype="multipart/form-data">
 
         <input type="hidden" name="userId" th:value="${session.get('id')}">
@@ -71,7 +71,7 @@
 
                 <div class="w-full my-8 flex justify-between">
                     <label for="goal-date" class="w-2/12 ml-7 flex justify-start items-center text-lg font-medium text-gray-900">목표 날짜</label>
-                    <input type="date" placeholder="년. 월. 일" class="w-9/12 bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 bg-slate-200" id="goal-date" name="goalDateString">
+                    <input type="date" placeholder="년. 월. 일" class="w-9/12 bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 bg-slate-200" id="goal-date" name="goalDate">
                 </div>
 
                 <div class="w-full my-8 flex justify-between">
@@ -98,9 +98,8 @@
         </div>
 
         <input type="hidden" name="completionStatus" value=false>
-        <input type="hidden" name="completionStatus" value=false>
-        <input type="hidden" name="registerDatetimeString" th:value="${#temporals.format(localDateTime, 'yyyy-MM-dd HH:mm:ss')}">
-        <input type="hidden" name="modifyDatetimeString" th:value="${#temporals.format(localDateTime, 'yyyy-MM-dd HH:mm:ss')}">
+<!--        <input type="hidden" name="registerDatetime" th:value="${#temporals.format(localDateTime, 'yyyy-MM-dd HH:mm:ss')}">-->
+<!--        <input type="hidden" name="modifyDatetime" th:value="${#temporals.format(localDateTime, 'yyyy-MM-dd HH:mm:ss')}">-->
     </form>
 </section>
 
