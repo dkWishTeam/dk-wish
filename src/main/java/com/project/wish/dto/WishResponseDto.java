@@ -6,12 +6,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Builder
 @ToString
-public class WishUpdateDto {
+public class WishResponseDto {
 
     private Long id;
     private Long userId;
@@ -22,5 +23,8 @@ public class WishUpdateDto {
     private long goalAmount;
     private Date goalDate;
     private boolean isPublic;
+    private boolean completionStatus;
+    private LocalDateTime registerDatetime;
+    private LocalDateTime modifyDatetime;
 
 }

@@ -11,7 +11,6 @@ import lombok.ToString;
 @Setter
 @Builder
 @AllArgsConstructor
-@ToString
 public class WishHistoryResponseDto {
 
     private Long wishId;

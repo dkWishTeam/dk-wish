@@ -1,6 +1,7 @@
 package com.project.wish.controller;
 
-import com.project.wish.dto.WishDto;
+import com.project.wish.dto.WishRequestDto;
+import com.project.wish.dto.WishResponseDto;
 import com.project.wish.dto.WishUpdateDto;
 import com.project.wish.service.FileUploader;
 import com.project.wish.service.UserService;
@@ -14,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -36,8 +36,8 @@ public class WishController {
     @GetMapping("/{userId}/wishes")
     public String showWishMain(@PathVariable("userId") Long id, Model model, HttpSession session) {
         userService.isLogin(session);
-        List<WishDto> userWishDto = wishService.findWishListByUserID(id);
-        model.addAttribute("userWishlist", userWishDto);
+        List<WishResponseDto> userWishResponseDto = wishService.findWishListByUserID(id);
+        model.addAttribute("userWishlist", userWishResponseDto);
         return "wish/userWishMain";
     }
 
@@ -48,7 +48,7 @@ public class WishController {
     }
 
     @GetMapping("/{userId}/wishes/createForm")
-    public String createWishForm(Model model, HttpSession session) {
+    public String createWishForm(HttpSession session) {
         userService.isLogin(session);
         return "wish/wishCreateForm";
     }
@@ -56,20 +56,15 @@ public class WishController {
     /**
      * todo : redirectAttributes 를 toastr 에  넘겨주기
      */
-    @PostMapping("/{userId}/wishes/")
-    public String createWish(WishDto wishDto,
+    @PostMapping("/{userId}/wishes")
+    public String createWish(WishRequestDto wishRequestDto,
                              @RequestParam MultipartFile imageFile,
                              RedirectAttributes redirectAttributes,
-                             HttpSession session) throws ParseException, IOException {
-        System.out.println("1 : " + session.getAttribute("id"));
+                             HttpSession session) throws IOException {
         FileUploader fileUploader = new FileUploader();
-        System.out.println("2 : " + session.getAttribute("id"));
-        wishDto.setImage(fileUploader.getUploadFilePath(imageFile));
-        System.out.println("3 : " + session.getAttribute("id"));
-        wishService.createWish(wishDto);
-        System.out.println("4 : " + session.getAttribute("id"));
+        wishRequestDto.setImage(fileUploader.getUploadFilePath(imageFile));
+        wishService.createWish(wishRequestDto);
         redirectAttributes.addAttribute("isCreateSuccess", true);
-        System.out.println("5 : " + session.getAttribute("id"));
         return "redirect:/users/" + session.getAttribute("id") + "/wishes";
     }
 
