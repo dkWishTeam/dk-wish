@@ -1,12 +1,8 @@
 package com.project.wish.service;
 
 import com.project.wish.domain.WishHistory;
-import com.project.wish.dto.WishDto;
-import com.project.wish.dto.WishHistoryCreateDto;
-import com.project.wish.dto.WishHistoryRateDto;
-import com.project.wish.dto.WishHistoryResponseDto;
-import com.project.wish.dto.WishHistoryUpdateRequestDto;
-import com.project.wish.dto.WishUserDto;
+import com.project.wish.dto.*;
+
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -45,16 +41,16 @@ public interface WishHistoryService {
             .build();
     }
 
-    default WishHistory wishHistoryUpdateRequestDtoToWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto, LocalDateTime registerDatetime){
-        return WishHistory.builder()
-            .wishId(wishHistoryUpdateRequestDto.getWishId())
-            .id(wishHistoryUpdateRequestDto.getId())
-            .historyDatetime(convertSqlDateToLocalDateTime(wishHistoryUpdateRequestDto.getHistoryDatetime()))
-            .amount(wishHistoryUpdateRequestDto.getAmount())
-            .registerDatetime(registerDatetime)
-            .modifyDatetime(LocalDateTime.now())
-            .build();
-    }
+//    default WishHistory wishHistoryUpdateRequestDtoToWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto, LocalDateTime registerDatetime){
+//        return WishHistory.builder()
+//            .wishId(wishHistoryUpdateRequestDto.getWishId())
+//            .id(wishHistoryUpdateRequestDto.getId())
+//            .historyDatetime(convertSqlDateToLocalDateTime(wishHistoryUpdateRequestDto.getHistoryDatetime()))
+//            .amount(wishHistoryUpdateRequestDto.getAmount())
+//            .registerDatetime(registerDatetime)
+//            .modifyDatetime(LocalDateTime.now())
+//            .build();
+//    }
 
     default LocalDateTime convertSqlDateToLocalDateTime(Date sqlDate){
         java.util.Date utilDate = new java.util.Date(sqlDate.getTime());

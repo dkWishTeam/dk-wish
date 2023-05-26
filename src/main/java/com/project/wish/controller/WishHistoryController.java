@@ -23,36 +23,36 @@ public class WishHistoryController {
     private final WishService wishService;
     private final UserService userService;
 
-    @GetMapping("/{wishId}")
-    public String findWishHistoryListByWishId(@PathVariable Long wishId, Model model, HttpSession session) {
-        session.setAttribute("wishId", wishId);
-        if (!userService.isLogin(session)) return "redirect:/";
-
-        // user 닉네임 추가
-        WishUserDto userInfo = wishHistoryService.getWishUserInfo(wishId);
-        model.addAttribute("wishUserDto", userInfo);
-
-        WishDto wishDto = wishService.findWishByWishId(wishId);
-
-        model.addAttribute("wishDto", wishDto);
-
-        List<WishHistoryResponseDto> wishHistoryList = wishHistoryService.findWishHistoryListByWishId(wishId);
-        model.addAttribute("wishId", wishId);
-
-        model.addAttribute("dto", new WishHistoryUpdateRequestDto());
-
-        WishHistoryRateDto wishHistoryRateDto = wishHistoryService.findRateByWishId(wishId);
-        model.addAttribute("rate", wishHistoryRateDto);
-
-        if (wishHistoryList.size() != 0) {
-            model.addAttribute("wishHistoryResponseDtoList", wishHistoryList);
-        } else {
-            model.addAttribute("msg", "아직 위시 기록이 없네요. 새로운 기록을 남겨보세요.");
-        }
-        wishHistoryList.stream().forEach(System.out::println);
-        log.info("================== {} 위시 조화 ==================", wishId);
-        return "wishHistory";
-    }
+//    @GetMapping("/{wishId}")
+//    public String findWishHistoryListByWishId(@PathVariable Long wishId, Model model, HttpSession session) {
+//        session.setAttribute("wishId", wishId);
+//        if (!userService.isLogin(session)) return "redirect:/";
+//
+//        // user 닉네임 추가
+//        WishUserDto userInfo = wishHistoryService.getWishUserInfo(wishId);
+//        model.addAttribute("wishUserDto", userInfo);
+//
+//        WishDto wishDto = wishService.findWishByWishId(wishId);
+//
+//        model.addAttribute("wishDto", wishDto);
+//
+//        List<WishHistoryResponseDto> wishHistoryList = wishHistoryService.findWishHistoryListByWishId(wishId);
+//        model.addAttribute("wishId", wishId);
+//
+//        model.addAttribute("dto", new WishHistoryUpdateRequestDto());
+//
+//        WishHistoryRateDto wishHistoryRateDto = wishHistoryService.findRateByWishId(wishId);
+//        model.addAttribute("rate", wishHistoryRateDto);
+//
+//        if (wishHistoryList.size() != 0) {
+//            model.addAttribute("wishHistoryResponseDtoList", wishHistoryList);
+//        } else {
+//            model.addAttribute("msg", "아직 위시 기록이 없네요. 새로운 기록을 남겨보세요.");
+//        }
+//        wishHistoryList.stream().forEach(System.out::println);
+//        log.info("================== {} 위시 조화 ==================", wishId);
+//        return "wishHistory";
+//    }
 
 //    @GetMapping("/{wishId}")
 //    public String findTotalRateByWishId(@PathVariable Long wishId, Model model) {
