@@ -127,9 +127,14 @@
         </span>
       </td>
       <td class="px-5 py-3 text-sm font-normal text-left text-gray-800">
+<!--        <th:block th:if="${wishUserDto.userId == session.id}">-->
+<!--          <button th:id="'deleteButton-' + ${userStat.index}"-->
+<!--                  class="text-indigo-600 hover:text-indigo-900 cursor-pointer">삭제하기-->
+<!--          </button>-->
+<!--        </th:block>-->
         <th:block th:if="${wishUserDto.userId == session.id}">
           <button th:id="'deleteButton-' + ${userStat.index}"
-                  th:onclick="'deleteWishHistory(' + ${userStat.index} + ',' + ${wishHistoryResponseDto.id} + ')'"
+                  th:onclick="'deleteWishHistory(' + ${userStat.index} + ',' + ${wishId} +  ',' +  ${wishHistoryResponseDto.id} + ')'"
                   class="text-indigo-600 hover:text-indigo-900 cursor-pointer">삭제하기
           </button>
         </th:block>
@@ -154,7 +159,7 @@
       <div class="content w-2/6 m-auto bg-white rounded-lg px-6 py-12 lg:px-8">
       <span id="createCloseBtn"
             class="fixed top-10 right-10 fixed justify-center items-center text-white text-3xl font-bold cursor-pointer">&times;</span>
-        <form action="/wishHistory/create" method="POST">
+        <form action="/wishes/${wishId}/wishHistories"  method="POST">
           <h2 class="font-semibold text-xl pb-4 text-gray-800 w-full border-b-2 border-gray-20">위시기록하기</h2>
           <br>
           <input type="hidden" name="wishId" th:value="${wishId}">
@@ -191,7 +196,7 @@
         <span id="updateModalCloseBtn"
               class="fixed top-10 right-10 fixed justify-center items-center text-white text-3xl font-bold cursor-pointer">&times;</span>
 
-        <form th:action="@{/wishHistory/update}" th:object="${dto}" method="POST">
+        <form th:action="@{/wishes/{wishId}/wishHistories}" th:object="${dto}" method="POST">
           <h2 class="font-semibold text-xl pb-4 text-gray-800 w-full border-b-2 border-gray-20">위시수정하기</h2>
           <br>
           <input type="hidden" name="id" th:field="*{id}" value="" id="id"/>
@@ -304,12 +309,42 @@
     }
   }
 
-  function deleteWishHistory(index, id) {
+  // function deleteWishHistory(index, wishId, wishHistoryId) {
+  //   $.ajax({
+  //     url: '/wishes/' + wishId + '/wishHistories/' + wishHistoryId,
+  //     type: 'DELETE',
+  //     success: function (isDeleted) {
+  //       console.log(index);
+  //       if (isDeleted) {
+  //         let wishHistory = document.querySelector('#wishHistory-' + index);
+  //         let wishListCount = document.querySelectorAll('.wishListCount');
+  //         for (let i = 0; i < wishListCount.length; i++) {
+  //           let num = wishListCount[i].innerHTML.replace("회차", "");
+  //           if (num > index) {
+  //             wishListCount[i].textContent = (num - 1) + "회차";
+  //           }
+  //         }
+  //
+  //         console.log(wishHistory);
+  //         console.log('#wishHistory-' + index);
+  //         wishHistory.style.display = "none";
+  //         toastr.success("삭제 완료");
+  //       } else {
+  //         toastr.error("삭제 실패");
+  //       }
+  //     },
+  //     error: function () {
+  //       alert("error");
+  //     }
+  //   });
+  // }
+
+
+  function deleteWishHistory(index, wishId, id) {
     $.ajax({
-      url: '/wishHistory/delete/' + id,
-      type: 'get',
+      url: '/wishes/' + wishId +'/wishHistories/' + id,
+      type: 'delete',
       success: function (isDeleted) {
-        console.log(index);
         if (isDeleted) {
           let wishHistory = document.querySelector('#wishHistory-' + index);
           let wishListCount = document.querySelectorAll('.wishListCount');
