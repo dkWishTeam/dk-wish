@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/wishes/{wishId}/wishHistories")
@@ -48,22 +49,16 @@ public class WishHistoryController {
             model.addAttribute("msg", "아직 위시 기록이 없네요. 새로운 기록을 남겨보세요.");
         }
         wishHistoryList.stream().forEach(System.out::println);
-        log.info("================== {} 위시 조화 ==================", wishId);
+        //log.info("================== {} 위시 조화 ==================", wishId);
         return "wishHistory";
     }
 
-//    @GetMapping("/{wishId}")
-//    public String findTotalRateByWishId(@PathVariable Long wishId, Model model) {
-//        Long totalAmount = wishHistoryService.findTotalRateByWishId(wishId);
-//        model.addAttribute("totalAmount", totalAmount);
-//        if()
-//        return "wishHistory";
-//    }
-    @PostMapping(value = "/create")
+    //"/wishes/{wishId}/wishHistories"
+    @PostMapping
     public String createWishHistory(WishHistoryCreateDto wishHistoryCreateDto, HttpSession session) {
         if (!userService.isLogin(session)) return "redirect:/";
         wishHistoryService.createWishHistory(wishHistoryCreateDto);
-        return "redirect:/wishHistory/" + wishHistoryCreateDto.getWishId();
+        return "redirect:/wishes/" + wishHistoryCreateDto.getWishId() + "/wishHistories";
     }
 
     @RequestMapping(value = "/wishHistoryInfo/{id}")
@@ -72,16 +67,20 @@ public class WishHistoryController {
         return wishHistoryService.findWishHistoryInfoById(id);
     }
 
-    @PostMapping(value = "/update")
+    @PutMapping
     public String updateWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto, HttpSession session) {
         if (!userService.isLogin(session)) return "redirect:/";
         wishHistoryService.updateWishHistory(wishHistoryUpdateRequestDto);
-        return "redirect:/wishHistory/" + wishHistoryUpdateRequestDto.getWishId();
+//        return "redirect:/wishHistory/" + wishHistoryUpdateRequestDto.getWishId();
+        return "redirect:/wishes/" + wishHistoryUpdateRequestDto.getWishId() + "/wishHistories";
     }
 
-    @GetMapping("/delete/{id}")
+
+    @DeleteMapping("/{wishHistoryId}")
     @ResponseBody
-    public void deleteWishHistory(@PathVariable Long id) {
-        wishHistoryService.deleteWishHistory(id);
+    public Boolean deleteWishHistory(@PathVariable Long wishHistoryId) {
+        return wishHistoryService.deleteWishHistory(wishHistoryId);
+
+
     }
 }

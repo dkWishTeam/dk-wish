@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -62,6 +63,7 @@ public class WishHistoryServiceImpl implements WishHistoryService {
     }
 
     @Override
+    @Transactional
     public void createWishHistory(WishHistoryCreateDto wishHistoryCreateDto) {
         Wish wish = wishRepository.findById(wishHistoryCreateDto.getWishId()).orElseThrow();
         WishHistory wishHistory = wishHistoryCreateDtoToWishHistory(wishHistoryCreateDto, wish);
@@ -69,6 +71,7 @@ public class WishHistoryServiceImpl implements WishHistoryService {
     }
 
     @Override
+    @Transactional
     public void updateWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto) {
 //        WishHistory wishHistory = wishHistoryRepository.findWishHistoryInfoById(
 //            wishHistoryUpdateRequestDto.getId());
@@ -83,9 +86,11 @@ public class WishHistoryServiceImpl implements WishHistoryService {
     }
 
     @Override
-    public void deleteWishHistory(Long id) {
+    @Transactional
+    public Boolean deleteWishHistory(Long id) {
 //        return wishHistoryRepository.deleteWishHistory(id);
         wishHistoryRepository.deleteById(id);
+        return true;
     }
 
     @Override
