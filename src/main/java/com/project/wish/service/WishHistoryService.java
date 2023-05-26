@@ -1,5 +1,6 @@
 package com.project.wish.service;
 
+import com.project.wish.domain.Wish;
 import com.project.wish.domain.WishHistory;
 import com.project.wish.dto.WishDto;
 import com.project.wish.dto.WishHistoryCreateDto;
@@ -24,11 +25,11 @@ public interface WishHistoryService {
 
     void updateWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto);
 
-    boolean deleteWishHistory(Long id);
+    void deleteWishHistory(Long id);
 
     default WishHistoryResponseDto wishHistoryToWishHistoryResponseDto(WishHistory wishHistory) {
         return WishHistoryResponseDto.builder()
-            .wishId(wishHistory.getWishId())
+            .wishId(wishHistory.getWish().getId())
             .id(wishHistory.getId())
             .historyDatetime(wishHistory.getHistoryDatetime())
             .registerDatetime(wishHistory.getRegisterDatetime())
@@ -36,36 +37,34 @@ public interface WishHistoryService {
             .build();
     }
 
-    default WishHistory wishHistoryCreateDtoToWishHistory(WishHistoryCreateDto wishHistoryCreateDto) {
+    default WishHistory wishHistoryCreateDtoToWishHistory(WishHistoryCreateDto wishHistoryCreateDto, Wish wish) {
         return WishHistory.builder()
-            .wishId(wishHistoryCreateDto.getWishId())
+            .wish(wish)
+//            .wishId(wishHistoryCreateDto.getWishId())
             .historyDatetime(convertSqlDateToLocalDateTime(wishHistoryCreateDto.getHistoryDatetime()))
             .amount(wishHistoryCreateDto.getAmount())
             .registerDatetime(LocalDateTime.now())
             .build();
     }
 
-    default WishHistory wishHistoryUpdateRequestDtoToWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto, LocalDateTime registerDatetime){
-        return WishHistory.builder()
-            .wishId(wishHistoryUpdateRequestDto.getWishId())
-            .id(wishHistoryUpdateRequestDto.getId())
-            .historyDatetime(convertSqlDateToLocalDateTime(wishHistoryUpdateRequestDto.getHistoryDatetime()))
-            .amount(wishHistoryUpdateRequestDto.getAmount())
-            .registerDatetime(registerDatetime)
-            .modifyDatetime(LocalDateTime.now())
-            .build();
-    }
+//    default WishHistory wishHistoryUpdateRequestDtoToWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto, LocalDateTime registerDatetime, Wish wish){
+//        return WishHistory.builder()
+//            .wish(wish)
+////            .wishId(wishHistoryUpdateRequestDto.getWishId())
+////            .id(wishHistoryUpdateRequestDto.getId())      //Todo : id 재설정해줘야하나?
+//            .historyDatetime(convertSqlDateToLocalDateTime(wishHistoryUpdateRequestDto.getHistoryDatetime()))
+//            .amount(wishHistoryUpdateRequestDto.getAmount())
+//            .registerDatetime(registerDatetime)
+//            .modifyDatetime(LocalDateTime.now())
+//            .build();
+//    }
 
     default LocalDateTime convertSqlDateToLocalDateTime(Date sqlDate){
         java.util.Date utilDate = new java.util.Date(sqlDate.getTime());
         LocalDateTime localDateTime = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         return localDateTime;
     }
-//    default WishHistory wishHistoryCreateDtoToWishHistory(WishHistoryCreateDto dto) {
-//v
-//    }
 
-    WishUserDto getWishUserInfo(Long id);
+    WishUserDto getWishUserInfo(Long wishId);
+
 }
-
-

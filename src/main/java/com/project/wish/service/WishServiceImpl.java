@@ -45,4 +45,8 @@ public class WishServiceImpl implements WishService {
         return null;
     }
 
+    @Override
+    public String findTitleByWishId(Long wishId) {
+        return wishRepository.findById(wishId).orElseThrow().getTitle();
+    }
 }

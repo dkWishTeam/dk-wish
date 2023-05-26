@@ -15,26 +15,24 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/wishHistory")
+@RequestMapping("/wishes/{wishId}/wishHistories")
 @Slf4j
 public class WishHistoryController {
-
     private final WishHistoryService wishHistoryService;
     private final WishService wishService;
     private final UserService userService;
 
-    @GetMapping("/{wishId}")
+    @GetMapping
     public String findWishHistoryListByWishId(@PathVariable Long wishId, Model model, HttpSession session) {
         session.setAttribute("wishId", wishId);
         if (!userService.isLogin(session)) return "redirect:/";
 
         // user 닉네임 추가
         WishUserDto userInfo = wishHistoryService.getWishUserInfo(wishId);
+
         model.addAttribute("wishUserDto", userInfo);
 
-        WishDto wishDto = wishService.findWishByWishId(wishId);
-
-        model.addAttribute("wishDto", wishDto);
+        model.addAttribute("title", wishService.findTitleByWishId(wishId));
 
         List<WishHistoryResponseDto> wishHistoryList = wishHistoryService.findWishHistoryListByWishId(wishId);
         model.addAttribute("wishId", wishId);
@@ -61,7 +59,6 @@ public class WishHistoryController {
 //        if()
 //        return "wishHistory";
 //    }
-
     @PostMapping(value = "/create")
     public String createWishHistory(WishHistoryCreateDto wishHistoryCreateDto, HttpSession session) {
         if (!userService.isLogin(session)) return "redirect:/";
@@ -84,7 +81,7 @@ public class WishHistoryController {
 
     @GetMapping("/delete/{id}")
     @ResponseBody
-    public boolean deleteWishHistory(@PathVariable Long id) {
-        return wishHistoryService.deleteWishHistory(id);
+    public void deleteWishHistory(@PathVariable Long id) {
+        wishHistoryService.deleteWishHistory(id);
     }
 }

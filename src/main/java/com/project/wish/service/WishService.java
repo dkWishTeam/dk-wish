@@ -83,4 +83,5 @@ public interface WishService {
         return LocalDateTime.parse(localdateString, formatter);
     }
 
+    String findTitleByWishId(Long wishId);
 }
