@@ -118,4 +118,20 @@ class WishRepositoryTest {
         //then
         assertThat(wishRepository.findById(id).orElse(null)).isEqualTo(null);
     }
+
+    @Test
+    void findWishByUserID() {
+        //given
+        User findUser = userRepository.findById(1L).get();
+        List<Wish> wishList = wishRepository.findWishListByUserID(findUser);
+
+        //when
+
+
+        //then
+        for (Wish wish : wishList) {
+            System.out.println(wish.getUser().getId() + " =? " + findUser.getId());
+            assertThat(wish.getUser().getId()).isEqualTo(findUser.getId());
+        }
+    }
 }
