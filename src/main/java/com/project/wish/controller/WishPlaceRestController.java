@@ -17,7 +17,7 @@ import java.util.List;
 public class WishPlaceRestController {
     private final WishPlaceService wishPlaceService;
 
-    @RequestMapping(value = "/test/{path}", produces = "application/json; charset=utf-8")
+    @RequestMapping(value = "/place/{path}", produces = "application/json; charset=utf-8")
     @ResponseBody
     public List<WishPlaceDto> responseWishPlace(@PathVariable("path") String path) {
         return wishPlaceService.getWishPlace(path);
