@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,10 +21,11 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @Table(name = "user")
-public class User {
+@Entity
+public class User extends BaseEntity{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -38,14 +40,11 @@ public class User {
     private String phone;
     private String nickname;
     private boolean isBlock;
-    private LocalDateTime registerDatetime;
-    private LocalDateTime modifyDatetime;
     private boolean isQuit;
 
     @Builder
     public User(Role role, String userId, String password, String email, String name, Date birth, String phone,
-        String nickname, boolean isBlock, LocalDateTime registerDatetime, LocalDateTime modifyDatetime,
-        boolean isQuit) {
+        String nickname, boolean isBlock, boolean isQuit) {
         this.role = role;
         this.userId = userId;
         this.password = password;
@@ -55,8 +54,6 @@ public class User {
         this.phone = phone;
         this.nickname = nickname;
         this.isBlock = isBlock;
-        this.registerDatetime = registerDatetime;
-        this.modifyDatetime = modifyDatetime;
         this.isQuit = isQuit;
     }
 }

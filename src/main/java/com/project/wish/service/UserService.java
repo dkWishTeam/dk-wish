@@ -53,8 +53,6 @@ public interface UserService {
             .phone(dto.getPhone())
             .nickname(dto.getNickname())
             .isBlock(false)
-            .registerDatetime(LocalDateTime.now())
-            .modifyDatetime(null)
             .isQuit(false)
             .build();
     }
@@ -67,7 +65,6 @@ public interface UserService {
         user.setBirth(dto.getBirth());
         user.setPhone(dto.getPhone());
         user.setNickname(dto.getNickname());
-        user.setModifyDatetime(LocalDateTime.now());
         return user;
     }
 
