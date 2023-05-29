@@ -68,7 +68,7 @@ public class WishController {
         return "redirect:/users/" + session.getAttribute("id") + "/wishes";
     }
 
-    @GetMapping("/{userId}/wishes/updateForm/{wishId}")
+    @GetMapping("/{userId}/wishes/{wishId}/updateForm")
     public String updateWishForm(@PathVariable Long wishId, Model model, HttpSession session) {
         userService.isLogin(session);
         model.addAttribute("wishDto", wishService.findWishById(wishId));
