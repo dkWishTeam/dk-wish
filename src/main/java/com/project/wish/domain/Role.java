@@ -1,5 +1,6 @@
 package com.project.wish.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,6 +16,8 @@ public class Role {
     @Id
     private Integer id;
 
+    @Column(name = "role_type")
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
+
 }
