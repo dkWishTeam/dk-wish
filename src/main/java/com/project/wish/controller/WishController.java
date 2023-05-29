@@ -44,7 +44,8 @@ public class WishController {
     @GetMapping("/{userId}/wishes/{wishId}")
     public String userWish(@PathVariable Long wishId, HttpSession session){
         userService.isLogin(session);
-        return "redirect:wishHistory/" + wishId;
+//        return "redirect:wishHistory/" + wishId;
+        return "redirect:/wishes/" + wishId + "/wishHistories";
     }
 
     @GetMapping("/{userId}/wishes/createForm")
