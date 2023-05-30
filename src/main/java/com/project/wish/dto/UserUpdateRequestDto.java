@@ -1,13 +1,14 @@
 package com.project.wish.dto;
 
-import java.util.Date;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @Builder
+@ToString
 public class UserUpdateRequestDto {
 
     private Long id;
