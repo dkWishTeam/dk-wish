@@ -34,7 +34,7 @@ public class WishHistoryController {
 
         model.addAttribute("wishUserDto", userInfo);
 
-        model.addAttribute("title", wishService.findWishById(wishId));
+        model.addAttribute("title", wishService.findWishById(wishId).getTitle());
 
         List<WishHistoryResponseDto> wishHistoryList = wishHistoryService.findWishHistoryListByWishId(wishId);
         model.addAttribute("wishId", wishId);
