@@ -36,25 +36,10 @@ public interface WishHistoryService {
     default WishHistory wishHistoryCreateDtoToWishHistory(WishHistoryCreateDto wishHistoryCreateDto, Wish wish) {
         return WishHistory.builder()
             .wish(wish)
-//            .wishId(wishHistoryCreateDto.getWishId())
             .historyDatetime(convertSqlDateToLocalDateTime(wishHistoryCreateDto.getHistoryDatetime()))
             .amount(wishHistoryCreateDto.getAmount())
             .build();
     }
-
-
-//    default WishHistory wishHistoryUpdateRequestDtoToWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto, LocalDateTime registerDatetime, Wish wish){
-//        return WishHistory.builder()
-//            .wish(wish)
-////            .wishId(wishHistoryUpdateRequestDto.getWishId())
-////            .id(wishHistoryUpdateRequestDto.getId())      //Todo : id 재설정해줘야하나?
-
-//            .historyDatetime(convertSqlDateToLocalDateTime(wishHistoryUpdateRequestDto.getHistoryDatetime()))
-//            .amount(wishHistoryUpdateRequestDto.getAmount())
-//            .registerDatetime(registerDatetime)
-//            .modifyDatetime(LocalDateTime.now())
-//            .build();
-//    }
 
     default LocalDateTime convertSqlDateToLocalDateTime(Date sqlDate){
         java.util.Date utilDate = new java.util.Date(sqlDate.getTime());

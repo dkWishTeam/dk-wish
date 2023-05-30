@@ -1,13 +1,7 @@
 package com.project.wish.repository;
 
 import com.project.wish.domain.WishHistory;
-import com.project.wish.dto.WishHistoryRateDto;
-import com.project.wish.dto.WishUserDto;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface WishHistoryRepository extends JpaRepository<WishHistory, Long> {
     //    1. List<WishHistory> findWishHistoryListByWishId(Long wishId);

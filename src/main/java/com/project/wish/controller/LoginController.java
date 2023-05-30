@@ -45,7 +45,6 @@ public class LoginController {
             model.addAttribute("rememberCookie", rememberCookie.getValue());
             model.addAttribute("rememberCheckBox", true);
         }
-        log.info("================== 회원 로그인 ==================");
         return "login";
     }
 

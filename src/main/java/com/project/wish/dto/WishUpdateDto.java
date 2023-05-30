@@ -22,5 +22,6 @@ public class WishUpdateDto {
     private long goalAmount;
     private Date goalDate;
     private boolean isPublic;
+    private boolean completionStatus;
 
 }

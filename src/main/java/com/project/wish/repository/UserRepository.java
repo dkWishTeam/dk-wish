@@ -1,10 +1,10 @@
 package com.project.wish.repository;
 
 import com.project.wish.domain.User;
-import com.project.wish.dto.LoginDto;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User,Long> {
 
