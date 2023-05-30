@@ -13,13 +13,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Setter
 @Getter
 @NoArgsConstructor
-@ToString
 @Table(name="wish_history")
 
 public class WishHistory extends BaseEntity{
