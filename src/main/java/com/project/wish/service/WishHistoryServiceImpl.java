@@ -51,9 +51,10 @@ public class WishHistoryServiceImpl implements WishHistoryService {
 //        private String cheerUpPhrase;
 
         Wish wish = wishRepository.findById(wishId).orElseThrow();
+//        System.out.println("wish = " + wish);
         List<WishHistory> wishHistories = wish.getWishHistories();
 
-        Long percent = (wishHistories.stream().mapToLong(WishHistory::getAmount).sum()/wish.getGoalAmount())*100;
+        Long percent = (wishHistories.stream().mapToLong(WishHistory::getAmount).sum() * 100)/wish.getGoalAmount();
 
         return WishHistoryRateDto.builder()
                 .wishId(wishId)
