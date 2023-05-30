@@ -33,11 +33,17 @@ public enum CheerUpPhrase {
     }
 
     public static CheerUpPhrase getByPercent(int percent) {
-        for (CheerUpPhrase phrase : CheerUpPhrase.values()) {
-            if (percent >= phrase.getMinPercent() && percent <= phrase.getMaxPercent()) {
-                return phrase;
+        if (percent > 0) {
+            if(percent > 100){
+//                percent = 100;
+                return CheerUpPhrase.SUCCESS;
+            }
+            for (CheerUpPhrase phrase : CheerUpPhrase.values()) {
+                if (percent >= phrase.getMinPercent() && percent <= phrase.getMaxPercent()) {
+                    return phrase;
+                }
             }
         }
-        return null;
+        return CheerUpPhrase.START;
     }
 }

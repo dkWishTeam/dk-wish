@@ -71,7 +71,7 @@
   <div id="progressBarBox" class="clear-both pt-12 px-7 pb-5 border border-gray-200 rounded-lg">
     <div class="flex items-center justify-between mb-3 pr-16">
       <span class="text-xl font-bold text-base text-yellow-500 dark:text-yellow-500 mr-4"
-            th:text="|${rate.percent}%|"></span>
+            th:text="(${rate.percent > 100} ? '100%' : ${rate.percent + '%'})"></span>
       <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-200">
         <div class="bg-yellow-500 h-2.5 rounded-full" th:classappend="${rate.percent > 0 ? 'animate-fill' : ''}"
              th:style="|width:${(rate.percent > 100 ? 100 : rate.percent)}%|"></div>
