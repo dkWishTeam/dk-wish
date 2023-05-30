@@ -30,13 +30,7 @@ public class UserController {
      */
     @PostMapping
     public String createUser(UserCreateRequestDto dto) {
-        log.debug("[START]User registration with " + dto);
-        try {
-            userService.insertUser(dto);
-        } catch (Exception e) {
-            log.error("[Error]User registration failed", e);
-        }
-        log.debug("[END]User registration");
+        userService.insertUser(dto);
         return "redirect:/";
     }
 
@@ -86,7 +80,6 @@ public class UserController {
         isRoleEqualsAdmin(session);
         model.addAttribute("users", userService.findUsers());
         return "user/userList";
-        //todo paging
     }
 
     /**
@@ -217,7 +210,6 @@ public class UserController {
      * @throws UnAuthorizedAccessException
      */
     private void isUserAuthorized(Long id, HttpSession session) throws UnAuthorizedAccessException {
-        log.info("[START] User Authorized id=" + id);
         Long loggedUserId = (Long) session.getAttribute("id");
         if (loggedUserId == null || !Objects.equals(loggedUserId, id)) {
             throw new UnAuthorizedAccessException();

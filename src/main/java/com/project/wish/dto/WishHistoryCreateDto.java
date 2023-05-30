@@ -13,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
-@Builder
+@ToString
 public class WishHistoryCreateDto {
     private Long wishId;
     private java.sql.Date historyDatetime;
