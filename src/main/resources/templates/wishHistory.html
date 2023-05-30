@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>wishHistory Page</title>
+  <title>위시 상세보기</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
         integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
@@ -63,7 +63,8 @@
           th:text="|${wishUserDto.nickname}님의 ${title}위시입니다.|"></h2>
     </div>
     <div class="flex justify-end">
-      <button id="updateButton"
+<!--      <button id="updateButton" th:action="@{/users/{id}/wishes/{wishId}/updateForm(id=${session.id}, wishId=${wishId})}"-->
+      <button id="updateButton" th:onclick="|location.href='@{/users/{id}/wishes/{wishId}/updateForm(id=${session.id}, wishId=${wishId})}'|"
               class="bg-blue-600 w-28 py-3 rounded-lg text-sm text-white cursor-pointer mt-5 mb-3 hover:bg-gradient-to-br from-purple-600 to-blue-500">위시수정하기
       </button>
     </div>
@@ -85,7 +86,7 @@
 
   <th:block th:if="${wishUserDto.userId == session.id}">
     <button id="createButton"
-            class="float-right bg-blue-600 w-28 py-3 rounded-lg text-sm text-white cursor-pointer mt-5 mb-3 hover:bg-gradient-to-br from-purple-600 to-blue-500"
+            class="float-right bg-blue-600 w-28 py-3 rounded-lg text-sm text-white cursor-pointer mt-5 mb-3 hover:bg-gradient-to-br from-purple-600 to-blue-500 transition duration-500"
             th:onclick="showCreateModal()">위시기록하기
     </button>
   </th:block>

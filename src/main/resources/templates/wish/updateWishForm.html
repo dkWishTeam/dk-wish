@@ -2,71 +2,161 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>위시 등록</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/wishCreateForm.css">
 </head>
 <body>
 <header th:replace="fragments/header :: header"></header>
 
-<div class="mt-8 mb-8">
-    <h2 class="text-4xl text-center">위시 등록하기</h2>
-    <p class="text-center">당신의 위시를 실현하는 첫걸음 이에요!</p>
-</div>
+<article class="my-16 text-center">
+    <h1 class="mb-4 text-4xl font-extrabold leading-none
+    tracking-tight text-gray-900 dark:text-white">위시 수정하기</h1>
+    <!--    <p class="mb-6 text-lg font-normal text-gray-500-->
+    <!--    lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">당신의 위시를 실현하는 첫걸음 이에요!</p>-->
+</article>
 
-<section>
+<section class="mx-auto max-w-screen-lg">
+    <script>
+        function getCheckedValue() {
+            const checkBoxValue = document.getElementById("isPublicToggle");
+            const submitValueBox = document.getElementById("isPublicSubmit");
+            if ((checkBoxValue.checked)) {
+                submitValueBox.value = "true";
+            } else {
+                submitValueBox.value = "false";
+            }
+        }
+    </script>
+    <form class="w-full" th:action="@{/users/{userId}/wishes/{wishId}(userId=${session.get('id')}, wishId=${wishId})}" method="post" enctype="multipart/form-data">
 
-    <form action="/wish/create" method="post">
+        <input type="hidden" name="userId" th:value="${session.get('id')}">
+        <input type="hidden" name="id" th:value="${wishResponseDto.getId()}">
 
-        <div class="" id="input-image-container">
-            <label for="image"></label>
-            <input type="file" id="image" name="image" onclick="">
+        <hr class="w-full my-6">
+        <div class="w-full flex">
 
+            <div id="image-flex-container" class="w-1/2">
+                <div id="image-container"
+                     class="relative w-full h-0 pb-[100%] bg-white border border-gray-200 rounded-lg">
+                    <img class="absolute inset-0 w-full h-full object-scale-down rounded-lg" id="upload-image-preview"
+                         src="/images/default.png" th:src="${wishResponseDto.getImage()}"/>
+                </div>
+            </div>
+
+            <div id="wishContent-container" class="w-1/2 flex-col justify-between flex-none overflow-hidden block">
+
+                <div class="w-full my-8 items-center flex justify-end " id="input-isPublic-container">
+                    <input type="checkbox" class="drop-shadow-xl" id="isPublicToggle" hidden name="isPublic"
+                           onclick="getCheckedValue()" th:value="${wishResponseDto.isPublic()}" checked>
+                    <label for="isPublicToggle" id="toggleSwitch">
+                        <span id="toggleButton"></span>
+                    </label>
+                </div>
+
+
+                <div class="w-full my-8 flex justify-between">
+                    <label for="wish-title"
+                           class="w-2/12 ml-7 flex justify-start items-center text-base text-lg text-gray-900">위시
+                        제목</label>
+                    <input type="text"
+                           class="w-9/12 bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 bg-slate-200"
+                           id="wish-title" name="title" th:value="${wishResponseDto.getTitle()}">
+                </div>
+
+                <div class="w-full my-8 flex justify-between">
+                    <label for="product-name"
+                           class="w-2/12 ml-7 flex justify-start items-center text-lg font-medium text-gray-900">상품
+                        이름</label>
+                    <input type="text"
+                           class="w-9/12 bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 bg-slate-200"
+                           id="product-name" name="productName" th:value="${wishResponseDto.getProductName()}">
+                </div>
+
+                <div class="w-full my-8 flex justify-between">
+                    <label for="goal-amount"
+                           class="w-2/12 ml-7 flex justify-start items-center text-lg font-medium text-gray-900">목표
+                        금액</label>
+                    <input type="number"
+                           class="w-9/12 bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 bg-slate-200"
+                           id="goal-amount" name="goalAmount" th:value="${wishResponseDto.getGoalAmount()}">
+                </div>
+
+                <div class="w-full my-8 flex justify-between">
+                    <label for="goal-date"
+                           class="w-2/12 ml-7 flex justify-start items-center text-lg font-medium text-gray-900">목표
+                        날짜</label>
+                    <input type="date"
+                           class="w-9/12 bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 bg-slate-200"
+                           id="goal-date" name="goalDate" th:value="${wishResponseDto.getGoalDate()}">
+                </div>
+
+                <div class="w-full my-8 flex justify-between">
+                    <label for="image-input"
+                           class="w-2/12 ml-7 flex justify-start items-center rounded-lg text-lg font-medium text-gray-900">이미지등록</label>
+                    <div class="w-9/12 flex justify-between">
+                        <input class="w-8/12 text-base text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-slate-200 focus:outline-none"
+                               id="image-input" type="file" name="imageFile"  accept="image/jpeg, image/png" >
+                        <button onclick="deleteUploadImage()" type="button"
+                                class="w-3/12 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2.5 mb-2focus:outline-none">
+                            삭제
+                        </button>
+                    </div>
+                </div>
+                <div class="w-full ml-7">
+                    <th:block th:if="${!#strings.isEmpty(wishResponseDto.getImage())}">
+                        현재 파일 : <span class="text-gray-900" th:text="${#strings.replace(name,'/uploadImages','')}"></span>
+                    </th:block>
+                </div>
+            </div>
         </div>
 
-        <div class="mt-4 mb-4 float-right" id="input-isPublic-container">
-            <input type="checkbox" id="isPublic" hidden name="isPublic" th:value="${wishDto.isPublic()}">
-            <label for="isPublic" id="toggleSwitch">
-                <span id="toggleButton"></span>
-            </label>
+        <div class="my-4 ">
+            <label for="wish-content" class="my-3 block text-lg font-medium text-gray-900">위시 내용</label>
+            <textarea
+                    class="bg-gray-50  border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 p-4 w-full h-52 resize-none bg-slate-200"
+                    id="wish-content" name="content" th:text="${wishResponseDto.getContent()}"></textarea>
         </div>
 
-        <div class="mt-4 mb-4">
-            <label for="wish-title">위시 제목</label>
-            <input type="text" placeholder="위시의 제목을 입력해주세요" class="h-7 rounded-lg bg-slate-200" id="wish-title" name="wish-title" th:value="${wishDto.getTitle()}">
+        <div class="items-center justify-center flex my-20" id="button-container">
+            <button type="submit"
+                    class="mr-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center"
+                    id="submit-button">등록하기
+            </button>
+            <button type="reset"
+                    class="text-white bg-slate-400 hover:bg-slate-500 focus:ring-4 focus:outline-none focus:ring-slate-500 font-medium rounded-lg text-base px-7 py-3.5 text-center"
+                    id="reset-button">돌아가기
+            </button>
         </div>
-        <hr>
-
-        <div class="mt-4 mb-4">
-            <label for="wish-content">위시 내용</label>
-            <textarea placeholder="위시의 내용을 간략하게 작성해 주세요✏️" class=" rounded-lg w-full h-52 resize-none bg-slate-200"
-                      id="wish-content" name="content" th:value="${wishDto.getContent()}"></textarea>
-        </div>
-
-        <div class="mt-4 mb-4">
-            <label for="product-name">상품 이름</label>
-            <input type="text" placeholder="상품 이름을 자유롭게 작성해 주세요. ex) MacBook Pro M2 13인치"
-                   class="rounded-lg bg-slate-200" id="product-name" name="productName" th:value="${wishDto.productName}">
-        </div>
-
-        <div class="mt-4 mb-4">
-            <label for="goal-amount">목표 금액</label>
-            <input type="number" placeholder="목표 금액을 입력해 주세요. ex) 2200000원" class="rounded-lg bg-slate-200"
-                   id="goal-amount" name="goalAmount" th:value="${wishDto.getGoalAmount()}">
-        </div>
-
-        <div class="mt-4 mb-4">
-            <label for="goal-date">목표 날짜</label>
-            <input type="date" placeholder="년. 월. 일" class="rounded-lg bg-slate-200" id="goal-date" name="goalDate" th:value="${wishDto.getGoalDate()}">
-        </div>
-
-        <div class="items-center justify-center flex" id="button-container">
-            <button type="submit" class="w-1/6 h-8 text-white" id="submit-button">등록하기</button>
-            <button type="reset" class="w-1/6 h-8 bg-slate-200 text-zinc-400">초기화</button>
-        </div>
-
+        <input type="hidden" name="completionStatus" th:value="${wishResponseDto.isCompletionStatus()}">
+<!--        <input type="hidden" name="modifyDatetimeString"-->
+<!--               th:value="${#temporals.format(localDateTime, 'yyyy-MM-dd HH:mm:ss')}">-->
     </form>
 </section>
 
+<footer th:replace="fragments/footer :: footer"></footer>
+<script>
 
-<!--<footer th:replace="fragments/footer :: footer"></footer>-->
+
+    //이미지 업로드시 미리보기 기능
+    const uploadImage = document.querySelector('#image-input');
+    const imagePreview = document.querySelector('#upload-image-preview');
+    uploadImage.addEventListener("input", (event) => {
+        const image = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            imagePreview.src = URL.createObjectURL(image);
+        };
+        reader.readAsDataURL(image);
+    });
+
+    function deleteUploadImage() {
+        let elementById = document.getElementById("upload-image-preview");
+        elementById.src = "/images/default.png";
+    }
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 </body>
 </html>

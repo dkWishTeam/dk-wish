@@ -1,6 +1,5 @@
 package com.project.wish.service;
 
-import com.project.wish.domain.Role;
 import com.project.wish.domain.RoleType;
 import com.project.wish.domain.User;
 import com.project.wish.dto.*;

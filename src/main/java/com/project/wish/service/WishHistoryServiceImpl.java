@@ -3,30 +3,23 @@ package com.project.wish.service;
 import com.project.wish.domain.User;
 import com.project.wish.domain.Wish;
 import com.project.wish.domain.WishHistory;
-import com.project.wish.dto.WishHistoryCreateDto;
-import com.project.wish.dto.WishHistoryRateDto;
-import com.project.wish.dto.WishHistoryResponseDto;
-import com.project.wish.dto.WishHistoryUpdateRequestDto;
-import com.project.wish.dto.WishUserDto;
+import com.project.wish.dto.*;
 import com.project.wish.enums.CheerUpPhrase;
 import com.project.wish.repository.WishHistoryRepository;
 import com.project.wish.repository.WishRepository;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class WishHistoryServiceImpl implements WishHistoryService {
 
     private final WishHistoryRepository wishHistoryRepository;
-
     private final WishRepository wishRepository;
 
     @Override
@@ -39,21 +32,14 @@ public class WishHistoryServiceImpl implements WishHistoryService {
     @Override
     public WishHistoryResponseDto findWishHistoryInfoById(Long id) {
         WishHistory wishHistoryById = wishHistoryRepository.findById(id).orElseThrow();
-//        WishHistory wishHistoryById = wishHistoryRepository.findWishHistoryInfoById(id);
         return wishHistoryToWishHistoryResponseDto(wishHistoryById);
     }
 
     @Override
     public WishHistoryRateDto findRateByWishId(Long wishId) {
 
-//        private Long wishId;
-//        private Long percent;
-//        private String cheerUpPhrase;
-
         Wish wish = wishRepository.findById(wishId).orElseThrow();
-//        System.out.println("wish = " + wish);
         List<WishHistory> wishHistories = wish.getWishHistories();
-
         Long percent = (wishHistories.stream().mapToLong(WishHistory::getAmount).sum() * 100)/wish.getGoalAmount();
 
         return WishHistoryRateDto.builder()
@@ -74,22 +60,18 @@ public class WishHistoryServiceImpl implements WishHistoryService {
     @Override
     @Transactional
     public void updateWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto) {
-//        WishHistory wishHistory = wishHistoryRepository.findWishHistoryInfoById(
-//            wishHistoryUpdateRequestDto.getId());
         Wish wish = wishRepository.findById(wishHistoryUpdateRequestDto.getWishId()).orElseThrow();
         WishHistory wishHistory = wishHistoryRepository.findById(wishHistoryUpdateRequestDto.getWishId()).orElseThrow();
         wishHistory.setWish(wish);
         wishHistory.setModifyDatetime(LocalDateTime.now());
         wishHistory.setAmount(wishHistoryUpdateRequestDto.getAmount());
         wishHistory.setHistoryDatetime(wishHistory.getHistoryDatetime());
-//        wishHistoryRepository.updateWishHistory(wishHistory);
         wishHistoryRepository.save(wishHistory);
     }
 
     @Override
     @Transactional
     public Boolean deleteWishHistory(Long id) {
-//        return wishHistoryRepository.deleteWishHistory(id);
         wishHistoryRepository.deleteById(id);
         return true;
     }
