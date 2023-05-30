@@ -39,7 +39,6 @@ public interface WishHistoryService {
 //            .wishId(wishHistoryCreateDto.getWishId())
             .historyDatetime(convertSqlDateToLocalDateTime(wishHistoryCreateDto.getHistoryDatetime()))
             .amount(wishHistoryCreateDto.getAmount())
-            .registerDatetime(LocalDateTime.now())
             .build();
     }
 

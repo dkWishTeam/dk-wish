@@ -21,7 +21,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Table(name="wish_history")
-public class WishHistory {
+
+public class WishHistory extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,16 +33,12 @@ public class WishHistory {
     private Wish wish;
     private LocalDateTime historyDatetime;
     private Long amount;
-    private LocalDateTime registerDatetime;
-    private LocalDateTime modifyDatetime;
 
     @Builder
-    public WishHistory(Wish wish, LocalDateTime historyDatetime, Long amount, LocalDateTime registerDatetime,
-        LocalDateTime modifyDatetime) {
+    public WishHistory(Wish wish, LocalDateTime historyDatetime, Long amount) {
         this.wish = wish;
         this.historyDatetime = historyDatetime;
         this.amount = amount;
-        this.registerDatetime = registerDatetime;
-        this.modifyDatetime = modifyDatetime;
+
     }
 }
