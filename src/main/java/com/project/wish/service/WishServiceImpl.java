@@ -38,6 +38,9 @@ public class WishServiceImpl implements WishService {
     @Override
     public void updateWish(WishUpdateDto wishUpdateDto) {
         Wish findWish = wishRepository.findById(wishUpdateDto.getId()).orElseThrow();
+        if (wishUpdateDto.getImage() == null) {
+            wishUpdateDto.setImage(findWish.getImage());
+        }
         updateDtoToEntity(findWish, wishUpdateDto);
     }
 

@@ -44,7 +44,6 @@ public class WishController {
     @GetMapping("/{userId}/wishes/{wishId}")
     public String userWish(@PathVariable Long wishId, HttpSession session){
         userService.isLogin(session);
-//        return "redirect:wishHistory/" + wishId;
         return "redirect:/wishes/" + wishId + "/wishHistories";
     }
 
@@ -58,12 +57,11 @@ public class WishController {
      * todo : redirectAttributes 를 toastr 에  넘겨주기
      */
     @PostMapping("/{userId}/wishes")
-    public String createWish(WishRequestDto wishRequestDto,
-                             @RequestParam MultipartFile imageFile,
-                             RedirectAttributes redirectAttributes,
-                             HttpSession session) throws IOException {
+    public String createWish(WishRequestDto wishRequestDto, @RequestParam MultipartFile imageFile,
+                             RedirectAttributes redirectAttributes, HttpSession session) throws IOException {
         FileUploader fileUploader = new FileUploader();
-        wishRequestDto.setImage(fileUploader.getUploadFilePath(imageFile));
+        String fileName = fileUploader.getUploadFilePath(imageFile);
+        wishRequestDto.setImage(fileName);
         wishService.createWish(wishRequestDto);
         redirectAttributes.addAttribute("isCreateSuccess", true);
         return "redirect:/users/" + session.getAttribute("id") + "/wishes";
@@ -72,17 +70,19 @@ public class WishController {
     @GetMapping("/{userId}/wishes/{wishId}/updateForm")
     public String updateWishForm(@PathVariable Long wishId, Model model, HttpSession session) {
         userService.isLogin(session);
-        model.addAttribute("wishDto", wishService.findWishById(wishId));
+        model.addAttribute("wishId");
+        model.addAttribute("wishResponseDto", wishService.findWishById(wishId));
         return "wish/updateWishForm";
     }
 
-    /**
-     * todo : 뷰 파일 연결
-     */
-    @PutMapping("/{userId}/wishes/{wishId}")
-    public String updateWish( WishUpdateDto wishUpdateDto, HttpSession session) {
+
+    @PostMapping("/{userId}/wishes/{wishId}")
+    public String updateWish(@PathVariable Long userId, WishUpdateDto wishUpdateDto, @RequestParam MultipartFile imageFile) throws IOException {
+        FileUploader fileUploader = new FileUploader();
+        String fileName = fileUploader.getUploadFilePath(imageFile);
+        wishUpdateDto.setImage(fileName);
         wishService.updateWish(wishUpdateDto);
-        return "redirect:/users/" + session.getAttribute("id");
+        return "redirect:/users/" + userId + "/wishes";
     }
 
     @DeleteMapping("/{userId}/wishes/{wishId}")

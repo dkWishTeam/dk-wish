@@ -5,7 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class Wish extends BaseEntity{
     private Long goalAmount;
     private Date goalDate;
     private boolean isPublic;
-    private boolean completionStatus;
+    private boolean completionStatus = false;
 //    private LocalDateTime registerDatetime;
 //    private LocalDateTime modifyDatetime;
 

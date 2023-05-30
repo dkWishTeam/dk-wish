@@ -6,7 +6,6 @@ import com.project.wish.dto.WishRequestDto;
 import com.project.wish.dto.WishResponseDto;
 import com.project.wish.dto.WishUpdateDto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -32,6 +31,8 @@ public interface WishService {
         wish.setGoalAmount(wishUpdateDto.getGoalAmount());
         wish.setGoalDate(wishUpdateDto.getGoalDate());
         wish.setPublic(wishUpdateDto.isPublic());
+//        wish.setCompletionStatus(wishUpdateDto.isCompletionStatus());
+
     }
 
     default Wish wishRequestDtoToWish(WishRequestDto wishRequestDto, User user) {
