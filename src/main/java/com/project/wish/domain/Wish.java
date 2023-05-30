@@ -14,9 +14,10 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Wish {
+public class Wish extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +27,7 @@ public class Wish {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Builder.Default
     @OneToMany(mappedBy = "wish")
     private List<WishHistory> wishHistories = new ArrayList<>();
 
@@ -37,8 +39,8 @@ public class Wish {
     private Date goalDate;
     private boolean isPublic;
     private boolean completionStatus;
-    private LocalDateTime registerDatetime;
-    private LocalDateTime modifyDatetime;
+//    private LocalDateTime registerDatetime;
+//    private LocalDateTime modifyDatetime;
 
 
 }

@@ -56,8 +56,8 @@ class WishRepositoryTest {
                 .goalDate(new Date(System.currentTimeMillis()))
                 .isPublic(false)
                 .completionStatus(false)
-                .registerDatetime(LocalDateTime.now())
-                .modifyDatetime(LocalDateTime.now())
+//                .registerDatetime(LocalDateTime.now())
+//                .modifyDatetime(LocalDateTime.now())
                 .build();
 
         //when
@@ -107,8 +107,8 @@ class WishRepositoryTest {
                 .goalDate(new Date(System.currentTimeMillis()))
                 .isPublic(false)
                 .completionStatus(false)
-                .registerDatetime(LocalDateTime.now())
-                .modifyDatetime(LocalDateTime.now())
+//                .registerDatetime(LocalDateTime.now())
+//                .modifyDatetime(LocalDateTime.now())
                 .build();
         //when
         Long id = wishRepository.save(newWish).getId();
