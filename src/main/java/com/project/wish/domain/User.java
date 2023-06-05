@@ -32,7 +32,7 @@ public class User extends BaseEntity{
     private Date birth;
     private String phone;
     private String nickname;
-    private boolean isBlock;
+    private boolean isBlock = false;
     private boolean isQuit;
 
     @Builder

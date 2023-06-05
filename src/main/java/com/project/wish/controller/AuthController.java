@@ -16,17 +16,6 @@ public class AuthController {
 
     private final UserService userService;
 
-
-    /**
-     * 회원가입 시에 사용되는 메서드입니다.
-     *
-     * @param dto user 등록 시 쓰이는 dto 입니다.
-     */
-    @PostMapping("/user")
-    public void createUser(@RequestBody UserCreateRequestDto dto) {
-        userService.insertUser(dto);
-    }
-
     @PostMapping("/auth")
     public void auth(@RequestBody User user) {
         userService.auth(user);

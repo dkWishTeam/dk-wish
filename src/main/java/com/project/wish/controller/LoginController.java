@@ -4,18 +4,23 @@ import com.project.wish.dto.LoginDto;
 import com.project.wish.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LoginController {
 
     private final UserService userService;
@@ -24,6 +29,11 @@ public class LoginController {
      * 메인 페이지 요청 메서드
      * @return 메인페이지로 리턴해줍니다.
      */
+    @ResponseBody
+    @GetMapping("/hello")
+    public ResponseEntity<String> getHello(){
+        return ResponseEntity.ok("hellllo");
+    }
     @RequestMapping("/")
     public String mainView() {
         return "index";
@@ -35,18 +45,30 @@ public class LoginController {
      * @return 로그인페이지로 리턴
      */
     @RequestMapping("/login")
-    public String loginView(HttpSession session, Model model,
-        @CookieValue(value = "rememberUserId", required = false) Cookie rememberCookie) {
+    public String loginView(HttpSession session) {
         boolean result = userService.isLogin(session);
         if(result == true)
             return "redirect:/";
 
-        if(rememberCookie != null) {
-            model.addAttribute("rememberCookie", rememberCookie.getValue());
-            model.addAttribute("rememberCheckBox", true);
-        }
         return "login";
     }
+//    /**
+//     * 로그인페이지 요청 메서드
+//     * @return 로그인페이지로 리턴
+//     */
+//    @RequestMapping("/login")
+//    public String loginView(HttpSession session, Model model,
+//        @CookieValue(value = "rememberUserId", required = false) Cookie rememberCookie) {
+//        boolean result = userService.isLogin(session);
+//        if(result == true)
+//            return "redirect:/";
+//
+//        if(rememberCookie != null) {
+//            model.addAttribute("rememberCookie", rememberCookie.getValue());
+//            model.addAttribute("rememberCheckBox", true);
+//        }
+//        return "login";
+//    }
 
     /**
      * 로그인 체크 메서드

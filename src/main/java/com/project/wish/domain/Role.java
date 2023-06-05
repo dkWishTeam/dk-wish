@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class Role {
 
     @Id
+    @GeneratedValue
     private Integer id;
 
     @Column(name = "role_type")

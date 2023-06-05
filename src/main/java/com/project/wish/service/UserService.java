@@ -1,5 +1,6 @@
 package com.project.wish.service;
 
+import com.project.wish.domain.Otp;
 import com.project.wish.domain.User;
 import com.project.wish.dto.*;
 import org.springframework.ui.Model;
@@ -9,6 +10,11 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface UserService {
+
+
+    void auth(User user);
+
+    boolean check(Otp otp);
 
     public boolean findLoginUser(LoginDto user, HttpSession session, Model model, boolean remember, HttpServletResponse response);
 

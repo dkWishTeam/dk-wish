@@ -1,20 +1,29 @@
 package com.project.wish.service;
 
+import com.project.wish.domain.Otp;
 import com.project.wish.domain.RoleType;
 import com.project.wish.domain.User;
-import com.project.wish.dto.*;
+import com.project.wish.dto.LoginDto;
+import com.project.wish.dto.UserCreateRequestDto;
+import com.project.wish.dto.UserResponseDto;
+import com.project.wish.dto.UserResponseDtoByAdmin;
+import com.project.wish.dto.UserUpdateRequestDto;
+import com.project.wish.repository.OtpRepository;
 import com.project.wish.repository.RoleRepository;
 import com.project.wish.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-
+import com.project.wish.utils.GenerateCodeUtil;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +33,51 @@ public class UserServiceImpl implements UserService {
     //todo 트랜잭션
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final OtpRepository otpRepository;
 
+
+    @Override
+    public void auth(User user) {
+        Optional<User> o =
+            userRepository.findByUserId(user.getUserId());
+
+        if (o.isPresent()) {
+            User u = o.get();
+            if (passwordEncoder.matches(user.getPassword(), u.getPassword())
+            ) {
+                renewOtp(u);
+            }else{
+                throw new BadCredentialsException("Bad Credentials.");
+            }
+        }else{
+            throw new BadCredentialsException("Bad Credentials.");
+        }
+    }
+
+    private void renewOtp(User u) {
+        String code = GenerateCodeUtil.generateCode();
+
+        Optional<Otp> userOtp = otpRepository.findByUserId(u.getUserId());
+
+        if(userOtp.isPresent()){
+            Otp otp = userOtp.get();
+            otp.setCode(code);
+        }
+    }
+
+    @Override
+    public boolean check(Otp otpToValidate){
+        Optional<Otp> userOtp = otpRepository.findByUserId(otpToValidate.getUserId());
+
+        if (userOtp.isPresent()) {
+            Otp otp = userOtp.get();
+            if(otpToValidate.getCode().equals(otp.getCode())){
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public boolean findLoginUser(LoginDto loginDto, HttpSession session, Model model,
@@ -35,7 +88,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        if(user.isBlock()) {
+        if (user.isBlock()) {
             model.addAttribute("msg", "블락된 회원입니다. 관리자에게 문의하세요.");
             return false;
         }
@@ -43,8 +96,8 @@ public class UserServiceImpl implements UserService {
         // 아이디 기억 : 쿠키에 아이디를 저장
         Cookie rememberCookie = new Cookie("rememberUserId", loginDto.getUserId());
         rememberCookie.setPath("/");
-        if(remember == true) {
-            rememberCookie.setMaxAge(60*60*24*3); // 3일 동안 쿠키에 저장
+        if (remember == true) {
+            rememberCookie.setMaxAge(60 * 60 * 24 * 3); // 3일 동안 쿠키에 저장
         } else {
             rememberCookie.setMaxAge(0);
         }
@@ -66,8 +119,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isLogin(HttpSession session) {
-        if(session.getAttribute("id") != null)
+        if (session.getAttribute("id") != null) {
             return true;
+        }
         return false;
     }
 
@@ -81,6 +135,7 @@ public class UserServiceImpl implements UserService {
     public void insertUser(UserCreateRequestDto dto) {
         User user = userCreateRequestDtoToUser(dto);
         user.setRole(roleRepository.findByRoleType(RoleType.USER).orElseThrow());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         userRepository.save(user);
     }
 
@@ -119,7 +174,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updateUserBlockByAdmin(Long id) {
         User user = userRepository.findById(id).orElseThrow();
-        if(user.getRole().getRoleType() == RoleType.ADMIN){
+        if (user.getRole().getRoleType() == RoleType.ADMIN) {
             return false;
         }
         boolean beforeBlockMethod = user.isBlock();
