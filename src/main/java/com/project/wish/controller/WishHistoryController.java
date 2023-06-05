@@ -4,8 +4,11 @@ import com.project.wish.dto.*;
 import com.project.wish.service.UserService;
 import com.project.wish.service.WishHistoryService;
 import com.project.wish.service.WishService;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,47 +17,52 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/wishes/{wishId}/wishHistories")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class WishHistoryController {
+
     private final WishHistoryService wishHistoryService;
     private final WishService wishService;
     private final UserService userService;
 
 
     @GetMapping
-    public String findWishHistoryListByWishId(@PathVariable Long wishId, Model model, HttpSession session) {
+    public WishHistoryInfoDto findWishHistoryInfoByWishId(@PathVariable Long wishId, Model model, HttpSession session) {
         session.setAttribute("wishId", wishId);
-        if (!userService.isLogin(session)) return "redirect:/";
+//        if (!userService.isLogin(session)) return "redirect:/";
+        WishHistoryInfoDto wishHistoryInfoDtos = new WishHistoryInfoDto();
 
         // user 닉네임 추가
         WishUserDto userInfo = wishHistoryService.getWishUserInfo(wishId);
-        List<WishHistoryResponseDto> wishHistoryList = wishHistoryService.findWishHistoryListByWishId(wishId);
+        String wishTitle = wishService.findWishById(wishId).getTitle();
         WishHistoryRateDto wishHistoryRateDto = wishHistoryService.findRateByWishId(wishId);
+        List<WishHistoryResponseDto> wishHistoryList = wishHistoryService.findWishHistoryListByWishId(wishId);
 
-        model.addAttribute("wishUserDto", userInfo);
-        model.addAttribute("title", wishService.findWishById(wishId).getTitle());
-        model.addAttribute("wishId", wishId);
-        model.addAttribute("dto", new WishHistoryUpdateRequestDto());
-        model.addAttribute("rate", wishHistoryRateDto);
+        wishHistoryInfoDtos.setWishUserDto(userInfo);
+        wishHistoryInfoDtos.setTitle(wishTitle);
+        wishHistoryInfoDtos.setWishHistoryRateDto(wishHistoryRateDto);
+
+        wishHistoryInfoDtos.setMsg("아직 위시 기록이 없네요. 새로운 기록을 남겨보세요.");
 
         if (wishHistoryList.size() != 0) {
-            model.addAttribute("wishHistoryResponseDtoList", wishHistoryList);
-        } else {
-            model.addAttribute("msg", "아직 위시 기록이 없네요. 새로운 기록을 남겨보세요.");
+            wishHistoryInfoDtos.setWishHistoryList(wishHistoryList);
         }
         wishHistoryList.stream().forEach(System.out::println);
-        return "wishHistory";
+
+        return wishHistoryInfoDtos;
     }
 
-    //"/wishes/{wishId}/wishHistories"
     @PostMapping
-    public String createWishHistory(WishHistoryCreateDto wishHistoryCreateDto, HttpSession session) {
-        if (!userService.isLogin(session)) return "redirect:/";
+    public ResponseEntity<String> createWishHistory(@RequestBody WishHistoryCreateDto wishHistoryCreateDto) {
+//        if (!userService.isLogin(session)) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+//        }
+
         wishHistoryService.createWishHistory(wishHistoryCreateDto);
-        return "redirect:/wishes/" + wishHistoryCreateDto.getWishId() + "/wishHistories";
+        return ResponseEntity.status(HttpStatus.CREATED).body("위시 히스토리가 기록 되었습니다.");
     }
 
     @RequestMapping(value = "/wishHistoryInfo/{id}")
@@ -64,19 +72,20 @@ public class WishHistoryController {
     }
 
     @PutMapping
-    public String updateWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto, HttpSession session) {
-        if (!userService.isLogin(session)) return "redirect:/";
+    public ResponseEntity<?> updateWishHistory(@RequestBody WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto) {
+//        if (!userService.isLogin(session)) {
+//            return "redirect:/";
+//        }
         wishHistoryService.updateWishHistory(wishHistoryUpdateRequestDto);
+        System.out.println(wishHistoryUpdateRequestDto.toString());
 //        return "redirect:/wishHistory/" + wishHistoryUpdateRequestDto.getWishId();
-        return "redirect:/wishes/" + wishHistoryUpdateRequestDto.getWishId() + "/wishHistories";
+        return ResponseEntity.ok().build();
     }
-
 
     @DeleteMapping("/{wishHistoryId}")
     @ResponseBody
     public Boolean deleteWishHistory(@PathVariable Long wishHistoryId) {
         return wishHistoryService.deleteWishHistory(wishHistoryId);
-
 
     }
 }
