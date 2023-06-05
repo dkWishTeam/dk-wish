@@ -23,6 +23,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/users")
 @Slf4j
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class WishController {
 
     private final WishService wishService;
@@ -33,12 +34,18 @@ public class WishController {
         this.userService = userService;
     }
 
+//    @GetMapping("/{userId}/wishes")
+//    public String showWishMain(@PathVariable("userId") Long id, Model model, HttpSession session) {
+//        userService.isLogin(session);
+//        List<WishResponseDto> userWishResponseDto = wishService.findWishListByUserID(id);
+//        model.addAttribute("userWishlist", userWishResponseDto);
+//        return "wish/userWishMain";
+//    }
+
+    @ResponseBody
     @GetMapping("/{userId}/wishes")
-    public String showWishMain(@PathVariable("userId") Long id, Model model, HttpSession session) {
-        userService.isLogined(session);
-        List<WishResponseDto> userWishResponseDto = wishService.findWishListByUserID(id);
-        model.addAttribute("userWishlist", userWishResponseDto);
-        return "wish/userWishMain";
+    public List<WishResponseDto> showWishMainJson(@PathVariable("userId") Long id, Model model, HttpSession session) {
+        return wishService.findWishListByUserID(id);
     }
 
     @GetMapping("/{userId}/wishes/{wishId}")
