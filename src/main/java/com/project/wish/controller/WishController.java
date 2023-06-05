@@ -35,7 +35,7 @@ public class WishController {
 
     @GetMapping("/{userId}/wishes")
     public String showWishMain(@PathVariable("userId") Long id, Model model, HttpSession session) {
-        userService.isLogin(session);
+        userService.isLogined(session);
         List<WishResponseDto> userWishResponseDto = wishService.findWishListByUserID(id);
         model.addAttribute("userWishlist", userWishResponseDto);
         return "wish/userWishMain";
@@ -43,13 +43,13 @@ public class WishController {
 
     @GetMapping("/{userId}/wishes/{wishId}")
     public String userWish(@PathVariable Long wishId, HttpSession session){
-        userService.isLogin(session);
+        userService.isLogined(session);
         return "redirect:/wishes/" + wishId + "/wishHistories";
     }
 
     @GetMapping("/{userId}/wishes/createForm")
     public String createWishForm(HttpSession session) {
-        userService.isLogin(session);
+        userService.isLogined(session);
         return "wish/wishCreateForm";
     }
 
@@ -69,7 +69,7 @@ public class WishController {
 
     @GetMapping("/{userId}/wishes/{wishId}/updateForm")
     public String updateWishForm(@PathVariable Long wishId, Model model, HttpSession session) {
-        userService.isLogin(session);
+        userService.isLogined(session);
         model.addAttribute("wishId");
         model.addAttribute("wishResponseDto", wishService.findWishById(wishId));
         return "wish/updateWishForm";

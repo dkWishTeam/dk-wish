@@ -35,6 +35,7 @@ public class WishHistoryController {
 //        if (!userService.isLogin(session)) return "redirect:/";
         WishHistoryInfoDto wishHistoryInfoDtos = new WishHistoryInfoDto();
 
+
         // user 닉네임 추가
         WishUserDto userInfo = wishHistoryService.getWishUserInfo(wishId);
         String wishTitle = wishService.findWishById(wishId).getTitle();
@@ -60,7 +61,6 @@ public class WishHistoryController {
 //        if (!userService.isLogin(session)) {
 //            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
 //        }
-
         wishHistoryService.createWishHistory(wishHistoryCreateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("위시 히스토리가 기록 되었습니다.");
     }
@@ -76,6 +76,7 @@ public class WishHistoryController {
 //        if (!userService.isLogin(session)) {
 //            return "redirect:/";
 //        }
+
         wishHistoryService.updateWishHistory(wishHistoryUpdateRequestDto);
         System.out.println(wishHistoryUpdateRequestDto.toString());
 //        return "redirect:/wishHistory/" + wishHistoryUpdateRequestDto.getWishId();
