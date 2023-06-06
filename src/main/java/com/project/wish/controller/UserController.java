@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 
     private final UserService userService;
@@ -44,8 +43,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody UserCreateRequestDto dto) {
         userService.insertUser(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
     /**
