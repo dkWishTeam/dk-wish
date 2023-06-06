@@ -1,6 +1,5 @@
 package com.project.wish.service;
 
-import com.project.wish.domain.Otp;
 import com.project.wish.domain.RoleType;
 import com.project.wish.domain.User;
 import com.project.wish.dto.LoginDto;
@@ -8,18 +7,14 @@ import com.project.wish.dto.UserCreateRequestDto;
 import com.project.wish.dto.UserResponseDto;
 import com.project.wish.dto.UserResponseDtoByAdmin;
 import com.project.wish.dto.UserUpdateRequestDto;
-import com.project.wish.repository.OtpRepository;
 import com.project.wish.repository.RoleRepository;
 import com.project.wish.repository.UserRepository;
-import com.project.wish.utils.GenerateCodeUtil;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,59 +29,16 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final OtpRepository otpRepository;
 
-
-    @Override
-    public void auth(User user) {
-        Optional<User> o =
-            userRepository.findByUserId(user.getUserId());
-
-        if (o.isPresent()) {
-            User u = o.get();
-            if (passwordEncoder.matches(user.getPassword(), u.getPassword())
-            ) {
-                renewOtp(u);
-            }else{
-                throw new BadCredentialsException("Bad Credentials.");
-            }
-        }else{
-            throw new BadCredentialsException("Bad Credentials.");
-        }
-    }
-
-    private void renewOtp(User u) {
-        String code = GenerateCodeUtil.generateCode();
-
-        Optional<Otp> userOtp = otpRepository.findByUserId(u.getUserId());
-
-        if(userOtp.isPresent()){
-            Otp otp = userOtp.get();
-            otp.setCode(code);
-        }
-    }
-
-    @Override
-    public boolean check(Otp otpToValidate){
-        Optional<Otp> userOtp = otpRepository.findByUserId(otpToValidate.getUserId());
-
-        if (userOtp.isPresent()) {
-            Otp otp = userOtp.get();
-            if(otpToValidate.getCode().equals(otp.getCode())){
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Override
     public boolean findLoginUser(LoginDto loginDto, HttpSession session, Model model,
         boolean remember, HttpServletResponse response) {
         User user = userRepository.findByUserId(loginDto.getUserId()).orElseThrow();
-        if (!loginDto.getPassword().equals(user.getPassword())) {
-            model.addAttribute("msg", "아이디 혹은 비밀번호가 다릅니다.");
-            return false;
-        }
+//        if (!loginDto.getPassword().equals(user.getPassword())) {
+//            model.addAttribute("msg", "아이디 혹은 비밀번호가 다릅니다.");
+//            return false;
+//        }
 
         if (user.isBlock()) {
             model.addAttribute("msg", "블락된 회원입니다. 관리자에게 문의하세요.");

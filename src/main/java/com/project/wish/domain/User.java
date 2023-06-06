@@ -1,13 +1,18 @@
 package com.project.wish.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
-import java.util.Date;
-
 
 
 @Setter
@@ -15,7 +20,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Table(name = "user")
 @Entity
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +29,7 @@ public class User extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
-
+    @JsonProperty(value = "username")
     private String userId;
     private String password;
     private String email;
