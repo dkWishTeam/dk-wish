@@ -2,17 +2,15 @@ package com.project.wish.service;
 
 import com.project.wish.domain.User;
 import com.project.wish.dto.*;
-import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface UserService {
+    public String isLogin(LoginDto loginUser, HttpSession session);
 
-    public boolean findLoginUser(LoginDto user, HttpSession session, Model model, boolean remember, HttpServletResponse response);
-
-    public boolean isLogin(HttpSession session);
+    public boolean isLogined(HttpSession session);
 
     public void logout(HttpSession session);
 

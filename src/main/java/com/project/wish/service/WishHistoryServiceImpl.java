@@ -61,7 +61,8 @@ public class WishHistoryServiceImpl implements WishHistoryService {
     @Transactional
     public void updateWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto) {
         Wish wish = wishRepository.findById(wishHistoryUpdateRequestDto.getWishId()).orElseThrow();
-        WishHistory wishHistory = wishHistoryRepository.findById(wishHistoryUpdateRequestDto.getWishId()).orElseThrow();
+        System.out.println(wish);
+        WishHistory wishHistory = wishHistoryRepository.findById(wishHistoryUpdateRequestDto.getId()).orElseThrow();
         wishHistory.setWish(wish);
         wishHistory.setModifyDatetime(LocalDateTime.now());
         wishHistory.setAmount(wishHistoryUpdateRequestDto.getAmount());

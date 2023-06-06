@@ -23,6 +23,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/users")
 @Slf4j
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class WishController {
 
     private final WishService wishService;
@@ -33,23 +34,29 @@ public class WishController {
         this.userService = userService;
     }
 
+//    @GetMapping("/{userId}/wishes")
+//    public String showWishMain(@PathVariable("userId") Long id, Model model, HttpSession session) {
+//        userService.isLogin(session);
+//        List<WishResponseDto> userWishResponseDto = wishService.findWishListByUserID(id);
+//        model.addAttribute("userWishlist", userWishResponseDto);
+//        return "wish/userWishMain";
+//    }
+
+    @ResponseBody
     @GetMapping("/{userId}/wishes")
-    public String showWishMain(@PathVariable("userId") Long id, Model model, HttpSession session) {
-        userService.isLogin(session);
-        List<WishResponseDto> userWishResponseDto = wishService.findWishListByUserID(id);
-        model.addAttribute("userWishlist", userWishResponseDto);
-        return "wish/userWishMain";
+    public List<WishResponseDto> showWishMainJson(@PathVariable("userId") Long id, Model model, HttpSession session) {
+        return wishService.findWishListByUserID(id);
     }
 
     @GetMapping("/{userId}/wishes/{wishId}")
     public String userWish(@PathVariable Long wishId, HttpSession session){
-        userService.isLogin(session);
+        userService.isLogined(session);
         return "redirect:/wishes/" + wishId + "/wishHistories";
     }
 
     @GetMapping("/{userId}/wishes/createForm")
     public String createWishForm(HttpSession session) {
-        userService.isLogin(session);
+        userService.isLogined(session);
         return "wish/wishCreateForm";
     }
 
@@ -69,7 +76,7 @@ public class WishController {
 
     @GetMapping("/{userId}/wishes/{wishId}/updateForm")
     public String updateWishForm(@PathVariable Long wishId, Model model, HttpSession session) {
-        userService.isLogin(session);
+        userService.isLogined(session);
         model.addAttribute("wishId");
         model.addAttribute("wishResponseDto", wishService.findWishById(wishId));
         return "wish/updateWishForm";

@@ -30,7 +30,6 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     @Override
     public boolean findLoginUser(LoginDto loginDto, HttpSession session, Model model,
         boolean remember, HttpServletResponse response) {
@@ -53,20 +52,18 @@ public class UserServiceImpl implements UserService {
         } else {
             rememberCookie.setMaxAge(0);
         }
-        response.addCookie(rememberCookie);
 
         // 세션에 유저 정보를 필요한 만큼 넣음
-        session.setAttribute("id", user.getId());
-        session.setAttribute("nickname", user.getNickname());
-        session.setAttribute("email", user.getEmail());
-        if (user.getRole().getRoleType() == RoleType.ADMIN) {
+        session.setAttribute("id", user.get().getId());
+        session.setAttribute("nickname", user.get().getNickname());
+        session.setAttribute("email", user.get().getEmail());
+        if (user.get().getRole().getRoleType() == RoleType.ADMIN) {
             session.setAttribute("role", RoleType.ADMIN.toString());
         } else {
             session.setAttribute("role", RoleType.USER.toString());
-            System.out.println(RoleType.USER.toString());
         }
 
-        return true;
+        return "loginSuccess";
     }
 
     @Override

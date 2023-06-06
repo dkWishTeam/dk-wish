@@ -17,6 +17,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LoginController {
 
     private final UserService userService;
+//
+//    @GetMapping("/loginView")
+//    public String loginView(HttpSession session, Model model,
+//        @CookieValue(value = "rememberUserId", required = false) Cookie rememberCookie) {
+//        boolean result = userService.isLogined(session);
+//        if(result)
+//            return "redirect:/";
+//
+//        if(rememberCookie != null) {
+//            model.addAttribute("rememberCookie", rememberCookie.getValue());
+//            model.addAttribute("rememberCheckBox", true);
+//        }
+//        return "login";
+//    }
 
     /**
      * 메인 페이지 요청 메서드
