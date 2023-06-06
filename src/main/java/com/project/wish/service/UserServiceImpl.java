@@ -30,54 +30,49 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public boolean findLoginUser(LoginDto loginDto, HttpSession session, Model model,
-        boolean remember, HttpServletResponse response) {
-        User user = userRepository.findByUserId(loginDto.getUserId()).orElseThrow();
+    //    @Override
+//    public boolean findLoginUser(LoginDto loginDto, HttpSession session, Model model,
+//        boolean remember, HttpServletResponse response) {
+//        User user = userRepository.findByUserId(loginDto.getUserId()).orElseThrow();
 //        if (!loginDto.getPassword().equals(user.getPassword())) {
 //            model.addAttribute("msg", "아이디 혹은 비밀번호가 다릅니다.");
 //            return false;
 //        }
-
-        if (user.isBlock()) {
-            model.addAttribute("msg", "블락된 회원입니다. 관리자에게 문의하세요.");
-            return false;
-        }
-
-        // 아이디 기억 : 쿠키에 아이디를 저장
-        Cookie rememberCookie = new Cookie("rememberUserId", loginDto.getUserId());
-        rememberCookie.setPath("/");
-        if (remember == true) {
-            rememberCookie.setMaxAge(60 * 60 * 24 * 3); // 3일 동안 쿠키에 저장
-        } else {
-            rememberCookie.setMaxAge(0);
-        }
-
-        // 세션에 유저 정보를 필요한 만큼 넣음
-        session.setAttribute("id", user.get().getId());
-        session.setAttribute("nickname", user.get().getNickname());
-        session.setAttribute("email", user.get().getEmail());
-        if (user.get().getRole().getRoleType() == RoleType.ADMIN) {
-            session.setAttribute("role", RoleType.ADMIN.toString());
-        } else {
-            session.setAttribute("role", RoleType.USER.toString());
-        }
-
-        return "loginSuccess";
-    }
-
-    @Override
-    public boolean isLogin(HttpSession session) {
-        if (session.getAttribute("id") != null) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void logout(HttpSession session) {
-        session.invalidate();
-    }
+//
+//        if (user.isBlock()) {
+//            model.addAttribute("msg", "블락된 회원입니다. 관리자에게 문의하세요.");
+//            return false;
+//        }
+//
+//        // 아이디 기억 : 쿠키에 아이디를 저장
+//        Cookie rememberCookie = new Cookie("rememberUserId", loginDto.getUserId());
+//        rememberCookie.setPath("/");
+//        if (remember == true) {
+//            rememberCookie.setMaxAge(60 * 60 * 24 * 3); // 3일 동안 쿠키에 저장
+//        } else {
+//            rememberCookie.setMaxAge(0);
+//        }
+//
+//        // 세션에 유저 정보를 필요한 만큼 넣음
+//        session.setAttribute("id", user.get().getId());
+//        session.setAttribute("nickname", user.get().getNickname());
+//        session.setAttribute("email", user.get().getEmail());
+//        if (user.get().getRole().getRoleType() == RoleType.ADMIN) {
+//            session.setAttribute("role", RoleType.ADMIN.toString());
+//        } else {
+//            session.setAttribute("role", RoleType.USER.toString());
+//        }
+//
+//        return "loginSuccess";
+//    }
+//
+//    @Override
+//    public boolean isLogin(HttpSession session) {
+//        if (session.getAttribute("id") != null) {
+//            return true;
+//        }
+//        return false;
+//    }
 
     @Transactional
     @Override

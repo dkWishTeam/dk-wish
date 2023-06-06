@@ -8,11 +8,6 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface UserService {
-    public String isLogin(LoginDto loginUser, HttpSession session);
-
-    public boolean isLogined(HttpSession session);
-
-    public void logout(HttpSession session);
 
     void insertUser(UserCreateRequestDto dto);
 
