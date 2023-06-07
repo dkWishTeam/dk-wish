@@ -4,6 +4,7 @@ import com.project.wish.domain.Wish;
 import com.project.wish.domain.WishHistory;
 import com.project.wish.dto.*;
 
+import com.project.wish.dto.common.PageRequestDto;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -22,6 +23,8 @@ public interface WishHistoryService {
     void updateWishHistory(WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto);
 
     Boolean deleteWishHistory(Long id);
+
+    PageResponseHistoryListDto findPageInfoList(Long wishId, PageRequestDto pageRequestDto);
 
     default WishHistoryResponseDto wishHistoryToWishHistoryResponseDto(WishHistory wishHistory) {
         return WishHistoryResponseDto.builder()

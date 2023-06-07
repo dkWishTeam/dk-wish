@@ -13,7 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Wish extends BaseEntity{
@@ -37,6 +36,8 @@ public class Wish extends BaseEntity{
     private Long goalAmount;
     private Date goalDate;
     private boolean isPublic;
+
+    @Builder.Default
     private boolean completionStatus = false;
 //    private LocalDateTime registerDatetime;
 //    private LocalDateTime modifyDatetime;

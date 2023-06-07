@@ -1,6 +1,7 @@
 package com.project.wish.controller;
 
 import com.project.wish.dto.*;
+import com.project.wish.dto.common.PageRequestDto;
 import com.project.wish.service.UserService;
 import com.project.wish.service.WishHistoryService;
 import com.project.wish.service.WishService;
@@ -30,8 +31,8 @@ public class WishHistoryController {
 
 
     @GetMapping
-    public WishHistoryInfoDto findWishHistoryInfoByWishId(@PathVariable Long wishId, Model model, HttpSession session) {
-        session.setAttribute("wishId", wishId);
+    public WishHistoryInfoDto findWishHistoryInfoByWishId(@PathVariable Long wishId, PageRequestDto pageRequestDto) {
+//        session.setAttribute("wishId", wishId);
 //        if (!userService.isLogin(session)) return "redirect:/";
         WishHistoryInfoDto wishHistoryInfoDtos = new WishHistoryInfoDto();
 
@@ -39,26 +40,39 @@ public class WishHistoryController {
         // user 닉네임 추가
         WishUserDto userInfo = wishHistoryService.getWishUserInfo(wishId);
         String wishTitle = wishService.findWishById(wishId).getTitle();
+//        List<WishHistoryResponseDto> wishHistoryList = wishHistoryService.findWishHistoryListByWishId(wishId);
         WishHistoryRateDto wishHistoryRateDto = wishHistoryService.findRateByWishId(wishId);
-        List<WishHistoryResponseDto> wishHistoryList = wishHistoryService.findWishHistoryListByWishId(wishId);
+        PageResponseHistoryListDto pageInfoList = wishHistoryService.findPageInfoList(wishId, pageRequestDto);
 
         wishHistoryInfoDtos.setWishUserDto(userInfo);
         wishHistoryInfoDtos.setTitle(wishTitle);
         wishHistoryInfoDtos.setWishHistoryRateDto(wishHistoryRateDto);
-
+        wishHistoryInfoDtos.setPageResponseHistoryListDto(pageInfoList);
+//
         wishHistoryInfoDtos.setMsg("아직 위시 기록이 없네요. 새로운 기록을 남겨보세요.");
 
-        if (wishHistoryList.size() != 0) {
-            wishHistoryInfoDtos.setWishHistoryList(wishHistoryList);
-        }
-        wishHistoryList.stream().forEach(System.out::println);
+        System.out.println();
+
+//        if (wishHistoryList.size() != 0) {
+//            wishHistoryInfoDtos.setWishHistoryList(wishHistoryList);
+//        }
+
+//        System.out.println(pageInfoList);
 
         return wishHistoryInfoDtos;
     }
 
+//    @GetMapping
+//    public ResponseEntity<PageResponseHistoryListDto> findPagedWishHistory() {
+////        PageResponseHistoryListDto pageInfoList = wishHistoryService.findPageInfoList(pageRequestDto);
+//        return ResponseEntity.ok(pageInfoList);
+//    }
+
+
     @PostMapping
     public ResponseEntity<String> createWishHistory(@RequestBody WishHistoryCreateDto wishHistoryCreateDto) {
 //        if (!userService.isLogin(session)) {
+
 //            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
 //        }
         wishHistoryService.createWishHistory(wishHistoryCreateDto);

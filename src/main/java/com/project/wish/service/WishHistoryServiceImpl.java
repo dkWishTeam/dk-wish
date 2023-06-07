@@ -1,13 +1,18 @@
 package com.project.wish.service;
 
+import com.example.simpleboardapi.common.utils.PagingUtil;
 import com.project.wish.domain.User;
 import com.project.wish.domain.Wish;
 import com.project.wish.domain.WishHistory;
 import com.project.wish.dto.*;
+import com.project.wish.dto.common.PageRequestDto;
 import com.project.wish.enums.CheerUpPhrase;
 import com.project.wish.repository.WishHistoryRepository;
 import com.project.wish.repository.WishRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,6 +81,27 @@ public class WishHistoryServiceImpl implements WishHistoryService {
         wishHistoryRepository.deleteById(id);
         return true;
     }
+
+    @Override
+    public PageResponseHistoryListDto findPageInfoList(Long wishId, PageRequestDto pageRequestDto) {
+        PageRequest pageRequest = PageRequest.of(pageRequestDto.getPage(), pageRequestDto.getPageSize());
+        Page<WishHistory> wishHistoryList = wishHistoryRepository.findAllByWish(wishId, pageRequest);     //페이징 처리가 된 엔티티를 받아올 수 있다.
+
+        PageResponseHistoryListDto pageResponseHistoryListDto = PageResponseHistoryListDto.builder()
+            .pagingUtil(new PagingUtil(wishHistoryList.getTotalElements(), wishHistoryList.getTotalPages(),
+                wishHistoryList.getNumber(), wishHistoryList.getSize()))
+            .wishHistoryList(wishHistoryList.stream().map(this::wishHistoryToWishHistoryResponseDto).collect(Collectors.toList()))
+            .build();
+
+        return pageResponseHistoryListDto;
+    }
+
+//    public List<WishHistoryResponseDto> findWishHistoryListByWishId(Long wishId) {
+//        return wishRepository.findById(wishId).orElseThrow()
+//            .getWishHistories().stream()
+//            .map(this::wishHistoryToWishHistoryResponseDto).collect(Collectors.toList());
+//    }
+
 
     @Override
     public WishUserDto getWishUserInfo(Long wishId) {

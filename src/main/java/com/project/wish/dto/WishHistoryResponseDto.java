@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @AllArgsConstructor
-public class WishHistoryResponseDto {
+public class WishHistoryResponseDto{
 
     private Long wishId;
     private Long id;

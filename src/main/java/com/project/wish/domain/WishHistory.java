@@ -7,12 +7,14 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import lombok.ToString;
 
 @Entity
 @Setter
 @Getter
 @NoArgsConstructor
 @Table(name="wish_history")
+@ToString
 
 public class WishHistory extends BaseEntity{
 
