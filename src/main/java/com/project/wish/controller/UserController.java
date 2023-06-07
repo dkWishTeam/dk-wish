@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -87,7 +86,8 @@ public class UserController {
      * @return 회원 리스트 페이지를 반환합니다.
      */
     @GetMapping
-    public ResponseEntity<List<UserResponseDtoByAdmin>> findUsersByAdmin(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<List<UserResponseDtoByAdmin>> findUsersByAdmin() {
+
         return ResponseEntity.ok(userService.findUsers());
     }
 
