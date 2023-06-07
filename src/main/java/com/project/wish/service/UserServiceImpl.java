@@ -111,6 +111,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(UserUpdateRequestDto dto) {
         User user = userRepository.findById(dto.getId()).orElseThrow();
         userUpdateByDto(user, dto);
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
     }
 
 
