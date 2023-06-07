@@ -25,7 +25,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
         String jwt = getJwtFromRequest(request);
-
         if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
             // 2. 로직이 맞나 확인
             Authentication authentication = jwtTokenProvider.getAuthentication(jwt);
@@ -41,5 +40,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return bearerToken.substring(7, bearerToken.length());
         }
         return null;
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        return request.getServletPath()
+            .equals("/login");
     }
 }
