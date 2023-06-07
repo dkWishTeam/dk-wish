@@ -50,13 +50,11 @@ public class WishController {
 
     @GetMapping("/{userId}/wishes/{wishId}")
     public String userWish(@PathVariable Long wishId, HttpSession session){
-        userService.isLogined(session);
         return "redirect:/wishes/" + wishId + "/wishHistories";
     }
 
     @GetMapping("/{userId}/wishes/createForm")
     public String createWishForm(HttpSession session) {
-        userService.isLogined(session);
         return "wish/wishCreateForm";
     }
 
@@ -76,7 +74,6 @@ public class WishController {
 
     @GetMapping("/{userId}/wishes/{wishId}/updateForm")
     public String updateWishForm(@PathVariable Long wishId, Model model, HttpSession session) {
-        userService.isLogined(session);
         model.addAttribute("wishId");
         model.addAttribute("wishResponseDto", wishService.findWishById(wishId));
         return "wish/updateWishForm";

@@ -1,6 +1,8 @@
 package com.project.wish.config;
 
 import com.project.wish.filter.CustomAuthenticationFilter;
+import com.project.wish.filter.JwtAuthenticationFilter;
+import com.project.wish.jwt.JwtTokenProvider;
 import com.project.wish.service.AuthenticationProviderService;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthenticationProviderService authenticationProvider;
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
     private final AuthenticationFailureHandler authenticationFailureHandler;
+    private final JwtTokenProvider jwtTokenProvider; // JWT를 처리하는 클래스
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -51,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().permitAll()
             .and()
             .csrf().disable()
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), CustomAuthenticationFilter.class)
             .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .logout()
             .logoutUrl("/logout") // 로그아웃 요청을 처리할 엔드포인트 지정

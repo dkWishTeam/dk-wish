@@ -1,5 +1,6 @@
 package com.project.wish.controller;
 
+import com.project.wish.auth.CustomUserDetails;
 import com.project.wish.domain.RoleType;
 import com.project.wish.dto.BlockUserResponse;
 import com.project.wish.dto.UserCreateRequestDto;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -82,12 +84,10 @@ public class UserController {
     /**
      * 사이트 이용자(관리자)가 회원의 리스트를 보는 메서드입니다.
      *
-     * @param model 데이터를 담는 model 객체입니다.
      * @return 회원 리스트 페이지를 반환합니다.
      */
     @GetMapping
-    public ResponseEntity<List<UserResponseDtoByAdmin>> findUsersByAdmin(HttpSession session) {
-//        isRoleEqualsAdmin(session);
+    public ResponseEntity<List<UserResponseDtoByAdmin>> findUsersByAdmin(@AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseEntity.ok(userService.findUsers());
     }
 

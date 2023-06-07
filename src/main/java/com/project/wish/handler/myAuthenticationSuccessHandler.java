@@ -1,6 +1,9 @@
 package com.project.wish.handler;
 
+import com.google.gson.JsonObject;
+import com.project.wish.domain.User;
 import com.project.wish.jwt.JwtTokenProvider;
+import com.project.wish.repository.UserRepository;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class myAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
+    private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -25,9 +29,19 @@ public class myAuthenticationSuccessHandler implements AuthenticationSuccessHand
             .findFirst();
 
         if (auth.isPresent()) {
+            User user = userRepository.findByUserId(authentication.getName()).orElseThrow();
             String token = jwtTokenProvider.createToken(authentication.getName(), authorities);
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("token", token);
+            jsonObject.addProperty("id", user.getId());
+            jsonObject.addProperty("userId", user.getUserId());
+            jsonObject.addProperty("nickname", user.getNickname());
+            jsonObject.addProperty("role", user.getRole().getRoleType().name());
+
             httpServletResponse.setContentType("application/json");
-            httpServletResponse.getWriter().write("{\"token\": \"" + token + "\"}");
+            httpServletResponse.setCharacterEncoding("UTF-8");  // 추가되는 부분
+            httpServletResponse.getWriter().write(jsonObject.toString());
+
         } else {
             httpServletResponse.sendRedirect("/error");
         }

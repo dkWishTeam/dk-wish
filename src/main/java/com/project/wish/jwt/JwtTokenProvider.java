@@ -26,15 +26,14 @@ public class JwtTokenProvider {
     // JWT 토큰 유효시간
     private final long TOKEN_VALIDITY = 3600L * 1000L;  // 1시간
 
-    @Value("${spring.jwt.secret}")
-    private String secretKey;
-
     private final UserDetailsService userDetailsService;
     private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    // 서버가 두대이상일때 문제 발생
 
     // 토큰 생성
     public String createToken(String username, Collection<? extends GrantedAuthority> authorities) {
         Claims claims = Jwts.claims().setSubject(username);  // JWT payload 에 저장되는 정보단위
+        // jwt 만들어질 때 claims 확인
         claims.put("roles", authorities.stream().map(GrantedAuthority::getAuthority)
             .collect(Collectors.toList()));  // 정보는 key / value 쌍으로 저장됩니다. 이 경우에는 사용자 권한.
 
@@ -52,7 +51,7 @@ public class JwtTokenProvider {
     // 토큰 유효성 + 만료일자 확인
     public boolean validateToken(String token) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
 
             if (claims.getBody().getExpiration().before(new Date())) {
                 return false;
@@ -70,7 +69,7 @@ public class JwtTokenProvider {
     }
 
     public String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject();
     }
 }
 

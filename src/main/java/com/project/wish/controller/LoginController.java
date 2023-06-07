@@ -62,16 +62,16 @@ public class LoginController {
 //        return "login";
 //    }
 //
-
-    /**
-     * 세션에 있는 유저 정보들을 지워주는 메서드
-     *
-     * @param session
-     * @return 메인페이지로 리턴해준다.
-     */
-    @GetMapping("/logout")
-    public ResponseEntity<Void> logout(HttpSession session) {
-        userService.logout(session);
-        return ResponseEntity.ok(null);
-    }
+//
+//    /**
+//     * 세션에 있는 유저 정보들을 지워주는 메서드
+//     *
+//     * @param session
+//     * @return 메인페이지로 리턴해준다.
+//     */
+//    @GetMapping("/logout")
+//    public ResponseEntity<Void> logout(HttpSession session) {
+//        userService.logout(session);
+//        return ResponseEntity.ok(null);
+//    }
 }
