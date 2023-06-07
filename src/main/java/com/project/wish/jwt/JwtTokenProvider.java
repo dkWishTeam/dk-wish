@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -67,6 +66,11 @@ public class JwtTokenProvider {
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
+    // todo 왜 여기에 비밀번호가 "" 인 token 을 만드는가
+    //UsernamePasswordAuthenticationToken 객체를 생성할 때, 두 번째 매개변수로 전달하는 "credentials"는 일반적으로 사용자가 제공한 비밀번호입니다.
+    // 그러나 JWT를 사용하는 경우, 이미 사용자는 자신의 사용자 이름과 비밀번호를 제공하고, 이를 통해 JWT를 얻었습니다.
+    //JWT 자체가 사용자의 인증 정보를 포함하므로, 이후 JWT를 사용하여 인증을 수행하는 과정에서는 원래의 비밀번호를 다시 사용할 필요가 없습니다.
+    // 따라서 여기에서 ""를 사용하여 비밀번호 필드를 비워두는 것입니다.
 
     public String getUsername(String token) {
         return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject();
