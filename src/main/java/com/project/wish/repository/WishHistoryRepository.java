@@ -1,7 +1,13 @@
 package com.project.wish.repository;
 
+import com.project.wish.domain.Wish;
 import com.project.wish.domain.WishHistory;
+import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface WishHistoryRepository extends JpaRepository<WishHistory, Long> {
     //    1. List<WishHistory> findWishHistoryListByWishId(Long wishId);
@@ -35,5 +41,12 @@ public interface WishHistoryRepository extends JpaRepository<WishHistory, Long> 
 
 //    6. D : boolean deleteWishHistory(Long id);
 
+    @Query("SELECT wh "
+        + "FROM WishHistory wh "
+        + "JOIN wh.wish w "
+        + "WHERE w.id = :wishId "
+        + "ORDER BY wh.historyDatetime")
+    Page<WishHistory> findAllByWish(@Param("wishId") Long wishId, Pageable pageable);
+//    List<WishHistory> findAllByWish_Id;
 
 }
