@@ -41,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         customAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
         customAuthenticationFilter.setFilterProcessesUrl("/login");
+        // 인증 시에 만 사용되는 필터임을 설정
         customAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
 
         http.cors().configurationSource(corsConfigurationSource())
