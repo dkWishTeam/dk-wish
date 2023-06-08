@@ -8,6 +8,7 @@ import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -47,12 +48,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().configurationSource(corsConfigurationSource())
             .and()
             .authorizeRequests()
-//            .antMatchers("/", "/login", "/logout", "/place/*","/wishes/*").permitAll() // 로그인과 메인화면에 누구나 접근 가능하게 설정
-//            .antMatchers("/users/*").hasAnyRole("USER","ADMIN")
-//            .antMatchers("/wishes/*").hasAnyRole("USER","ADMIN")
-//            .antMatchers("/admin/*").hasRole("ADMIN")
-//            .anyRequest().authenticated() // 그 외의 모든 요청은 인증 필요
-            .anyRequest().permitAll()
+            .antMatchers("/", "/login", "/place/*").permitAll() // 로그인과 메인화면에 누구나 접근 가능하게 설정
+            .antMatchers(
+                "/wishes/*/wishHistories/*"
+                ,"/wishes/*/wishHistories"
+                ,"/users/*"
+                ,"/logout").hasAnyRole("USER","ADMIN")
+            .antMatchers("/**/admin","/**/block").hasRole("ADMIN")
+            .antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
+            .anyRequest().authenticated()
             .and()
             .csrf().disable()
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), CustomAuthenticationFilter.class)
