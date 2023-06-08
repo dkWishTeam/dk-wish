@@ -15,9 +15,9 @@ public class WishPlaceServiceImpl implements WishPlaceService {
     WishPlaceRepository repo;
 
     @Override
-    public List<WishPlaceDto> getWishPlace(String path) {
+    public List<WishPlaceDto> getWishPlace(String path, Integer start, Integer size) {
         List<WishPlaceDto> list = null;
-        Pageable pageable = PageRequest.of(0, 9);
+        Pageable pageable = PageRequest.of(start, size);
 
         switch (path) {
             case "all" :
@@ -38,6 +38,37 @@ public class WishPlaceServiceImpl implements WishPlaceService {
         setWishImage(list);
         return list;
     }
+
+    @Override
+    public List<WishPlaceDto> getSearchWishPlace(String search, Integer start, Integer size) {
+        Pageable pageable = PageRequest.of(start, size);
+        return repo.findSearchWishPlaceList(search, pageable);
+    }
+
+    @Override
+    public int getWishCount(String path) {
+        List<WishPlaceDto> list = null;
+
+        switch (path) {
+            case "all" :
+                list = repo.findAllWishPlaceList();
+                break;
+            case "completion" :
+                list = repo.findCompletionWishPlaceList();
+                break;
+            case "ongoing" :
+                list = repo.findOngoingWishPlaceList();
+                break;
+            case "new" :
+                list = repo.findNewWishPlaceList();
+                break;
+            default:
+                break;
+        }
+
+        return list.size();
+    }
+
 
     @Override
     public void setWishImage(List<WishPlaceDto> list) {
