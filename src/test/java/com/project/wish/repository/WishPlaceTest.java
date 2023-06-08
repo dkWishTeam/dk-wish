@@ -20,10 +20,13 @@ class WishPlaceTest {
 
     @Test
     void findAllWishes() {
-        Pageable pageable = PageRequest.of(0, 9);
+        Pageable pageable = PageRequest.of(0, 4);
 
         List<WishPlaceDto> wishPlaceDto = wishPlaceRepository.findAllWishPlaceList(pageable);
         wishPlaceDto.stream().forEach(System.out::println);
+
+        List<WishPlaceDto> wishPlaceDto2 = wishPlaceRepository.findAllWishPlaceList();
+        System.out.println(wishPlaceDto2.size());
     }
 
     @Test
@@ -50,4 +53,11 @@ class WishPlaceTest {
         wishPlaceDto.stream().forEach(System.out::println);
     }
 
+    @Test
+    void searchWishes() {
+        Pageable pageable = PageRequest.of(0, 9);
+
+        List<WishPlaceDto> wishPlaceDto = wishPlaceRepository.findSearchWishPlaceList("시그니엘", pageable);
+        wishPlaceDto.stream().forEach(System.out::println);
+    }
 }
