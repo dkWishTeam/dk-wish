@@ -1,6 +1,7 @@
 package com.project.wish.handler;
 
 import com.google.gson.JsonObject;
+import com.project.wish.domain.RoleType;
 import com.project.wish.domain.User;
 import com.project.wish.jwt.JwtTokenProvider;
 import com.project.wish.repository.UserRepository;
@@ -25,7 +26,7 @@ public class myAuthenticationSuccessHandler implements AuthenticationSuccessHand
         var authorities = authentication.getAuthorities();
 
         var auth = authorities.stream()
-            .filter(a -> a.getAuthority().equals("ROLE_USER") || a.getAuthority().equals("ROLE_ADMIN"))
+            .filter(a -> a.getAuthority().equals(RoleType.ROLE_USER.name()) || a.getAuthority().equals(RoleType.ROLE_ADMIN.name()))
             .findFirst();
 
         if (auth.isPresent()) {
