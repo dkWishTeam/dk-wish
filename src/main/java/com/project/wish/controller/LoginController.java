@@ -1,10 +1,8 @@
 package com.project.wish.controller;
 
-import com.project.wish.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,7 +17,7 @@ public class LoginController {
      * @return 메인페이지로 리턴해줍니다.
      */
     @RequestMapping("/")
-    public ResponseEntity<Void> mainView(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<Void> mainView() {
         return ResponseEntity.ok(null);
 
     }
