@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().configurationSource(corsConfigurationSource())
             .and()
             .authorizeRequests()
-            .antMatchers("/", "/login", "/place/*").permitAll() // 로그인과 메인화면에 누구나 접근 가능하게 설정
+            .antMatchers("/", "/login", "/place/**").permitAll() // 로그인과 메인화면에 누구나 접근 가능하게 설정
             .antMatchers(
                 "/wishes/*/wishHistories/*"
                 ,"/wishes/*/wishHistories"
