@@ -1,7 +1,7 @@
 package com.project.wish.domain;
 
 public enum RoleType {
-    ADMIN(1), USER(2);
+    ROLE_ADMIN(1), ROLE_USER(2);
 
     private final int roleId;
 
