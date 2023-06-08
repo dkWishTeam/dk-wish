@@ -25,7 +25,7 @@ public class myAuthenticationSuccessHandler implements AuthenticationSuccessHand
         var authorities = authentication.getAuthorities();
 
         var auth = authorities.stream()
-            .filter(a -> a.getAuthority().equals("USER") || a.getAuthority().equals("ADMIN"))
+            .filter(a -> a.getAuthority().equals("ROLE_USER") || a.getAuthority().equals("ROLE_ADMIN"))
             .findFirst();
 
         if (auth.isPresent()) {
