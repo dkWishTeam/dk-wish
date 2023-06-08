@@ -1,5 +1,6 @@
 package com.project.wish.handler;
 
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import javax.servlet.ServletException;
@@ -15,6 +16,11 @@ public class myAuthenticationFailureHandler implements AuthenticationFailureHand
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException exception) throws IOException, ServletException {
-        response.setHeader("failed", LocalDateTime.now().toString());
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("loginSuccess", false);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");  // 추가되는 부분
+        response.getWriter().write(jsonObject.toString());
     }
 }
