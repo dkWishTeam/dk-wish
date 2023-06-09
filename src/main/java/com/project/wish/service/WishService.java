@@ -8,9 +8,7 @@ import com.project.wish.dto.WishUpdateDto;
 
 import java.util.List;
 
-
 public interface WishService {
-
 
     void createWish(WishRequestDto wishRequestDto);
 
@@ -22,6 +20,8 @@ public interface WishService {
     void deleteWish(Long id);
 
     List<WishResponseDto> findWishListByUserID(Long userId);
+
+    void createLocalImageFolder(String path);
 
     default void updateDtoToEntity(Wish wish,WishUpdateDto wishUpdateDto){
         wish.setTitle(wishUpdateDto.getTitle());
@@ -68,5 +68,7 @@ public interface WishService {
                 .modifyDatetime(wish.getModifyDatetime())
                 .build();
     }
+
+
 
 }

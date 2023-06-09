@@ -6,12 +6,15 @@ import com.project.wish.dto.WishResponseDto;
 import com.project.wish.dto.WishUpdateDto;
 import com.project.wish.repository.UserRepository;
 import com.project.wish.repository.WishRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class WishServiceImpl implements WishService {
 
@@ -54,6 +57,19 @@ public class WishServiceImpl implements WishService {
     public List<WishResponseDto> findWishListByUserID(Long userId) {
         List<Wish> wishListByUserID = wishRepository.findWishListByUserID(userRepository.findById(userId).orElseThrow());
         return wishListByUserID.stream().map(wish -> wishToWishResponseDto(wish)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void createLocalImageFolder(String path) {
+        File dir = new File(path);
+        if (!dir.exists()) {
+            boolean created = dir.mkdirs();
+            if (created) {
+                log.info("wish image temp dir created");
+            } else {
+                log.info("creating wish image temp dir failed");
+            }
+        }
     }
 
 }

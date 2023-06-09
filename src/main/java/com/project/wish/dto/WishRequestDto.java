@@ -1,9 +1,6 @@
 package com.project.wish.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.sql.Date;
 
@@ -12,6 +9,8 @@ import java.sql.Date;
 @Setter
 @Builder
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class WishRequestDto {
 
     private Long id;
