@@ -1,9 +1,11 @@
 package com.project.wish.dto.common;
 
-import com.example.simpleboardapi.common.utils.PagingUtil;
+
+import com.project.wish.utils.PagingUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import com.project.wish.utils.PagingUtil;
 
 @Getter
 @SuperBuilder

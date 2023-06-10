@@ -1,6 +1,6 @@
 package com.project.wish.service;
 
-import com.example.simpleboardapi.common.utils.PagingUtil;
+import com.project.wish.utils.PagingUtil;
 import com.project.wish.domain.User;
 import com.project.wish.domain.Wish;
 import com.project.wish.domain.WishHistory;
