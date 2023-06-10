@@ -1,21 +1,21 @@
-package com.example.simpleboardapi.common.utils;
+package com.project.wish.utils;
 
 import lombok.Getter;
 
 @Getter
 public class PagingUtil {
 
-    private long totalElements;
-    private int totalPages;
-    private int pageNumber;
-    private int pageSize;
-    private int totalPageGroups;
-    private int pageGroupSize = 5;
-    private int pageGroup;
-    private int startPage;
-    private int endPage;
-    private boolean existPrePageGroup;
-    private boolean existNextPageGroup;
+    private long totalElements;     //총 요소 수
+    private int totalPages;         //총 페이지 수
+    private int pageNumber;         //현재 페이지
+    private int pageSize;           //페이지 크기(한 페이지 당 보여줄 컨텐츠 수)
+    private int totalPageGroups;    //총 페이지 그룹 수(총 20페이지를 5개씩 끊어서 보여준다면 페이지 그룹 수는 4)
+    private int pageGroupSize = 5;  //페이지 그룹 크기(페이지를 5씩 끊어서 보여준다면 페이지 그룹 크기는 5)
+    private int pageGroup;          //현재 페이지 그룹
+    private int startPage;          //시작 페이지
+    private int endPage;            //끝 페이지
+    private boolean existPrePageGroup;      //이전 페이지 그룹이 존재하는 지 여부
+    private boolean existNextPageGroup;     //다음 페이지 그룹이 존재하는 지 여부
 
     public PagingUtil(long totalElements, int totalPages, int pageNumber, int pageSize) {
         this.totalElements = totalElements;

@@ -10,12 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
-import java.util.List;
 
 
 @RestController
@@ -27,13 +22,10 @@ public class WishHistoryController {
 
     private final WishHistoryService wishHistoryService;
     private final WishService wishService;
-    private final UserService userService;
 
 
     @GetMapping
     public WishHistoryInfoDto findWishHistoryInfoByWishId(@PathVariable Long wishId, PageRequestDto pageRequestDto) {
-//        session.setAttribute("wishId", wishId);
-//        if (!userService.isLogin(session)) return "redirect:/";
         WishHistoryInfoDto wishHistoryInfoDtos = new WishHistoryInfoDto();
 
 
@@ -48,33 +40,20 @@ public class WishHistoryController {
         wishHistoryInfoDtos.setTitle(wishTitle);
         wishHistoryInfoDtos.setWishHistoryRateDto(wishHistoryRateDto);
         wishHistoryInfoDtos.setPageResponseHistoryListDto(pageInfoList);
-//
         wishHistoryInfoDtos.setMsg("아직 위시 기록이 없네요. 새로운 기록을 남겨보세요.");
 
         System.out.println();
-
-//        if (wishHistoryList.size() != 0) {
-//            wishHistoryInfoDtos.setWishHistoryList(wishHistoryList);
-//        }
-
-//        System.out.println(pageInfoList);
-
         return wishHistoryInfoDtos;
     }
 
-//    @GetMapping
-//    public ResponseEntity<PageResponseHistoryListDto> findPagedWishHistory() {
-////        PageResponseHistoryListDto pageInfoList = wishHistoryService.findPageInfoList(pageRequestDto);
-//        return ResponseEntity.ok(pageInfoList);
-//    }
-
+    @GetMapping("/page")
+    public ResponseEntity<PageResponseHistoryListDto> findPagedWishHistory(@PathVariable Long wishId, PageRequestDto pageRequestDto) {
+        PageResponseHistoryListDto pageInfoList = wishHistoryService.findPageInfoList(wishId, pageRequestDto);
+        return ResponseEntity.ok(pageInfoList);
+    }
 
     @PostMapping
     public ResponseEntity<String> createWishHistory(@RequestBody WishHistoryCreateDto wishHistoryCreateDto) {
-//        if (!userService.isLogin(session)) {
-
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-//        }
         wishHistoryService.createWishHistory(wishHistoryCreateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("위시 히스토리가 기록 되었습니다.");
     }
@@ -87,13 +66,8 @@ public class WishHistoryController {
 
     @PutMapping
     public ResponseEntity<?> updateWishHistory(@RequestBody WishHistoryUpdateRequestDto wishHistoryUpdateRequestDto) {
-//        if (!userService.isLogin(session)) {
-//            return "redirect:/";
-//        }
-
         wishHistoryService.updateWishHistory(wishHistoryUpdateRequestDto);
         System.out.println(wishHistoryUpdateRequestDto.toString());
-//        return "redirect:/wishHistory/" + wishHistoryUpdateRequestDto.getWishId();
         return ResponseEntity.ok().build();
     }
 
@@ -101,6 +75,5 @@ public class WishHistoryController {
     @ResponseBody
     public Boolean deleteWishHistory(@PathVariable Long wishHistoryId) {
         return wishHistoryService.deleteWishHistory(wishHistoryId);
-
     }
 }

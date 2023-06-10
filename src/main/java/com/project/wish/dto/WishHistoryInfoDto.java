@@ -16,9 +16,7 @@ public class WishHistoryInfoDto {
 
     private WishHistoryRateDto wishHistoryRateDto;
 
-//    private List<WishHistoryResponseDto> wishHistoryList;
     private PageResponseHistoryListDto pageResponseHistoryListDto;
-
 
     private String msg = "아직 위시 기록이 없네요. 새로운 기록을 남겨보세요.";
 
