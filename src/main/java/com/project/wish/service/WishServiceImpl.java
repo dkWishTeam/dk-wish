@@ -26,10 +26,12 @@ public class WishServiceImpl implements WishService {
         this.wishRepository = wishRepository;
     }
 
+    @Transactional
     @Override
-    public void createWish(WishRequestDto wishRequestDto){
-        wishRepository.save(
-                wishRequestDtoToWish(wishRequestDto, userRepository.findById(wishRequestDto.getUserId()).orElseThrow()));
+    public Long createWish(WishRequestDto wishRequestDto){
+        return wishRepository.save(
+                wishRequestDtoToWish(wishRequestDto, userRepository.findById(wishRequestDto.getUserId())
+                        .orElseThrow())).getId();
     }
 
     @Override

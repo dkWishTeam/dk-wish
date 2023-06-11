@@ -15,9 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-/**
- * todo : delete 메소드 추가
- */
 @RestController
 @RequestMapping("/users")
 @Slf4j
@@ -50,19 +47,16 @@ public class WishController {
         return "wish/wishCreateForm";
     }
 
-    /**
-     * todo : redirectAttributes 를 toastr 에  넘겨주기
-     */
     @PostMapping("/{userId}/wishes")
-    public String createWish(@RequestPart WishRequestDto wishRequestDto, @RequestPart MultipartFile imageFile) {
+    public Long createWish(@RequestPart WishRequestDto wishRequestDto, @RequestPart MultipartFile imageFile) {
         wishService.createLocalImageFolder(path);
         String localFilePath = s3FileUploader.uploadToLocal(imageFile);
         String s3FileUrl = s3FileUploader.getS3FileUrl(localFilePath);
+        log.info(imageFile.getOriginalFilename());
         log.info("s3 image url : " + s3FileUrl);
         wishRequestDto.setImage(s3FileUrl);
-        wishService.createWish(wishRequestDto);
 
-        return "success";
+        return wishService.createWish(wishRequestDto);
     }
 
     @GetMapping("/{userId}/wishes/{wishId}/updateForm")
