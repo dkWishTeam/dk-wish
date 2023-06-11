@@ -49,10 +49,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
             .antMatchers("/", "/login", "/place/**").permitAll() // 로그인과 메인화면에 누구나 접근 가능하게 설정
+            .antMatchers(HttpMethod.GET,"/wishes/*/wishHistories").permitAll()
             .antMatchers(
                 "/wishes/*/wishHistories/*"
-                ,"/wishes/*/wishHistories"
                 ,"/users/*"
+                ,"/users/*/wishes"
+                ,"/wishes/*/wishHistories"
                 ,"/logout").hasAnyRole("USER","ADMIN")
             .antMatchers("/**/admin","/**/block").hasRole("ADMIN")
             .antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
