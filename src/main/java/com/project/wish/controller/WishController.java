@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -23,6 +24,7 @@ public class WishController {
 
     @Value("${wish.image.local.path}")
     private String path;
+    private final String DEFAULT_IMAGE_URL = "https://wish-image-s3.s3.ap-northeast-2.amazonaws.com/default.png";
     private final WishService wishService;
     private final S3FileUploader s3FileUploader;
 
@@ -48,14 +50,15 @@ public class WishController {
     }
 
     @PostMapping("/{userId}/wishes")
-    public Long createWish(@RequestPart WishRequestDto wishRequestDto, @RequestPart MultipartFile imageFile) {
-        wishService.createLocalImageFolder(path);
-        String localFilePath = s3FileUploader.uploadToLocal(imageFile);
-        String s3FileUrl = s3FileUploader.getS3FileUrl(localFilePath);
-        log.info(imageFile.getOriginalFilename());
-        log.info("s3 image url : " + s3FileUrl);
+    public Long createWish(@RequestPart WishRequestDto wishRequestDto, @RequestPart Optional<MultipartFile> imageFile) {
+        String s3FileUrl;
+        if (imageFile.isPresent()) {
+            wishService.createLocalImageFolder(path);
+            String localFilePath = s3FileUploader.uploadToLocal(imageFile.orElseThrow());
+            s3FileUrl = s3FileUploader.getS3FileUrl(localFilePath);
+        }
+        s3FileUrl = DEFAULT_IMAGE_URL;
         wishRequestDto.setImage(s3FileUrl);
-
         return wishService.createWish(wishRequestDto);
     }
 
