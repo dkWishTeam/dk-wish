@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface WishService {
 
-    void createWish(WishRequestDto wishRequestDto);
+    Long createWish(WishRequestDto wishRequestDto);
 
     WishResponseDto findWishById(Long id);
 
