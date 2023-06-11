@@ -45,7 +45,7 @@ public interface WishService {
                 .productName(wishRequestDto.getProductName())
                 .goalAmount(wishRequestDto.getGoalAmount())
                 .goalDate(wishRequestDto.getGoalDate())
-                .isPublic(wishRequestDto.isPublic())
+                .isPublic(wishRequestDto.isPublicStatus())
                 .completionStatus(wishRequestDto.isCompletionStatus())
 //                .registerDatetime(LocalDateTime.now())
 //                .modifyDatetime(null)
