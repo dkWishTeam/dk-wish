@@ -42,6 +42,7 @@ src/main/resources/aws.properties
  .idea/modules.xml
  .idea/*.iml
  .idea/modules
+ *.idea
  *.iml
  *.ipr
 
