@@ -21,7 +21,7 @@ public class WishRequestDto {
     private String productName;
     private long goalAmount;
     private Date goalDate;
-    private boolean isPublic;
+    private boolean publicStatus;
     private boolean completionStatus;
 
 }
