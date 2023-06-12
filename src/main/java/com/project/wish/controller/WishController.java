@@ -3,11 +3,12 @@ package com.project.wish.controller;
 import com.project.wish.dto.WishRequestDto;
 import com.project.wish.dto.WishResponseDto;
 import com.project.wish.dto.WishUpdateDto;
-import com.project.wish.service.FileUploader;
 import com.project.wish.service.S3FileUploader;
 import com.project.wish.service.WishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,8 +41,8 @@ public class WishController {
     }
 
     @GetMapping("/{userId}/wishes/{wishId}")
-    public String userWish(@PathVariable Long wishId) {
-        return "redirect:/wishes/" + wishId + "/wishHistories";
+    public WishResponseDto getUserWish(@PathVariable Long wishId) {
+        return wishService.findWishById(wishId);
     }
 
     @GetMapping("/{userId}/wishes/createForm")
@@ -51,12 +52,7 @@ public class WishController {
 
     @PostMapping("/{userId}/wishes")
     public Long createWish(@RequestPart WishRequestDto wishRequestDto, @RequestPart Optional<MultipartFile> imageFile) {
-        String s3FileUrl  = DEFAULT_IMAGE_URL;
-        if (imageFile.isPresent()) {
-            wishService.createLocalImageFolder(path);
-            String localFilePath = s3FileUploader.uploadToLocal(imageFile.orElseThrow());
-            s3FileUrl = s3FileUploader.getS3FileUrl(localFilePath);
-        }
+        String s3FileUrl = uploadFile(imageFile);
         wishRequestDto.setImage(s3FileUrl);
         return wishService.createWish(wishRequestDto);
     }
@@ -70,18 +66,27 @@ public class WishController {
 
 
     @PostMapping("/{userId}/wishes/{wishId}")
-    public String updateWish(@PathVariable Long userId, WishUpdateDto wishUpdateDto, @RequestParam MultipartFile imageFile) {
-        FileUploader fileUploader = new FileUploader();
-        String fileName = fileUploader.getUploadFilePath(imageFile);
+    public ResponseEntity<?> updateWish(WishUpdateDto wishUpdateDto, @RequestParam Optional<MultipartFile> imageFile) {
+        String fileName = uploadFile(imageFile);
         wishUpdateDto.setImage(fileName);
         wishService.updateWish(wishUpdateDto);
-        return "redirect:/users/" + userId + "/wishes";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{userId}/wishes/{wishId}")
     public String deleteWish(@PathVariable long wishId, HttpSession session) {
         wishService.deleteWish(wishId);
         return "redirect:/users/" + session.getAttribute("id") + "/wishes";
+    }
+
+    public String uploadFile(Optional<MultipartFile> imageFile) {
+        String s3FileUrl  = DEFAULT_IMAGE_URL;
+        if (imageFile.isPresent()) {
+            wishService.createLocalImageFolder(path);
+            String localFilePath = s3FileUploader.uploadToLocal(imageFile.orElseThrow());
+            s3FileUrl = s3FileUploader.getS3FileUrl(localFilePath);
+        }
+        return s3FileUrl;
     }
 
 }
