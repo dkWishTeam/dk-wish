@@ -10,6 +10,4 @@ public interface WishPlaceService {
     public List<WishPlaceDto> getSearchWishPlace(String search, Integer start, Integer size);
 
     public int getWishCount(String path);
-
-    public void setWishImage(List<WishPlaceDto> list);
 }

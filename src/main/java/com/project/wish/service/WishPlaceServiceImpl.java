@@ -36,7 +36,6 @@ public class WishPlaceServiceImpl implements WishPlaceService {
                 break;
         }
 
-        setWishImage(list);
         return list;
     }
 
@@ -68,15 +67,5 @@ public class WishPlaceServiceImpl implements WishPlaceService {
         }
 
         return list.size();
-    }
-
-
-    @Override
-    public void setWishImage(List<WishPlaceDto> list) {
-        for(WishPlaceDto l : list) {
-            if(l.getImageSrc() == null || l.getImageSrc().indexOf("wish-image-s3") == -1) {
-                l.setImageSrc("/images/default.png");
-            }
-        }
     }
 }
