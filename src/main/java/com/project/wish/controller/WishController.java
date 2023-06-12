@@ -51,13 +51,12 @@ public class WishController {
 
     @PostMapping("/{userId}/wishes")
     public Long createWish(@RequestPart WishRequestDto wishRequestDto, @RequestPart Optional<MultipartFile> imageFile) {
-        String s3FileUrl;
+        String s3FileUrl  = DEFAULT_IMAGE_URL;
         if (imageFile.isPresent()) {
             wishService.createLocalImageFolder(path);
             String localFilePath = s3FileUploader.uploadToLocal(imageFile.orElseThrow());
             s3FileUrl = s3FileUploader.getS3FileUrl(localFilePath);
         }
-        s3FileUrl = DEFAULT_IMAGE_URL;
         wishRequestDto.setImage(s3FileUrl);
         return wishService.createWish(wishRequestDto);
     }
