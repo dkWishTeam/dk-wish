@@ -19,7 +19,6 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     private final UserService userService;
-
     /**
      * 메인 페이지 요청 메서드
      * @return 메인페이지로 리턴해줍니다.
@@ -27,6 +26,12 @@ public class LoginController {
     @RequestMapping("/")
     public String mainView() {
         return "index";
+
+    }
+
+    @RequestMapping("/welcome")
+    public String welcomeView() {
+        return "welcome";
 
     }
 
